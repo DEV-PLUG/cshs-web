@@ -1,5 +1,6 @@
 import refreshAccessToken from "./refresh-access-token";
 import CryptoJS from 'crypto-js';
+import client from "@libs/server/client";
 
 export default async function updateCourse(email:string) {
   let google = await client?.google.findMany({
