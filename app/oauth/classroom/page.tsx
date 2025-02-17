@@ -27,7 +27,7 @@ function Home() {
 
   useEffect(() => {
     if(!searchParams.get('scope')) return;
-    console.log(searchParams.get('scope')?.split(' '))
+    // console.log(searchParams.get('scope')?.split(' '))
 
     if(!searchParams.get('scope')?.split(' ').includes('https://www.googleapis.com/auth/classroom.announcements.readonly') || !searchParams.get('scope')?.split(' ').includes('https://www.googleapis.com/auth/classroom.courses.readonly') || !searchParams.get('scope')?.split(' ').includes('https://www.googleapis.com/auth/classroom.rosters.readonly') || (!searchParams.get('scope')?.split(' ').includes('https://www.googleapis.com/auth/classroom.coursework.me.readonly') && !searchParams.get('scope')?.split(' ').includes('https://www.googleapis.com/auth/classroom.student-submissions.me.readonly'))) {
       setStep(1);

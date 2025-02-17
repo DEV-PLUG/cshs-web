@@ -77,14 +77,17 @@ export default function NotificationMenu() {
                         }
                       }} key={data.id} className="px-3 py-3 flex items-start space-x-3 transition-all cursor-pointer rounded-xl hover:bg-gray-50 text-lightgray-300">
                         <div className="w-10 h-10">
-                          <div className="w-10 h-10 rounded-xl bg-blue-100">
+                          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
                             { data.image && <Image alt="알림 이미지" width={40} height={40} src={data.image}/> }
+                            { data.title.includes('활동') && <svg className="w-6 h-6 stroke-blue-400" fill="none" strokeWidth={1.8} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+                            </svg> }
                           </div>
                         </div>
                         <div>
                           <div className="text-base font-bold text-lightgray-300">{data.title}</div>
                           <div className="text-sm text-lightgray-200">{data.content}</div>
-                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'time-left'))} 전</div>
+                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'date-left')) === '0' ? '오늘' : `${String(displayDate(new Date(data.createdAt), 'date-left'))}일 전`}</div>
                         </div>
                       </div>
                     </StaggerChildrenAnimation>
@@ -103,14 +106,17 @@ export default function NotificationMenu() {
                         }
                       }} key={data.id} className="px-3 py-3 flex items-start space-x-3 transition-all cursor-pointer rounded-xl hover:bg-gray-50 text-lightgray-300">
                         <div className="w-10 h-10">
-                          <div className="w-10 h-10 rounded-xl bg-blue-100">
+                          <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
                             { data.image && <Image alt="알림 이미지" width={40} height={40} src={data.image}/> }
+                            { data.title.includes('활동') && <svg className="w-6 h-6 stroke-blue-400" fill="none" strokeWidth={1.8} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122" />
+                            </svg> }
                           </div>
                         </div>
                         <div>
                           <div className="text-base font-bold text-lightgray-300">{data.title}</div>
                           <div className="text-sm text-lightgray-200">{data.content}</div>
-                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'time-left'))} 전</div>
+                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'date-left')) === '0' ? '오늘' : `${String(displayDate(new Date(data.createdAt), 'date-left'))}일 전`}</div>
                         </div>
                       </div>
                     </StaggerChildrenAnimation>

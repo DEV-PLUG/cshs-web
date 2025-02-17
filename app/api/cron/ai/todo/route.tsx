@@ -87,7 +87,10 @@ async function PostHandler() {
 
   const announcement = await client.classroomAnnoucement.findMany({
     where: {
-      analysed: false
+      analysed: false,
+      postCreationTime: {
+        gte: new Date(new Date().setDate(new Date().getDate() - 7))
+      }
     },
     select: {
       id: true,
@@ -139,14 +142,14 @@ async function PostHandler() {
                   },
                   "dueDate": {
                     "type": "string",
-                    "description": "2025-12-31 형식의 마감일"
+                    "description": "2025-02-01 형식의 마감일 딱히 없는 경우 기본값 7일 뒤"
                   },
                   "courseId": {
                     "type": "number",
                     "description": "해당 공지의 courseId"
                   }
                 }, 
-                "required": ["title", "des", "courseId"]
+                "required": ["title", "des", "courseId", "dueDate"]
               }, 
             }
           },

@@ -201,7 +201,7 @@ export default function AddActivityButton() {
                           setPlace({ id: activity.place.id, place: activity.place.place });
                         }} className="flex text-zinc-800 items-center justify-between p-1 hover:bg-gray-200 rounded-lg cursor-pointer transition-colors">
                           <div className="text-sm">'{activity.content}' {activity.relation.length > 0 && '-'} { activity.relation.length <= 0 ? '' : activity.relation.length === 1 ? activity.relation[0].user.name : activity.relation.length === 2 ? `${activity.relation[0].user.name}, ${activity.relation[1].user.name}` : `${activity.relation[0].user.name}, ${activity.relation[1].user.name} 외 ${activity.relation.length - 2}명` }</div>
-                          <div className="text-sm">{ displayDate(activity.createdAt, 'date-left') === 0 ? '오늘' : `${-(+displayDate(activity.createdAt, 'date-left'))}일 전` }</div>
+                          <div className="text-sm">{ -(+displayDate(activity.createdAt, 'date-left')) === 0 ? '오늘' : `${-(+displayDate(activity.createdAt, 'date-left'))}일 전` }</div>
                         </div>
                       )
                     }) }

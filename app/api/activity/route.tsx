@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
 
-// Add a new todo to the other user
+// Add Activity
 async function PostHandler(request:Request) {
   const session = await getServerSessionCM();
   const req = await request.json();
@@ -39,7 +39,8 @@ async function PostHandler(request:Request) {
       email: session.user.email
     },
     select: {
-      id: true
+      id: true,
+      name: true
     }
   });
   if(!sender) return NextResponse.json({
@@ -77,6 +78,35 @@ async function PostHandler(request:Request) {
   }));
   await client.activityRelation.createMany({
     data: activityData
+  });
+
+  const teacher = await client.user.findUnique({
+    where: {
+      id: req.teacher[0]
+    },
+    select: {
+      notificationToken: true
+    }
+  });
+  if(teacher && teacher.notificationToken) {
+    await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: teacher.notificationToken,
+        title: `새로운 활동 승인 요청이 있습니다`,
+        body: `'${req.content}' - ${sender.name}${activityData.length > 0 ? ' 외 ' + activityData.length + '명' : ''}`
+      })
+    });
+  }
+  await client.notification.create({
+    data: {
+      title: `새로운 활동 승인 요청이 있습니다`,
+      content: `'${req.content}' - ${sender.name}${activityData.length > 0 ? ' 외 ' + activityData.length + '명' : ''}`,
+      userId: req.teacher[0]
+    }
   });
 
   return NextResponse.json({

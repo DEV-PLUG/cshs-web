@@ -34,6 +34,14 @@ export default function withHandler({ method, isPrivate = true, fn }: ConfigType
       } catch(error) {
         const err:any = error;
         console.log(err); // 디버깅용 코드 - Build시 삭제
+        
+        await client?.log.create({
+          data: {
+            type: 'Unknown Error',
+            description: err
+          }
+        });
+
         if(err.message.toLowerCase().indexOf('prisma') !== -1) return NextResponse.json({ success:false, message: 'Unknown Error (101)' }, { status: 500 });
         else return NextResponse.json({ success: false, message: 'Unknown Error' }, { status: 500 });
       }
