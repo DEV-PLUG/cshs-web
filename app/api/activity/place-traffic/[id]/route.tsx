@@ -1,7 +1,5 @@
 import withHandler from "@libs/server/withHandler";
 import client from "@libs/server/client";
-import { getServerSession } from "next-auth";
-import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
 
 // Get traffic of the selected place
