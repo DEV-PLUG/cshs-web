@@ -1,0 +1,30 @@
+// import Menu from "@components/menu";
+// import Image from "next/image";
+// import Link from "next/link";
+// import Broadcast from "./broadcast";
+
+// export default function Home() {
+
+//   return (
+//     <main className="flex min-h-screen">
+//       {/* <Menu/> */}
+//       <div className="h-[100vh] bg-white w-full md:border-l-[1px] border-lightgray-100 drop-shadow-2xl p-10 overflow-auto">
+//         <div className="flex justify-between w-full mb-8">
+//           <div className="flex space-x-7 h-[46px] items-center">
+//             <Link href='/convenience'>
+//               <div className="font-bold text-3xl text-zinc-800 cursor-pointer">방송 녹음기</div>
+//             </Link>
+//           </div>
+//         </div>
+//         <div className="w-full h-[1px] mb-5 bg-lightgray-100"></div>
+//         <div className="mt-8 flex justify-between space-x-5">
+//           <div className="w-full space-y-10">
+//             <div className="space-y-3">
+//               <Broadcast/>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </main>
+//   );
+// }

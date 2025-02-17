@@ -1,0 +1,50 @@
+{
+  "name": "ground",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@aws-sdk/client-comprehend": "^3.614.0",
+    "@aws-sdk/client-s3": "^3.613.0",
+    "@aws-sdk/client-transcribe": "^3.613.0",
+    "@aws-sdk/s3-request-presigner": "^3.613.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.16.1",
+    "@mui/x-date-pickers": "^7.12.1",
+    "@prisma/client": "^6.0.1",
+    "@reduxjs/toolkit": "^2.2.6",
+    "@sentry/nextjs": "^8.54.0",
+    "@types/crypto-js": "^4.2.2",
+    "@vercel/speed-insights": "^1.1.0",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
+    "es-hangul": "^1.3.5",
+    "framer-motion": "^11.1.7",
+    "hangul-search": "^1.4.2",
+    "kadvice": "^2.0.2",
+    "next": "^14.2.20",
+    "next-auth": "^4.24.7",
+    "node-jose-tools": "^2.0.4",
+    "openai": "^4.80.1",
+    "react": "^18.3.1",
+    "react-dom": "^18",
+    "react-redux": "^9.1.2",
+    "stream-to-string": "^1.2.1",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "prisma": "^6.0.1",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

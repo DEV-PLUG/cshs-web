@@ -1,0 +1,98 @@
+// import withHandler from "@libs/server/withHandler";
+// import client from "@libs/server/client";
+// import { getServerSession } from "next-auth";
+// import getServerSessionCM from "@libs/server/session";
+// import { NextResponse } from "next/server";
+// import { NextApiRequest } from "next";
+// import { getSignedFileUrl } from "@libs/server/s3";
+// import { textExtraction } from "@libs/server/transcribe";
+// import { entityExtraction } from "@libs/server/comprehend";
+// import { disassembleHangulToGroups } from "es-hangul";
+// import { getSimilarity } from "@libs/client/getSimilarity";
+
+// async function PostHandler(request:Request) {
+//   const session = await getServerSessionCM();
+
+//   const req = await request.json();
+//   const broadcast = await client.broadcast.findUnique({
+//     where: {
+//       id: req.id
+//     }
+//   });
+
+//   if(!broadcast || !broadcast.text) {
+//     return NextResponse.json({
+//       success: false,
+//       message: 'Broadcast not found.'
+//     }, { status: 400 });
+//   }
+//   const entity = await entityExtraction(broadcast.text);
+
+//   const students = ['박성민', '최지환', '지민겸', '최예준', '배경률', '구민하', '배석현', '이영민', '이재용'];
+//   let entityList:any = entity.ResultList[0].Entities;
+//   broadcast.text.split(' ').forEach((word) => {
+//     if(students.includes(word)) {
+//       entityList.push({ Type: 'PERSON', Score: 1, Text: word });
+//     }
+//   });
+
+//   console.log(entityList)
+//   const person:any = [];
+//   entityList.forEach((entity:any) => {
+//     let personData = { similarity: 0, text: '' };
+//     if((entity.Type === 'PERSON' || entity.Type === 'ORGANIZATION') && entity.Score > 0.85) {
+//       students.forEach((student) => {
+//         if(getSimilarity(entity.Text.replaceAll(' ', ''), student) > personData.similarity) {
+//           personData = { similarity: getSimilarity(entity.Text.replaceAll(' ', ''), student), text: student };
+//         }
+//       });
+//       console.log(personData, entity.Text.replaceAll(' ', ''))
+//       if(!person.some((person:any) => person.text === personData.text)) person.push(personData);
+//     }
+//   });
+
+//   await client.broadcast.update({
+//     where: {
+//       id: req.id
+//     },
+//     data: {
+//       person: JSON.stringify(person)
+//     }
+//   });
+
+//   person.forEach(async (person:any) => {
+//     const user = await client.user.findFirst({
+//       where: {
+//         name: person.text
+//       },
+//       select: {
+//         notificationToken: true
+//       }
+//     });
+
+//     if(user) {
+//       await fetch('https://exp.host/--/api/v2/push/send', {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({ 
+//           to: user.notificationToken, 
+//           title: "학교 방송 알림", 
+//           body: `학교 방송에서 언급되었습니다.\n이곳을 눌러 내용을 확인하세요.`, 
+//           sound: "default" })
+//       })
+//       .then((response) => response.json())
+//       .then((response) => {
+//         console.log(response)
+//       });
+//     }
+//   });
+
+//   return NextResponse.json({
+//     success: true,
+//     person: person
+//   }, { status: 200 });
+// }
+
+// export const POST = withHandler({ method: "POST", fn: PostHandler, isPrivate: false });

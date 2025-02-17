@@ -1,0 +1,298 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Prisma 6 버전의 Preview 기능이 안정될 때까지 search 대신 contains를 사용할 것.
+// Prisma 6 Preview: https://www.prisma.io/docs/concepts/components/prisma-client/preview-features
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model School {
+  id Int @id @default(autoincrement())
+  name String
+  description String
+  image String
+  level Int // 0: 고등학교 1: 중학교 2: 초등학교
+  region String
+  address String
+  ATPT_OFCDC_SC_CODE String
+  SD_SCHUL_CODE String
+  admin User[] @relation("SchoolAdmin")
+  member User[] @relation("SchoolMember")
+  group Group[] @relation("Group")
+  meal Meal[] @relation("SchoolMeal")
+  timetable Timetable[] @relation("SchoolTimetable")
+  place Place[] @relation("SchoolPlace")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  provider String
+  email String @unique
+  userId String @unique
+  profile String?
+  type Int // 0: 학생 1: 선생님
+  name String
+  grade Int?
+  class Int?
+  number Int?
+  notificationToken String?
+  mobileToken String? @db.Text
+
+  managedSchool School? @relation("SchoolAdmin", fields: [mangedSchoolId], references: [id])
+  mangedSchoolId Int?
+  affiliationSchool School? @relation("SchoolMember", fields: [affiliationSchoolId], references: [id])
+  affiliationSchoolId Int?
+  google Google? @relation("GoogleAccount")
+  googleId Int?
+
+  receivedTodo Todo[] @relation("ReceivedTodoUser")
+  sendedTodo Todo[] @relation("SendedTodoUser")
+  favoritesFrom Favorite[] @relation("FavoriteFromUser")
+  favoritesTo Favorite[] @relation("FavoriteToUser")
+  group GroupRelation[] @relation("GroupUser")
+  classroomCourse ClassroomCourseRelation[] @relation("ClassroomCourse")
+  joinedActivity ActivityRelation[] @relation("ActivityUser")
+  writtenActivity Activity[] @relation("WriterActivity")
+  asignedActivity Activity[] @relation("TeacherActivity")
+  notification Notification[] @relation("NotificationUser")
+  verificationCode VerificationCode? @relation("VerificationCode")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationCode {
+  id Int @id @default(autoincrement())
+  code String @unique @db.VarChar(6)
+  user User @relation("VerificationCode", fields: [userId], references: [id])
+  userId Int @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Place {
+  id Int @id @default(autoincrement())
+  affiliationSchool School @relation("SchoolPlace", fields: [affiliationSchoolId], references: [id])
+  affiliationSchoolId Int
+  code String?
+  place String // 0: 일반 강의실 1: 학습실
+  type Int
+  activity Activity[] @relation("ActivityPlace")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Activity {
+  id Int @id @default(autoincrement())
+  teacher User @relation("TeacherActivity", fields: [teacherId], references: [id])
+  teacherId Int
+  writer User @relation("WriterActivity", fields: [writerId], references: [id])
+  writerId Int
+  relation ActivityRelation[] @relation("ActivityRelation")
+  content String
+  perio String
+  date String
+  place Place @relation("ActivityPlace", fields: [placeId], references: [id])
+  placeId Int
+  status Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityRelation {
+  id Int @id @default(autoincrement())
+  user User @relation("ActivityUser", fields: [userId], references: [id])
+  userId Int
+  activity Activity @relation("ActivityRelation", fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Google {
+  id Int @id @default(autoincrement())
+  user User @relation("GoogleAccount", fields: [userId], references: [id])
+  userId Int @unique
+  accessToken String @db.Text
+  refreshToken String @db.Text
+  expire DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClassroomCourse {
+  id Int @id @default(autoincrement())
+  courseId String @unique
+  name String
+  description String
+  relation ClassroomCourseRelation[] @relation("ClassroomCourse")
+  relationId Int?
+  annoucement ClassroomAnnoucement[] @relation("ClassroomAnnoucement")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClassroomAnnoucement {
+  id Int @id @default(autoincrement())
+  announcementId String @unique
+  writer String
+  profile String?
+  title String?
+  content String @db.LongText
+  course ClassroomCourse @relation("ClassroomAnnoucement", fields: [courseId], references: [id])
+  courseId Int
+  type Int? // 0: 공지, 1: 과제
+  analysed Boolean
+  dueDate DateTime?
+  postCreationTime DateTime
+  postUpdateTime DateTime
+  materials Boolean?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ClassroomCourseRelation {
+  id Int @id @default(autoincrement())
+  course ClassroomCourse @relation("ClassroomCourse", fields: [courseId], references: [id])
+  courseId Int
+  user User @relation("ClassroomCourse", fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Favorite {
+  id Int @id @default(autoincrement())
+  from User @relation("FavoriteFromUser", fields: [fromId], references: [id], onDelete: Cascade)
+  fromId Int
+  to User @relation("FavoriteToUser", fields: [toId], references: [id], onDelete: Cascade)
+  toId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Meal {
+  id Int @id @default(autoincrement())
+  affiliationSchool School @relation("SchoolMeal", fields: [affiliationSchoolId], references: [id])
+  affiliationSchoolId Int
+  date String
+  breakfast String? @db.Text
+  lunch String? @db.Text
+  dinner String? @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Timetable {
+  id Int @id @default(autoincrement())
+  affiliationSchool School @relation("SchoolTimetable", fields: [affiliationSchoolId], references: [id])
+  affiliationSchoolId Int
+  date String
+  perio Int
+  subject String
+  class Int
+  grade Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+  title String
+  content String
+  link String?
+  image String?
+  user User @relation("NotificationUser", fields: [userId], references: [id])
+  userId Int
+  read Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Group {
+  id Int @id @default(autoincrement())
+  name String
+  relation GroupRelation[] @relation("GroupRelation")
+  school School @relation("Group", fields: [schoolId], references: [id])
+  schoolId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GroupRelation {
+  id Int @id @default(autoincrement())
+  user User @relation("GroupUser", fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  group Group @relation("GroupRelation", fields: [groupId], references: [id], onDelete: Cascade)
+  groupId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Broadcast {
+  id Int @id @default(autoincrement())
+  text String?
+  place String?
+  person String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Todo {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(40)
+  description String? @db.Text
+  type Int // 0: 일반 1: 인공지능 2: 설문조사
+  status Int // 0: 미완료 1: 완료
+  deadline DateTime?
+  receiver User? @relation("ReceivedTodoUser", fields: [receiverId], references: [id])
+  receiverId Int?
+  sender User @relation("SendedTodoUser", fields: [senderId], references: [id])
+  senderId Int
+  survey Survey? @relation("TodoSurvey", fields: [surveyId], references: [id])
+  surveyId Int?
+  mainTodo Todo? @relation("MainTodo", fields: [mainTodoId], references: [id], onDelete: Cascade)
+  mainTodoId Int?
+  relationTodo Todo[] @relation("MainTodo")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@fulltext([title])
+  @@fulltext([description])
+}
+
+model Survey {
+  id Int @id @default(autoincrement())
+  todo Todo[] @relation("TodoSurvey")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Feedback {
+  id Int @id @default(autoincrement())
+  content String @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Log {
+  id Int @id @default(autoincrement())
+  type String @db.VarChar(40)
+  description String? @db.Text
+  relation Int?
+  ip String? @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

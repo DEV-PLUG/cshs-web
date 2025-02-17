@@ -1,0 +1,218 @@
+// 'use client';
+
+// import React from 'react';
+// import { useState } from 'react';
+
+// export default function Broadcast() {
+//   const [stream, setStream] = useState<any>();
+//   const [media, setMedia] = useState<any>();
+//   const [onRec, setOnRec] = useState(true);
+//   const [source, setSource] = useState<any>();
+//   const [analyser, setAnalyser] = useState<any>();
+//   const [audioUrl, setAudioUrl] = useState<any>();
+//   const chunks = []; // 오디오 청크 데이터를 저장할 배열
+
+//   const [result, setResult] = useState('');
+//   const [status, setStatus] = useState(0);
+
+//   const onRecAudio = () => {
+//     setStatus(0);
+
+//     // 음원정보를 담은 노드를 생성하거나 음원을 실행또는 디코딩 시키는 일을 한다
+//     const audioCtx = new (window.AudioContext || window.AudioContext)();
+    
+//     // 자바스크립트를 통해 음원의 진행상태에 직접접근에 사용된다.
+//     const analyser:any = audioCtx.createScriptProcessor(0, 1, 1);
+//     setAnalyser(analyser);
+
+//     let source:any;
+//     function makeSound(stream:any) {
+//       // 내 컴퓨터의 마이크나 다른 소스를 통해 발생한 오디오 스트림의 정보를 보여준다.
+//       source = audioCtx.createMediaStreamSource(stream);
+//       setSource(source);
+      
+//       // AudioBufferSourceNode 연결
+//       source.connect(analyser);
+//       analyser.connect(audioCtx.destination);
+//     }
+    
+//     // 마이크 사용 권한 획득 후 녹음 시작
+//     navigator.mediaDevices.getUserMedia({ audio: true }).then((stream:any) => {
+//       const mediaRecorder:any = new MediaRecorder(stream);
+      
+
+//       // dataavailable 이벤트 핸들러 등록
+//       mediaRecorder.addEventListener('dataavailable', (e:any) => {
+//         chunks.push(e.data); // 청크 데이터를 배열에 추가
+//       });
+
+//       mediaRecorder.start();
+//       setStream(stream);
+//       setMedia(mediaRecorder);
+//       makeSound(stream);
+
+//       // 음성 녹음이 시작됐을 때 onRec state값을 false로 변경
+//       analyser.onaudioprocess = function (e:any) {
+//         setOnRec(false);
+
+//         if (e.playbackTime > 20) {
+//           // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
+//           mediaRecorder.ondataavailable = function (e:any) {
+//             chunks.push(e.data);
+//             setAudioUrl(e.data);
+//             setOnRec(true);
+
+//             onSubmitAudioFile(e.data);
+//           };
+
+//           // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
+//           stream.getAudioTracks().forEach(function (track:any) {
+//             track.stop();
+//           });
+
+//           // 미디어 캡처 중지
+//           mediaRecorder.stop();
+          
+//           // 메서드가 호출 된 노드 연결 해제
+//           analyser.disconnect();
+//           source.disconnect();
+//         }
+//       };
+//     }) .catch((error) => {
+//       // 마이크 사용 권한을 받지 못했을 때 처리
+//       alert('마이크 사용 권한을 허용해야 녹음을 진행할 수 있습니다.');
+//     });
+//   };
+
+//   const offRecAudio = () => {
+//     // dataavailable 이벤트로 Blob 데이터에 대한 응답을 받을 수 있음
+//     media.ondataavailable = function (e:any) {
+//       chunks.push(e.data);
+//       setAudioUrl(e.data);
+//       setOnRec(true);
+
+//       onSubmitAudioFile(e.data);
+//     };
+
+//     // 모든 트랙에서 stop()을 호출해 오디오 스트림을 정지
+//     stream.getAudioTracks().forEach(function (track:any) {
+//       track.stop();
+//     });
+
+//     // 미디어 캡처 중지
+//     media.stop();
+    
+//     // 메서드가 호출 된 노드 연결 해제
+//     analyser.disconnect();
+//     source.disconnect();
+//   };
+
+//   const [person, setPerson] = useState<any>();
+
+//   async function entityExtraction(id:number) {
+//     setStatus(4);
+//     await fetch(`/api/convenience/broadcast/extract-entity`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({
+//         id: id
+//       })
+//     })
+//     .then((response) => response.json())
+//     .then(async (response) => {
+//       setStatus(5);
+//       setPerson(response.person)
+//     });
+//   }
+
+//   async function textExtraction(id:number) {
+//     setStatus(3);
+//     await fetch(`/api/convenience/broadcast/extract-text`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({
+//         id: id
+//       })
+//     })
+//     .then((response) => response.json())
+//     .then(async (response) => {
+//       setResult(response.text);
+//       entityExtraction(id);
+//     });
+//   }
+
+//   async function sendNotification() {
+//     await fetch('/api/convenience/broadcast/notification', {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       }
+//     })
+//     .then((response) => response.json())
+//     .then((response) => {
+//       console.log(response)
+//     });
+//   }
+
+//   const onSubmitAudioFile = async (audioUrl:string) => {
+//     setStatus(1);
+//     if(audioUrl) {
+//       await fetch(`/api/convenience/broadcast`, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json"
+//         }
+//       })
+//       .then((response) => response.json())
+//       .then(async (DataResponse) => {
+//         setStatus(2);
+//         if(DataResponse.success === true) {
+//           await fetch(DataResponse.url, {
+//             method: "PUT",
+//             body: audioUrl
+//           })
+//           .then((response) => {
+//             textExtraction(DataResponse.id);
+//           })
+//         }
+//       });
+//     }
+//   };
+
+//   return  (
+//     <div>
+//       <div>
+//         <div>
+//           <div onClick={onRec ? onRecAudio : offRecAudio} className="bg-blue-500 hover:bg-blue-600 text-md transition-all text-white justify-center w-[400px] py-4 flex items-center cursor-pointer rounded-xl">
+//             {onRec ? '녹음 시작' : '녹음 중지'}
+//           </div>
+//         </div>
+//         { result !== '' && <div className='mt-10 text-4xl'>음성-텍스트 변환 결과: {result}</div> }
+//         {/* <div>
+//           <div onClick={() => sendNotification()} className="bg-blue-500 hover:bg-blue-600 text-md transition-all text-white justify-center w-[400px] py-4 flex items-center cursor-pointer rounded-xl">
+//             알림 보내기
+//           </div>
+//         </div> */}
+//         { person && <div className='mt-5 text-6xl font-bold'>
+//           <span>
+//             언급된 학생: 
+//             {
+//               person.map((person:any) => {
+//                 return (
+//                   <span> {person.text}</span>
+//                 )
+//               })
+//             }
+//           </span>
+//         </div> }
+//         { status === 1 && <div className='mt-5 text-4xl'>음성 데이터 저장 중</div> }
+//         { status === 2 && <div className='mt-5 text-4xl'>음성 데이터 업로드 중</div> }
+//         { status === 3 && <div className='mt-5 text-4xl'>음성 데이터 변환 중</div> }
+//         { status === 4 && <div className='mt-5 text-4xl'>데이터 추출 중</div> }
+//       </div>
+//     </div> )
+// }

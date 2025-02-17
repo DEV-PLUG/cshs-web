@@ -1,0 +1,22 @@
+// import withHandler from "@libs/server/withHandler";
+// import client from "@libs/server/client";
+// import { getServerSession } from "next-auth";
+// import getServerSessionCM from "@libs/server/session";
+// import { NextResponse } from "next/server";
+// import { NextApiRequest } from "next";
+// import { getSignedFileUrl } from "@libs/server/s3";
+// import { textExtraction } from "@libs/server/transcribe";
+// import { entityExtraction } from "@libs/server/comprehend";
+// import { disassembleHangulToGroups } from "es-hangul";
+// import { getSimilarity } from "@libs/client/getSimilarity";
+
+// async function GetHandler(request:Request) {
+//   const broadcast = await client.broadcast.findMany({});
+
+//   return NextResponse.json({
+//     success: true,
+//     broadcast
+//   }, { status: 200 });
+// }
+
+// export const GET = withHandler({ method: "GET", fn: GetHandler, isPrivate: false });

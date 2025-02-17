@@ -1,0 +1,24 @@
+// import withHandler from "@libs/server/withHandler";
+// import client from "@libs/server/client";
+// import { getServerSession } from "next-auth";
+// import getServerSessionCM from "@libs/server/session";
+// import { NextResponse } from "next/server";
+// import { getSignedFileUrl } from "@libs/server/s3";
+
+// async function PostHandler() {
+//   const session = await getServerSessionCM();
+
+//   const broadcast = await client.broadcast.create({
+//     data: {}
+//   });
+
+//   const presignedUrl = await getSignedFileUrl(broadcast.id + '.webm');
+
+//   return NextResponse.json({
+//     success: true,
+//     url: presignedUrl,
+//     id: broadcast.id
+//   }, { status: 200 });
+// }
+
+// export const POST = withHandler({ method: "POST", fn: PostHandler, isPrivate: false });
