@@ -209,7 +209,7 @@ export default function DemeritOverview() {
             </Link>
           </div>
           <div className="relative overflow-x-auto">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                 <tr>
                   <th scope="col" className="px-6 py-3 !font-medium">
@@ -230,7 +230,7 @@ export default function DemeritOverview() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                   <td className="px-6 py-4">
                     기숙사
                   </td>
@@ -247,7 +247,7 @@ export default function DemeritOverview() {
                     2024-03-06 (금) 오후 02:14
                   </td>
                 </tr>
-                <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                   <td className="px-6 py-4">
                     기숙사
                   </td>

@@ -66,7 +66,7 @@ export default function Home() {
                 <div className="font-bold text-2xl text-zinc-800">제출 마감 전 내역 <span className="text-blue-500">1</span></div>
               </div>
               <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                   <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                     <tr>
                       <th scope="col" className="px-6 py-3 !font-medium">
@@ -89,7 +89,7 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                       <td className="px-6 py-2">
                         ESG 영상 인기투표
                       </td>
@@ -124,7 +124,7 @@ export default function Home() {
                 <div className="font-bold text-2xl text-zinc-800">제출 마감된 내역</div>
               </div>
               <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                   <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                     <tr>
                         <th scope="col" className="px-6 py-3 !font-medium">
@@ -147,7 +147,7 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                       <td className="px-6 py-2">
                         ESG 영상 인기투표
                       </td>

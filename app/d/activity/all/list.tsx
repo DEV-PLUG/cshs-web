@@ -70,7 +70,7 @@ export default function ActivityList() {
               </div>
             </div>
             <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 min-w-[600px]">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[600px]">
                 <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                   <tr>
                     <th scope="col" className="px-6 py-3 !font-medium">
@@ -126,7 +126,7 @@ export default function ActivityList() {
                           mutateActivity: mutateActivity
                         });
                         setDetailModal(true);
-                      }} key={activity.id} className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                      }} key={activity.id} className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                         <td className="px-6 py-2">
                           { activity.writer.name }
                         </td>
@@ -163,7 +163,7 @@ export default function ActivityList() {
                   }) }
                   { !data && [...Array(5)].map((value, index) => {
                     return (
-                      <tr key={index} className="bg-white h-[57px] hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                      <tr key={index} className="bg-white h-[57px] hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                         <td className="px-6 py-2">
                           <div className="bg-gray-100 animate-pulse w-14 h-3 rounded-lg"></div>
                         </td>
@@ -199,7 +199,7 @@ export default function ActivityList() {
               </div>
             </div>
             <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 min-w-[600px]">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[600px]">
                 <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                   <tr>
                     <th scope="col" className="px-6 py-3 !font-medium">
@@ -255,7 +255,7 @@ export default function ActivityList() {
                           mutateActivity: mutateActivity
                         });
                         setDetailModal(true);
-                      }} key={activity.id} className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                      }} key={activity.id} className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                         <td className="px-6 py-2">
                           { activity.writer.name }
                         </td>
@@ -292,7 +292,7 @@ export default function ActivityList() {
                   }) }
                   { !data && [...Array(5)].map((value, index) => {
                     return (
-                      <tr key={index} className="bg-white h-[57px] hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                      <tr key={index} className="bg-white h-[57px] hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                         <td className="px-6 py-2">
                           <div className="bg-gray-100 animate-pulse w-14 h-3 rounded-lg"></div>
                         </td>

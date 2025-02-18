@@ -117,7 +117,7 @@ function Home() {
             <div className='text-4xl tossface'>🛡️</div>
             <div>
               <div className='text-lg font-bold'>보안 및 개인 정보 보호</div>
-              <div className='text-gray-500 dark:text-gray-400 text-sm'>전자 활동 승인서는 구글에서 지정한 민감하지 않은 범위의<br/> 데이터에 한하여 최소한의 권한을 요청합니다.<br/><br/>모든 인증 정보는 암호화되어 전송 및 보관되며, 어떠한 경우에도 클래스룸에서<br/> 평가(점수) 관련 데이터를 저장하거나 수정할 권한을 가지지 않습니다.</div>
+              <div className='text-gray-500 text-sm'>전자 활동 승인서는 구글에서 지정한 민감하지 않은 범위의<br/> 데이터에 한하여 최소한의 권한을 요청합니다.<br/><br/>모든 인증 정보는 암호화되어 전송 및 보관되며, 어떠한 경우에도 클래스룸에서<br/> 평가(점수) 관련 데이터를 저장하거나 수정할 권한을 가지지 않습니다.</div>
             </div>
           </div>
         </div>
@@ -151,7 +151,7 @@ function Home() {
             <div className='text-4xl tossface'>🛡️</div>
             <div>
               <div className='text-lg font-bold'>보안 및 개인 정보 보호</div>
-              <div className='text-gray-500 dark:text-gray-400 text-sm'>Ground는 구글에서 지정한 민감하지 않은 범위의<br/> 데이터에 한하여 최소한의 권한을 요청합니다.<br/><br/>모든 인증 정보는 암호화되어 전송 및 보관되며, 어떠한 경우에도 클래스룸에서<br/> 평가(점수) 관련 데이터를 저장하거나, 수정할 권한을 가지지 않습니다.</div>
+              <div className='text-gray-500 text-sm'>Ground는 구글에서 지정한 민감하지 않은 범위의<br/> 데이터에 한하여 최소한의 권한을 요청합니다.<br/><br/>모든 인증 정보는 암호화되어 전송 및 보관되며, 어떠한 경우에도 클래스룸에서<br/> 평가(점수) 관련 데이터를 저장하거나, 수정할 권한을 가지지 않습니다.</div>
             </div>
           </div>
         </div>

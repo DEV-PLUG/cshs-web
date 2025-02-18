@@ -25,7 +25,7 @@ export default function Home() {
                 <div className='text-5xl tossface'>👥</div>
                 <div>
                   <div className='text-lg font-bold'>랜덤 학생 뽑기</div>
-                  <div className='text-gray-500 dark:text-gray-400 text-sm'>무작위 학생을 선택할 수 있습니다.<br/>원하는 인원, 중복 선택 여부 등을 선택하여 사용할 수 있습니다.</div>
+                  <div className='text-gray-500 text-sm'>무작위 학생을 선택할 수 있습니다.<br/>원하는 인원, 중복 선택 여부 등을 선택하여 사용할 수 있습니다.</div>
                 </div>
               </div>
               <Link href='/convenience/class/random-group'>
@@ -33,7 +33,7 @@ export default function Home() {
                   <div className='text-5xl tossface'>📇</div>
                   <div>
                     <div className='text-lg font-bold'>랜덤 조 편성</div>
-                    <div className='text-gray-500 dark:text-gray-400 text-sm'>무작위 조를 편성할 수 있습니다.<br/>원하는 인원, 조 개수 등을 선택하여 사용할 수 있습니다.</div>
+                    <div className='text-gray-500 text-sm'>무작위 조를 편성할 수 있습니다.<br/>원하는 인원, 조 개수 등을 선택하여 사용할 수 있습니다.</div>
                   </div>
                 </div>
               </Link>
@@ -47,7 +47,7 @@ export default function Home() {
                   <div className='text-5xl tossface'>📻</div>
                   <div>
                     <div className='text-lg font-bold'>방송 녹음기</div>
-                    <div className='text-gray-500 dark:text-gray-400 text-sm'>방송 내용을 텍스트로 변환 후 해당하는<br/>구성원에게 알림을 전송합니다.</div>
+                    <div className='text-gray-500 text-sm'>방송 내용을 텍스트로 변환 후 해당하는<br/>구성원에게 알림을 전송합니다.</div>
                   </div>
                 </div>
               </Link>
@@ -60,7 +60,7 @@ export default function Home() {
                 <div className='text-5xl tossface'>🗂️</div>
                 <div>
                   <div className='text-lg font-bold'>데이터 요청</div>
-                  <div className='text-gray-500 dark:text-gray-400 text-sm'>커스텀 필터를 적용하거나, 과거 데이터를 조회하고 싶은 경우 등<br/>원하는 조건 및 범위의 데이터를 요청할 수 있습니다.</div>
+                  <div className='text-gray-500 text-sm'>커스텀 필터를 적용하거나, 과거 데이터를 조회하고 싶은 경우 등<br/>원하는 조건 및 범위의 데이터를 요청할 수 있습니다.</div>
                 </div>
               </div>
               <Link href='/convenience/class/random-group'>
@@ -68,7 +68,7 @@ export default function Home() {
                   <div className='text-5xl tossface'>💻</div>
                   <div>
                     <div className='text-lg font-bold'>API 요청</div>
-                    <div className='text-gray-500 dark:text-gray-400 text-sm'>프로그래밍 방식으로 데이터를 제어하고 싶은 경우,<br/>API 키 및 데이터베이스 구조를 요청할 수 있습니다.</div>
+                    <div className='text-gray-500 text-sm'>프로그래밍 방식으로 데이터를 제어하고 싶은 경우,<br/>API 키 및 데이터베이스 구조를 요청할 수 있습니다.</div>
                   </div>
                 </div>
               </Link>
@@ -81,7 +81,7 @@ export default function Home() {
                 <div className='text-5xl tossface'>💡</div>
                 <div>
                   <div className='text-lg font-bold'>원하는 편의기능이 있으신가요?</div>
-                  <div className='text-gray-500 dark:text-gray-400 text-sm'>그라운드는 학교 구성원이 함께 만들어나가는 공간입니다.<br/>원하는 기능이 있으시다면 언제든 이곳을 눌러 알려주세요.</div>
+                  <div className='text-gray-500 text-sm'>그라운드는 학교 구성원이 함께 만들어나가는 공간입니다.<br/>원하는 기능이 있으시다면 언제든 이곳을 눌러 알려주세요.</div>
                 </div>
               </div>
             </div>

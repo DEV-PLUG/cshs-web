@@ -53,7 +53,7 @@ export default function Home() {
                 <div className="font-bold text-2xl text-zinc-800">1학년 1반</div>
               </div>
               <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                   <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                     <tr>
                       <th scope="col" className="px-6 py-3 !font-medium">
@@ -74,7 +74,7 @@ export default function Home() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                       <td className="px-6 py-2">
                         <div className="w-[40px] h-[40px] overflow-hidden rounded-full">
                           <Image
@@ -98,7 +98,7 @@ export default function Home() {
                         18
                       </td>
                     </tr>
-                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                       <td className="px-6 py-2">
                         <div className="w-[40px] h-[40px] overflow-hidden rounded-full">
                           <Image
@@ -122,7 +122,7 @@ export default function Home() {
                         19
                       </td>
                     </tr>
-                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                       <td className="px-6 py-2">
                         <div className="w-[40px] h-[40px] overflow-hidden rounded-full">
                           <Image
@@ -146,7 +146,7 @@ export default function Home() {
                         20
                       </td>
                     </tr>
-                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800 dark:bg-gray-800 dark:border-gray-700">
+                    <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                       <td className="px-6 py-2">
                         <div className="w-[40px] h-[40px] overflow-hidden rounded-full">
                           <Image
