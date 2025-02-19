@@ -249,7 +249,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                 { !favorite && [...Array(20)].map((value, index) => {
                   return ( 
                     <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
-                      <div className="w-7 h-7 bg-gray-100 rounded-lg"></div>
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
                       <div className="space-y-1">
                         <div className="w-20 h-6 bg-gray-100 rounded-md"></div>
                         <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
@@ -293,8 +293,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                               <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
                             </div>
                           </div>
-                          { value.id !== user.user.id && <div className="cursor-pointer" onClick={ favorite.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? () => deleteFavorite(value.id) : () => postFavorite(value.id) }>
-                            <svg className={ favorite.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? "w-5 h-5 fill-yellow-500 stroke-yellow-500" : "w-5 h-5 stroke-lightgray-200" } fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          { value.id !== user.user.id && <div className="cursor-pointer" onClick={ favorite?.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? () => deleteFavorite(value.id) : () => postFavorite(value.id) }>
+                            <svg className={ favorite?.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? "w-5 h-5 fill-yellow-500 stroke-yellow-500" : "w-5 h-5 stroke-lightgray-200" } fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                             </svg>
                           </div> }
@@ -607,7 +607,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           <div className="flex flex-col justify-between h-full pb-0">
             <div className="mt-[300px]">
               <div className="font-bold text-2xl">즐겨찾기를 통해<br/>빠르게 선택하세요.</div>
-              <div className="text-base text-lightgray-200 mt-2">초성으로도 구성원을 검색할 수 있습니다.<br/>이전보다 더 손쉬워진 검색을 경험해보세요.</div>
+              <div className="text-base text-lightgray-200 mt-2">내 R&E 팀원, 동아리 부원들을 즐겨찾기하면,<br/>빠르게 선택할 수 있습니다.</div>
             </div>
             <div className="absolute bottom-5 right-5">
               <SubButton color="lightblue" fn={() => {
