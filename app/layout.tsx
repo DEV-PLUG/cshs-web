@@ -5,6 +5,13 @@ import Notification from "@components/notification";
 import Providers from "./providers";
 import MobileLoading from "@components/menu/mobile-loading";
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import localFont from 'next/font/local'
+
+const pretendard = localFont({
+  src: '../public/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+});
 
 export default function RootLayout({
   children,
@@ -16,7 +23,7 @@ export default function RootLayout({
       <SpeedInsights/>
       <Providers>
         <SWRProvider>
-          <body>
+          <body className={`${pretendard.className} font-pretendard`}>
             {children}
             <MobileLoading/>
             <Notification/>

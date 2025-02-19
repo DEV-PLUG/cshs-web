@@ -18,7 +18,10 @@ const config: Config = {
         'lightgray-100': '#DDE1E3',
         'lightgray-200': '#8D949E',
         'lightgray-300': '#576270'
-      }
+      },
+      fontFamily: {
+        pretendard: ['var(--font-pretendard)'],
+      },
     },
   },
   plugins: []
