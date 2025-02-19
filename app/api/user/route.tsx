@@ -20,7 +20,10 @@ async function GetHandler() {
       grade: true,
       class: true,
       number: true,
-      type: true
+      type: true,
+      allowNotification: true,
+      allowAI: true,
+      allowNightNotification: true
     }
   });
   if(user.length <= 0) {
@@ -36,4 +39,26 @@ async function GetHandler() {
   }, { status: 200 });
 }
 
+// Change settings of user
+async function PutHandler(request:Request) {
+  const session = await getServerSessionCM();
+  const req = await request.json();
+
+  await client.user.update({
+    where: {
+      email: session.user.email
+    },
+    data: {
+      allowNotification: req.notification,
+      allowAI: req.ai,
+      allowNightNotification: req.nightNotification
+    }
+  });
+
+  return NextResponse.json({
+    success: true
+  }, { status: 200 });
+}
+
 export const GET = withHandler({ method: "GET", fn: GetHandler });
+export const PUT = withHandler({ method: "PUT", fn: PutHandler });

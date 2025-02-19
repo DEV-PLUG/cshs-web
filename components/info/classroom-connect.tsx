@@ -32,7 +32,7 @@ export default function ClassroomConnectModal() {
           <div className='text-2xl tossface'>🛡️</div>
           <div>
             <div className='text-lightgray-200 text-sm'>
-              모든 인증 정보는 암호화되며, 전자 활동 승인서는 평가(점수)<br/> 관련 정보를 저장하거나 수정할 권한이 없습니다.<br/>
+              모든 인증 정보는 암호화되며, 전자 활승은 평가(점수)<br/> 관련 정보를 저장하거나 수정할 권한이 없습니다.<br/>
               {/* <span className="text-lightgray-300 flex items-center mt-1">
                 보안을 위한 전자 활동 승인서의 노력 알아보기
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

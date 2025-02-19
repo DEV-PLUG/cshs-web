@@ -87,7 +87,7 @@ export default function NotificationMenu() {
                         <div>
                           <div className="text-base font-bold text-lightgray-300">{data.title}</div>
                           <div className="text-sm text-lightgray-200">{data.content}</div>
-                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'date-left')) === '0' ? '오늘' : `${String(displayDate(new Date(data.createdAt), 'date-left'))}일 전`}</div>
+                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'date-left')) === '0' ? '오늘' : `${String(-(+displayDate(new Date(data.createdAt), 'date-left')))}일 전`}</div>
                         </div>
                       </div>
                     </StaggerChildrenAnimation>
@@ -116,7 +116,7 @@ export default function NotificationMenu() {
                         <div>
                           <div className="text-base font-bold text-lightgray-300">{data.title}</div>
                           <div className="text-sm text-lightgray-200">{data.content}</div>
-                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'date-left')) === '0' ? '오늘' : `${String(displayDate(new Date(data.createdAt), 'date-left'))}일 전`}</div>
+                          <div className="text-xs text-lightgray-200 mt-1">{String(displayDate(new Date(data.createdAt), 'date-left')) === '0' ? '오늘' : `${String(-(+displayDate(new Date(data.createdAt), 'date-left')))}일 전`}</div>
                         </div>
                       </div>
                     </StaggerChildrenAnimation>

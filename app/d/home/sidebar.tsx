@@ -35,7 +35,7 @@ export default function SideBar() {
             <div className="space-y-1">
               { timetable?.timetable.map((item:any, index:number) => {
                 return (
-                  <div className="text-lightgray-200 flex items-center"><div className="text-sm px-1 bg-blue-500/10 w-[50px] text-center rounded-full text-blue-500">{item.perio}교시</div><div className="text-base text-lightgray-200 font-bold break-keep ml-3">{item.subject}</div></div>
+                  <div key={index} className="text-lightgray-200 flex items-center"><div className="text-sm px-1 bg-blue-500/10 w-[50px] text-center rounded-full text-blue-500">{item.perio}교시</div><div className="text-base text-lightgray-200 font-bold break-keep ml-3">{item.subject}</div></div>
                 )
               }) }
             </div>

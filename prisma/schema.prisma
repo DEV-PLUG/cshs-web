@@ -49,6 +49,9 @@ model User {
   number Int?
   notificationToken String?
   mobileToken String? @db.Text
+  allowNotification Boolean @default(true)
+  allowNightNotification Boolean @default(false)
+  allowAI Boolean @default(true)
 
   managedSchool School? @relation("SchoolAdmin", fields: [mangedSchoolId], references: [id])
   mangedSchoolId Int?
