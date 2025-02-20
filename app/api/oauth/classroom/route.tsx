@@ -34,9 +34,13 @@ async function PostHandler(request: Request) {
   });
 
   if (!tokenResponse.ok) {
+    // return NextResponse.json({
+    //   success: false,
+    //   message: "토큰을 가져오는 데 실패했습니다"
+    // }, { status: 400 });
     return NextResponse.json({
       success: false,
-      message: "토큰을 가져오는 데 실패했습니다"
+      message: `${tokenResponse}`
     }, { status: 400 });
   }
 
