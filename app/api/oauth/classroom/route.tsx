@@ -34,17 +34,11 @@ async function PostHandler(request: Request) {
   });
 
   if (!tokenResponse.ok) {
-    // return NextResponse.json({
-    //   success: false,
-    //   message: "토큰을 가져오는 데 실패했습니다"
-    // }, { status: 400 });
-    console.log(tokenResponse)
     return NextResponse.json({
       success: false,
-      message: `${JSON.stringify(tokenResponse)}`
+      message: "토큰을 가져오는 데 실패했습니다"
     }, { status: 400 });
   }
-  console.log(tokenResponse, 'success')
 
   const tokenData = await tokenResponse.json();
 
