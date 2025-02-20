@@ -149,14 +149,16 @@ export default function ActivityList() {
                         <td className="px-6 py-2">
                           {displayDate(activity.createdAt, 'date')}<br/>
                           {activity.perio.split(',').sort()[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort()[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort()[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort()[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort()[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort()[0] === '5' && '야자 3교시'}
                           {' ~ '}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
                         </td>
                       </tr>
                     )
@@ -278,14 +280,16 @@ export default function ActivityList() {
                         <td className="px-6 py-2">
                           {displayDate(activity.createdAt, 'date')}<br/>
                           {activity.perio.split(',').sort()[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort()[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort()[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort()[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort()[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort()[0] === '5' && '야자 3교시'}
                           {' ~ '}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
                         </td>
                       </tr>
                     )

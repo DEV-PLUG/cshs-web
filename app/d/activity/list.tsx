@@ -219,14 +219,16 @@ export default function ActivityList() {
                         <td className="px-6 py-2">
                           {displayDate(activity.createdAt, 'date')}<br/>
                           {activity.perio.split(',').sort()[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort()[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort()[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort()[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort()[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort()[0] === '5' && '야자 3교시'}
                           {' ~ '}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
                         </td>
                         { userType === 1 && <td className="px-6 py-2 w-[40px]">
                           <div className="bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center px-3 py-3 flex items-center cursor-pointer rounded-[10px] text-blue-500" onClick={(e) => {
@@ -359,14 +361,16 @@ export default function ActivityList() {
                         <td className="px-6 py-2">
                           {displayDate(activity.createdAt, 'date')}<br/>
                           {activity.perio.split(',').sort()[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort()[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort()[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort()[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort()[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort()[0] === '5' && '야자 3교시'}
                           {' ~ '}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8-9교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '3' && '야자 1교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
+                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
                         </td>
                       </tr>
                     )
