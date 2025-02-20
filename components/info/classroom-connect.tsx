@@ -26,7 +26,7 @@ export default function ClassroomConnectModal() {
       <div className="flex flex-col justify-between h-full pb-0">
         <div className="mt-[200px]">
           <div className="font-bold text-2xl">클래스룸 연결하기</div>
-          <div className="text-base text-lightgray-200 mt-2">클래스룸을 연결하면 할 일을 직접 등록하지 않아도 됩니다.<br/>Glassy AI가 알아서 해야할 일을 알려주고,<br/>수업 교체 소식과 수행평가 일정을 알려줍니다.</div>
+          <div className="text-base text-lightgray-200 mt-2">클래스룸을 연결하면 할 일을 직접 등록하지 않아도 됩니다.<br/>AI가 알아서 해야할 일을 알려주고,<br/>수업 교체 소식과 수행평가 일정을 알려줍니다.</div>
         </div>
         <div className='w-full space-x-2 flex items-start py-2 px-3 rounded-xl bg-gray-100 transition-all mt-10'>
           <div className='text-2xl tossface'>🛡️</div>

@@ -22,7 +22,7 @@ export default function ClassroomModal({ fn }:{ fn:()=>void }) {
       <div className="flex flex-col justify-between h-full pb-0">
         <div className="mt-[200px]">
           <div className="font-bold text-2xl">클래스룸에서<br/>게시물을 작성하셨나요?</div>
-          <div className="text-base text-lightgray-200 mt-2">클래스룸에서 게시물을 작성한 경우<br/>할 일을 따로 보내지 않아도 됩니다.<br/><br/>Glassy AI가 클래스룸 게시물을 분석하고<br/>자동으로 구성원의 할 일로 등록합니다.</div>
+          <div className="text-base text-lightgray-200 mt-2">클래스룸에서 게시물을 작성한 경우<br/>할 일을 따로 보내지 않아도 됩니다.<br/><br/>AI가 클래스룸 게시물을 분석하고<br/>자동으로 구성원의 할 일로 등록합니다.</div>
         </div>
         <Button color="blue" fn={fn}>
           확인 후, 다시 보지 않기

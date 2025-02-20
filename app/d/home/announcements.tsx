@@ -56,7 +56,7 @@ export default function Announcement() {
               </div>
               <div className="text-lightgray-200 my-5">
                 <div className="text-center font-bold text-lightgray-300 text-base mb-1">학생만 이용 가능한 기능입니다</div>
-                <div className="text-center">학생이 클래스룸 계정을 연결하면 Glassy AI가 자동으로 할 일을 등록하고,<br/>손쉽게 정보를 검색할 수 있습니다.</div>
+                <div className="text-center">학생이 클래스룸 계정을 연결하면 AI가 자동으로 할 일을 등록하고,<br/>손쉽게 정보를 검색할 수 있습니다.</div>
               </div>
               <div className="flex justify-center mt-6">
                 <div className="bg-gray-100 rounded-lg p-1 px-2 text-sm text-lightgray-200">곧 이곳에 다른 기능을 표시할 예정입니다</div>

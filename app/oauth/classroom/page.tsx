@@ -171,7 +171,7 @@ function Home() {
           </div>
           <div className="text-lightgray-200 my-5">
             <div className="text-center">클래스룸 계정을 연결했습니다.</div>
-            <div className="text-center">이제 할 일과 수업 교체, 수행평가 일정을 Glassy AI가 알려드릴게요</div>
+            <div className="text-center">이제 할 일과 수업 교체, 수행평가 일정을 AI가 알려드릴게요</div>
           </div>
           <div className="flex items-center justify-center text-blue-500 space-x-3">
             <Link href='/d/home'>
