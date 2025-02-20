@@ -40,7 +40,7 @@ async function PostHandler(request: Request) {
     // }, { status: 400 });
     return NextResponse.json({
       success: false,
-      message: `${tokenResponse}`
+      message: `${JSON.stringify(tokenResponse)}`
     }, { status: 400 });
   }
 
