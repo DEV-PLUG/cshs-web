@@ -25,6 +25,7 @@ function Home() {
   const[step, setStep] = useState(0);
   const searchParams = useSearchParams();
 
+  let loading = false;
   useEffect(() => {
     if(!searchParams.get('scope')) return;
     // console.log(searchParams.get('scope')?.split(' '))
@@ -35,7 +36,10 @@ function Home() {
     else if(searchParams.get('error')) {
       setStep(2);
     }
-    else if(searchParams.get('code')) {
+    else if(searchParams.get('code') && loading === false) {
+      // console.log('test', searchParams.get('code'))
+      
+      loading = true;
       setStep(0);
       fetch('/api/oauth/classroom', {
         method: 'POST',
