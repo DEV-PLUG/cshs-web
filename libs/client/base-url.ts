@@ -1,3 +1,3 @@
 // const baseURL = "http://localhost:3000";
-const baseURL = "https://ground-demo.vercel.app";
+const baseURL = "https://cshs.farmwork.kr";
 export default baseURL;
