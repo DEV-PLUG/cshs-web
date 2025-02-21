@@ -27,6 +27,10 @@ function Home() {
 
   let loading = false;
   useEffect(() => {
+    if(searchParams.get('error')) {
+      setStep(2);
+    }
+    
     if(!searchParams.get('scope')) return;
     // console.log(searchParams.get('scope')?.split(' '))
 
