@@ -124,7 +124,7 @@ async function GetHandler(request:Request) {
       t.id, 
       t.title, 
       t.description, 
-      t.createdAt, 
+      t."createdAt", 
       t.deadline, 
       t.type,
       s.name as senderName, 
@@ -132,14 +132,14 @@ async function GetHandler(request:Request) {
       r.name as receiverName, 
       r.profile as receiverProfile, 
       t.status,
-      (SELECT COUNT(*) FROM Todo AS rt WHERE rt.mainTodoId = t.id) AS relationTodoCount,
-      (SELECT COUNT(*) FROM Todo AS rt WHERE rt.mainTodoId = t.id AND rt.status = 1) AS relationTodoStatusCount
-    FROM Todo AS t
-    LEFT JOIN User AS s ON t.senderId = s.id
-    LEFT JOIN User AS r ON t.receiverId = r.id
+      (SELECT COUNT(*) FROM "Todo" AS rt WHERE rt."mainTodoId" = t.id) AS relationTodoCount,
+      (SELECT COUNT(*) FROM "Todo" AS rt WHERE rt."mainTodoId" = t.id AND rt.status = 1) AS relationTodoStatusCount
+    FROM "Todo" AS t
+    LEFT JOIN "User" AS s ON t."senderId" = s.id
+    LEFT JOIN "User" AS r ON t."receiverId" = r.id
     WHERE 
-      t.senderId = (SELECT id FROM User WHERE email = ${session.user.email}) AND
-      t.receiverId IS NULL AND
+      t."senderId" = (SELECT id FROM "User" WHERE email = ${session.user.email}) AND
+      t."receiverId" IS NULL AND
       t.status = 0 AND
       (${search ? Prisma.sql`(t.title LIKE ${'%' + search + '%'} OR t.description LIKE ${'%' + search + '%'})` : Prisma.sql`1=1`})
     ${sort && order ? Prisma.sql`ORDER BY t.${Prisma.raw(sort)} ${Prisma.raw(order)}` : Prisma.sql``}
@@ -151,7 +151,7 @@ async function GetHandler(request:Request) {
       t.id, 
       t.title, 
       t.description, 
-      t.createdAt, 
+      t."createdAt", 
       t.deadline, 
       t.type,
       s.name as senderName, 
@@ -159,14 +159,14 @@ async function GetHandler(request:Request) {
       r.name as receiverName, 
       r.profile as receiverProfile, 
       t.status,
-      (SELECT COUNT(*) FROM Todo AS rt WHERE rt.mainTodoId = t.id) AS relationTodoCount,
-      (SELECT COUNT(*) FROM Todo AS rt WHERE rt.mainTodoId = t.id AND rt.status = 1) AS relationTodoStatusCount
-    FROM Todo AS t
-    LEFT JOIN User AS s ON t.senderId = s.id
-    LEFT JOIN User AS r ON t.receiverId = r.id
+      (SELECT COUNT(*) FROM "Todo" AS rt WHERE rt."mainTodoId" = t.id) AS relationTodoCount,
+      (SELECT COUNT(*) FROM "Todo" AS rt WHERE rt."mainTodoId" = t.id AND rt.status = 1) AS relationTodoStatusCount
+    FROM "Todo" AS t
+    LEFT JOIN "User" AS s ON t."senderId" = s.id
+    LEFT JOIN "User" AS r ON t."receiverId" = r.id
     WHERE 
-      t.senderId = (SELECT id FROM User WHERE email = ${session.user.email}) AND
-      t.receiverId IS NULL AND
+      t."senderId" = (SELECT id FROM "User" WHERE email = ${session.user.email}) AND
+      t."receiverId" IS NULL AND
       t.status = 1 AND
       (${search ? Prisma.sql`(t.title LIKE ${'%' + search + '%'} OR t.description LIKE ${'%' + search + '%'})` : Prisma.sql`1=1`})
     ${sort && order ? Prisma.sql`ORDER BY t.${Prisma.raw(sort)} ${Prisma.raw(order)}` : Prisma.sql``}

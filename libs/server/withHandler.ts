@@ -38,7 +38,7 @@ export default function withHandler({ method, isPrivate = true, fn }: ConfigType
         await client?.log.create({
           data: {
             type: 'Unknown Error',
-            description: err
+            description: JSON.stringify(err)
           }
         });
 
