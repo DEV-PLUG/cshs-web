@@ -58,7 +58,6 @@ export default function ProfileMenu() {
   const { data } = useSWR('/api/user');
   useEffect(() => {
     if(data?.success === true) {
-      console.log(data)
       setAI(data.user.allowAI);
       setNotificationToggle(data.user.allowNotification);
       setNightNotification(data.user.allowNightNotification);

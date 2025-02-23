@@ -11,7 +11,7 @@ export default async function getServerSessionCM() {
   if(cookie.MobileAuthorization) {
     const user = await client.user.findMany({
       where: {
-        mobileToken: cookie.MobileAuthorization.includes('MobileAuthorization') === -1 ? cookie.MobileAuthorization : cookie.MobileAuthorization.split('MobileAuthorization=')[1]
+        mobileToken: cookie.MobileAuthorization.includes('MobileAuthorization') === false ? cookie.MobileAuthorization : cookie.MobileAuthorization.split('MobileAuthorization=')[1]
       },
       select: {
         id: true,
@@ -26,6 +26,14 @@ export default async function getServerSessionCM() {
           id: user[0].id,
           email: user[0].email,
           profile: user[0].profile
+        }
+      };
+    } else {
+      return {
+        user: {
+          id: 0,
+          email: '',
+          profile: ''
         }
       };
     }
@@ -48,6 +56,14 @@ export default async function getServerSessionCM() {
           id: user[0].id,
           email: user[0].email,
           profile: user[0].profile
+        }
+      };
+    } else {
+      return {
+        user: {
+          id: 0,
+          email: '',
+          profile: ''
         }
       };
     }
