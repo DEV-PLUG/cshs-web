@@ -289,21 +289,21 @@ export default function AddActivityButton() {
                       } else {
                         setTime(time.filter((item) => item !== 3));
                       }
-                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 1교시</div>
+                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 1</div>
                     <div onClick={() => {
                       if(time.indexOf(4) === -1) {
                         setTime([...time, 4]);
                       } else {
                         setTime(time.filter((item) => item !== 4));
                       }
-                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 2교시</div>
+                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 2</div>
                     <div onClick={() => {
                       if(time.indexOf(5) === -1) {
                         setTime([...time, 5]);
                       } else {
                         setTime(time.filter((item) => item !== 5));
                       }
-                    }} className={ time.indexOf(5) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(4) === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3교시</div>
+                    }} className={ time.indexOf(5) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(4) === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div>
                   </div>
                 </div>
                 <div>

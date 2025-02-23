@@ -55,7 +55,7 @@ export function CircleButton({ children, color, loading = false, disabled = fals
   return (
     <div onClick={() => {
       if(!loading && fn) fn();
-    }} className={ color === 'white' ? "border border-lightgray-100 hover:bg-gray-50 text-sm transition-all font-bold text-lightgray-200 justify-center py-3 flex items-center cursor-pointer rounded-full" : color === 'lightblue' ? `bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center py-3 flex items-center cursor-pointer rounded-full text-blue-500` : `bg-${color}-500 hover:bg-${color}-600 text-sm transition-all font-bold text-white justify-center py-3 flex items-center cursor-pointer rounded-full` }>
+    }} className={ color === 'white' ? "border bg-white border-lightgray-100 hover:bg-gray-50 text-sm transition-all font-bold text-lightgray-200 justify-center py-3 flex items-center cursor-pointer rounded-full" : color === 'lightblue' ? `bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center py-3 flex items-center cursor-pointer rounded-full text-blue-500` : `bg-${color}-500 hover:bg-${color}-600 text-sm transition-all font-bold text-white justify-center py-3 flex items-center cursor-pointer rounded-full` }>
       {children}
     </div>
   )

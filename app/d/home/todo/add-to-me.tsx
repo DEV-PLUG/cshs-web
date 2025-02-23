@@ -120,7 +120,7 @@ export default function AddToMeButton() {
           나에게 추가하기
         </SubButton>
       </div>
-      <div className="md:hidden block fixed bottom-[150px] right-4">
+      <div className="md:hidden block fixed bottom-[150px] right-4 z-30">
         <CircleButton color="white" fn={() => {
           setModal(true);
           setDateModal(false);

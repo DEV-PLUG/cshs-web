@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen">
       <Menu/>
-      <div className="w-full absolute left-[320px] drop-shadow-2xl z-10 h-[100vh] bg-white"></div>
+      <div className="w-full absolute left-[320px] drop-shadow-2xl z-10 h-[100vh] bg-white md:block hidden"></div>
       <div className="h-[100vh] bg-white z-10 w-full md:border-l-[1px] border-lightgray-100 p-5 md:p-10 overflow-auto">
         <div className="md:flex justify-between w-full mb-8">
           <div className="flex space-x-3 md:space-x-7 items-center">

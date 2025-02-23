@@ -86,7 +86,7 @@ export default function TodoSendList() {
           <div className="font-bold text-xl md:text-2xl text-zinc-800">해야할 일</div>
         </div>
         <div className="mt-0 overflow-x-auto xl:overflow-visible">
-          { (data && data?.success === true) && <div className="min-w-[700px]">
+          { (data && data?.success === true) && <div className="md:min-w-[700px]">
             { data.todo.before.length === 0 && search === '' && <div className="my-20">
               <OpacityAnimation>
                 <div className="text-lightgray-200 w-full flex items-center justify-center flex-col">
@@ -119,10 +119,10 @@ export default function TodoSendList() {
                       <div key={todo.id} onClick={() => {
                         setTodoDetail(todo);
                         setTodoDetailModal(true);
-                      }} className="w-full relative group flex items-center justify-between py-3 px-3 -mx-3 cursor-pointer rounded-xl hover:bg-gray-50 transition-all">
+                      }} className="w-full relative group flex items-center justify-between py-2 md:py-3 md:px-3 md:-mx-3 cursor-pointer rounded-xl hover:bg-gray-50 transition-all">
                         <div>
-                          <div className="flex items-center space-x-5">
-                            <div className="w-[50px] h-[50px] flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[20px]">
+                          <div className="flex items-center space-x-3 md:space-x-5">
+                            <div className="w-[50px] h-[50px] hidden md:flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[20px]">
                               { todo.senderProfile && <Image
                                 src={todo.senderProfile}
                                 width={50}
@@ -130,12 +130,22 @@ export default function TodoSendList() {
                                 alt="프로필"
                               /> }
                             </div>
+                            <div className="w-[43px] h-[43px] md:hidden flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[15px]">
+                              { todo.senderProfile && <Image
+                                src={todo.senderProfile}
+                                width={43}
+                                height={43}
+                                alt="프로필"
+                              /> }
+                            </div>
                             <div className="text-zinc-800 font-bold text-base xl:block hidden">활동 완료 요청 - '{todo.title}'</div>
-                            <div className="text-zinc-800 font-bold text-base xl:hidden block">'{todo.title}'</div>
-                            <div className="text-zinc-800 text-base">{ todo.deadline ? displayDate(todo.deadline, 'date-left') === 0 ? '오늘 마감' : `${displayDate(todo.deadline, 'date-without-year')} 마감` : '마감 기한 없음' }</div>
+                            <div className="md:flex items-center">
+                              <div className="text-zinc-800 font-bold text-base xl:hidden block break-all max-w-[60vw]">{todo.title}</div>
+                              <div className="md:text-zinc-800 md:text-base text-lightgray-200 text-sm">{ todo.deadline ? displayDate(todo.deadline, 'date-left') === 0 ? '오늘 마감' : `${displayDate(todo.deadline, 'date-without-year')} 마감` : '마감 기한 없음' }</div>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex space-x-5 items-center absolute right-3 transition-all">
+                        <div className="hidden md:flex space-x-5 items-center absolute right-3 transition-all">
                           <div className="text-lightgray-200 text-base">{todo.relationTodoStatusCount}/{todo.relationTodoCount}명 완료함</div>
                           <CircularProgress sx={() => ({
                             color: '#3b82f6',
@@ -159,15 +169,19 @@ export default function TodoSendList() {
           </div> }
           { !data && [...Array(3)].map((value, index) => {
             return ( 
-              <div key={index} className="w-full relative flex items-center justify-between py-3 px-3 -mx-3 rounded-xl">
+              <div key={index} className="w-full relative flex items-center justify-between py-2 px-3 md:py-3 md:px-3 md:-mx-3 rounded-xl">
                 <div>
-                  <div className="flex items-center space-x-5">
+                  <div className="items-center space-x-5 md:flex hidden">
                     <div className="w-[50px] h-[50px] flex justify-center overflow-hidden items-center bg-gray-100 animate-pulse rounded-[20px]"></div>
                     <div className="bg-gray-100 w-[200px] h-5 rounded-lg font-bold text-base"></div>
                     <div className="bg-gray-100 w-[80px] h-5 rounded-lg text-base"></div>
                   </div>
+                  <div className="items-center space-x-3 md:hidden flex">
+                    <div className="w-[43px] h-[43px] flex justify-center overflow-hidden items-center bg-gray-100 animate-pulse rounded-[15px]"></div>
+                    <div className="bg-gray-100 w-[50vw] h-5 rounded-lg font-bold text-base"></div>
+                  </div>
                 </div>
-                <div className="flex space-x-5 absolute right-3 transition-all">
+                <div className="space-x-5 absolute right-3 transition-all md:flex hidden">
                   <div className="bg-gray-100 w-[70px] h-5 rounded-lg text-base"></div>
                   <div className="bg-gray-100 w-[170px] h-5 rounded-lg text-base"></div>
                 </div>
@@ -179,7 +193,7 @@ export default function TodoSendList() {
           <div className="font-bold text-xl md:text-2xl text-zinc-800">완료한 일</div>
         </div>
         <div className="space-y-0 overflow-x-auto xl:overflow-visible">
-          { (data && data.success === true) && <div className="min-w-[700px]">
+          { (data && data.success === true) && <div className="md:min-w-[700px]">
             { data.todo.finished.length === 0 && search === '' && <div className="my-20">
               <OpacityAnimation>
                 <div className="text-lightgray-200 w-full flex items-center justify-center flex-col">
@@ -212,10 +226,10 @@ export default function TodoSendList() {
                       <div key={todo.id} onClick={() => {
                         setTodoDetail(todo);
                         setTodoDetailModal(true);
-                      }} className="w-full relative flex items-center justify-between py-3 px-3 -mx-3 cursor-pointer rounded-xl hover:bg-gray-50 transition-all">
+                      }} className="w-full relative group flex items-center justify-between py-2 md:py-3 md:px-3 md:-mx-3 cursor-pointer rounded-xl hover:bg-gray-50 transition-all">
                         <div>
-                          <div className="flex items-center space-x-5">
-                            <div className="w-[50px] h-[50px] flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[20px]">
+                          <div className="flex items-center space-x-3 md:space-x-5">
+                            <div className="w-[50px] h-[50px] hidden md:flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[20px]">
                               <Image
                                 src={todo.senderProfile}
                                 width={50}
@@ -223,15 +237,25 @@ export default function TodoSendList() {
                                 alt="학교 로고"
                               />
                             </div>
-                            <svg className="w-7 h-7 fill-emerald-500 !-mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <div className="w-[43px] h-[43px] md:hidden flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[15px]">
+                              { todo.senderProfile && <Image
+                                src={todo.senderProfile}
+                                width={43}
+                                height={43}
+                                alt="프로필"
+                              /> }
+                            </div>
+                            <svg className="md:w-7 md:h-7 w-6 h-6 fill-emerald-500 md:!-mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                               <path clipRule="evenodd" fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" />
                             </svg>
                             <div className="text-lightgray-100 font-bold text-base xl:block hidden">활동 완료 요청 - '{todo.title}'</div>
-                            <div className="text-lightgray-100 font-bold text-base xl:hidden block">'{todo.title}'</div>
-                            <div className="text-lightgray-100 text-base">{ todo.deadline ? displayDate(todo.deadline, 'date-left') === 0 ? '오늘 마감' : `${displayDate(todo.deadline, 'date-without-year')} 마감` : '마감 기한 없음' }</div>
+                            <div className="md:flex items-center">
+                              <div className="text-lightgray-100 font-bold text-base xl:hidden block break-all max-w-[60vw]">{todo.title}</div>
+                              <div className="md:text-lightgray-100 md:text-base text-lightgray-100 text-sm">{ todo.deadline ? displayDate(todo.deadline, 'date-left') === 0 ? '오늘 마감' : `${displayDate(todo.deadline, 'date-without-year')} 마감` : '마감 기한 없음' }<span> - {todo.relationTodoStatusCount}/{todo.relationTodoCount}명 완료함</span></div>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex space-x-5 items-center group-hover:opacity-0 absolute right-3 transition-all">
+                        <div className="hidden md:flex space-x-5 items-center group-hover:opacity-0 absolute right-3 transition-all">
                           <div className="text-lightgray-100 text-base">{todo.relationTodoStatusCount}/{todo.relationTodoCount}명 완료함</div>
                           <CircularProgress sx={() => ({
                             color: '#3b82f6',
@@ -247,15 +271,19 @@ export default function TodoSendList() {
           </div> }
           { !data && [...Array(5)].map((value, index) => {
             return ( 
-              <div key={index} className="w-full relative flex items-center justify-between py-3 px-3 -mx-3 rounded-xl">
+              <div key={index} className="w-full relative flex items-center justify-between py-2 px-3 md:py-3 md:px-3 md:-mx-3 rounded-xl">
                 <div>
-                  <div className="flex items-center space-x-5">
+                  <div className="items-center space-x-5 md:flex hidden">
                     <div className="w-[50px] h-[50px] flex justify-center overflow-hidden items-center bg-gray-100 animate-pulse rounded-[20px]"></div>
                     <div className="bg-gray-100 w-[200px] h-5 rounded-lg font-bold text-base"></div>
                     <div className="bg-gray-100 w-[80px] h-5 rounded-lg text-base"></div>
                   </div>
+                  <div className="items-center space-x-3 md:hidden flex">
+                    <div className="w-[43px] h-[43px] flex justify-center overflow-hidden items-center bg-gray-100 animate-pulse rounded-[15px]"></div>
+                    <div className="bg-gray-100 w-[50vw] h-5 rounded-lg font-bold text-base"></div>
+                  </div>
                 </div>
-                <div className="flex space-x-5 absolute right-3 transition-all">
+                <div className="space-x-5 absolute right-3 transition-all md:flex hidden">
                   <div className="bg-gray-100 w-[70px] h-5 rounded-lg text-base"></div>
                   <div className="bg-gray-100 w-[170px] h-5 rounded-lg text-base"></div>
                 </div>

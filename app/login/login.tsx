@@ -45,7 +45,7 @@ const Login: NextPage = () => {
         <div style={{
           backgroundImage: 'linear-gradient(to top, #ffffff 0%, #bfdbfe 99%, #bfdbfe 100%)'
         }} className="w-full h-[100vh] bg-cover opacity-70 bg-opacity-0 overflow-hidden min-h-[800px]"></div>
-        <div className='fixed right-0 left-0 bottom-7 flex justify-center items-center'>
+        <div className='fixed right-0 left-0 bottom-7 hidden justify-center items-center md:flex'>
           <div className='mx-auto p-3 rounded-xl bg-blue-100 text-sm md:block hiddenq'>
             <div className='text-blue-500 text-center'>학생은 기존 비밀번호를 이용해 로그인하거나 학교 구글 계정을 이용해 로그인 할 수 있습니다<br/><span className='underline'>비밀번호 변경 등 문의: 14c76@csh-h.gne.go.kr</span></div>
           </div>

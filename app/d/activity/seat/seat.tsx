@@ -77,12 +77,12 @@ export default function Seat() {
       </div>
       <div className="w-full h-[1px] mb-5 bg-lightgray-100"></div>
       <div className="flex">
-        <div className="flex rounded-full px-1 py-1 bg-gray-100 md:w-auto w-full">
+        <div className="flex rounded-full px-1 py-1 bg-gray-100 md:w-auto w-full text-sm">
           <div onClick={() => setTime('1')} className={ time === '1' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>7교시</div>
           <div onClick={() => setTime('2')} className={ time === '2' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>8교시</div>
-          <div onClick={() => setTime('3')} className={ time === '3' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 1교시</div>
-          <div onClick={() => setTime('4')} className={ time === '4' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 2교시</div>
-          <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3교시</div>
+          <div onClick={() => setTime('3')} className={ time === '3' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 1</div>
+          <div onClick={() => setTime('4')} className={ time === '4' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 2</div>
+          <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3</div>
         </div>
       </div>
       <div className="mt-8 flex justify-between space-x-5 overflow-x-auto">

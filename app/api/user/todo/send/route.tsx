@@ -177,16 +177,34 @@ async function GetHandler(request:Request) {
     success: true,
     todo: {
       before: beforeTodo.map((todo:any) => ({
-        ...todo,
         id: todo.id.toString(),
-        relationTodoCount: todo.relationTodoCount.toString(),
-        relationTodoStatusCount: todo.relationTodoStatusCount.toString()
+        relationTodoCount: todo.relationtodocount.toString(),
+        relationTodoStatusCount: todo.relationtodostatuscount.toString(),
+        title: todo.title,
+        description: todo.description,
+        createdAt: todo.createdAt,
+        deadline: todo.deadline,
+        type: todo.type,
+        senderName: todo.sendername,
+        senderProfile: todo.senderprofile,
+        receiverName: todo.receivername,
+        receiverProfile: todo.receiverprofile,
+        status: todo.status
       })),
       finished: finishedTodo.map((todo:any) => ({
-        ...todo,
         id: todo.id.toString(),
-        relationTodoCount: todo.relationTodoCount.toString(),
-        relationTodoStatusCount: todo.relationTodoStatusCount.toString()
+        relationTodoCount: todo.relationtodocount.toString(),
+        relationTodoStatusCount: todo.relationtodostatuscount.toString(),
+        title: todo.title,
+        description: todo.description,
+        createdAt: todo.createdAt,
+        deadline: todo.deadline,
+        type: todo.type,
+        senderName: todo.sendername,
+        senderProfile: todo.senderprofile,
+        receiverName: todo.receivername,
+        receiverProfile: todo.receiverprofile,
+        status: todo.status
       }))
     }
   }, { status: 200 });

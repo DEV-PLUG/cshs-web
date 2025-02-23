@@ -186,7 +186,7 @@ export default function AddToMeButton() {
           할 일 보내기
         </SubButton>
       </div>
-      <div className="md:hidden block fixed bottom-20 right-4">
+      <div className="md:hidden block fixed bottom-20 right-4 z-30">
         <CircleButton color="blue" fn={() => {
           if(document.cookie.indexOf('classroom-info-modal=') === -1) {
             setClassroomModal(true);
