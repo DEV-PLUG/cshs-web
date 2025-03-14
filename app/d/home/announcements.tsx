@@ -88,7 +88,7 @@ export default function Announcement() {
             </div>
           </div>
         </OpacityAnimation> }
-        { (data?.success === true && data.announcements.length <= 0) && <OpacityAnimation>
+        { (data?.message === '학교 계정을 연결해주세요') && <OpacityAnimation>
           <div className="flex items-center justify-center h-[400px]">
             <div>
               <div className="flex items-center justify-center space-x-5">
@@ -115,12 +115,49 @@ export default function Announcement() {
             </div>
           </div>
         </OpacityAnimation> }
+        { (data?.success === true && data.announcements.length <= 0) && <OpacityAnimation>
+          <div className="flex items-center justify-center h-[400px]">
+            <div>
+              <div className="flex items-center justify-center space-x-5">
+                <div className="w-[80px] h-[80px] flex items-center justify-center bg-gray-100 rounded-full">
+                  <Image src="/images/classroom/classroom-square-logo.png" width={45} height={45} alt="Classroom Logo" />
+                </div>
+              </div>
+              <div className="text-lightgray-200 my-5">
+                <div className="text-center font-bold text-lightgray-300 text-base mb-1">잠시 후 다시 확인해주세요</div>
+                <div className="text-center">클래스룸 게시글 데이터를 연동하는 데<br/>다소 시간이 소요될 수 있습니다.</div>
+              </div>
+            </div>
+          </div>
+        </OpacityAnimation> }
         { (data && data.success === true) && <OpacityAnimation>
           <div className="space-y-7">
-            { data.announcements.map((data:{writer:string, content:string, course:{name:string}, postCreationTime:string, id:number, title?:string, dueDate?:string, materials?:boolean, type?:number}) => {
+            { data.announcements.map((data:{writer:string, content:string, course:{name:string}, postCreationTime:string, id:number, title?:string, dueDate?:string, materials?:boolean, type?:number, alternateLink:string}) => {
               return (
                 <div key={data.id} className="w-full space-y-3">
-                  <div>
+                  { data.alternateLink ? <a href={data.alternateLink} target="_blank">
+                    <div className="cursor-pointer">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-[45px] h-[45px] relative flex justify-center items-center bg-gray-100 border-[1px] border-lightgray-100 rounded-[17px]">
+                          <svg className="w-8 h-8 fill-gray-300 stroke-gray-300" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                          </svg>
+                          { data.type === 1 && <div className="p-1 rounded-lg absolute -right-1 -bottom-1 flex items-center justify-center bg-blue-100">
+                            <svg className="w-4 h-4 stroke-blue-500" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                            </svg>
+                          </div> }
+                        </div>
+                        <div className="flex flex-col">
+                          <div className="text-zinc-800 font-bold text-base">{data.writer}</div>
+                          <div className="text-lightgray-200 text-sm flex items-center"><span className="">{ displayDate(new Date(data.postCreationTime), 'date-left') === '0' ? '오늘' : +displayDate(new Date(data.postCreationTime), 'date-left') < -7 ? displayDate(new Date(data.postCreationTime), 'date-without-year') : `${-(+displayDate(new Date(data.postCreationTime), 'date-left'))}일 전` } · </span> 
+                          <svg className="w-4 h-4 mx-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M7 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM14.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM1.615 16.428a1.224 1.224 0 0 1-.569-1.175 6.002 6.002 0 0 1 11.908 0c.058.467-.172.92-.57 1.174A9.953 9.953 0 0 1 7 18a9.953 9.953 0 0 1-5.385-1.572ZM14.5 16h-.106c.07-.297.088-.611.048-.933a7.47 7.47 0 0 0-1.588-3.755 4.502 4.502 0 0 1 5.874 2.636.818.818 0 0 1-.36.98A7.465 7.465 0 0 1 14.5 16Z" />
+                          </svg>{data.course.name}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </a> : <div>
                     <div className="flex items-center space-x-3">
                       <div className="w-[45px] h-[45px] relative flex justify-center items-center bg-gray-100 border-[1px] border-lightgray-100 rounded-[17px]">
                         <svg className="w-8 h-8 fill-gray-300 stroke-gray-300" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -140,7 +177,7 @@ export default function Announcement() {
                         </svg>{data.course.name}</div>
                       </div>
                     </div>
-                  </div>
+                  </div> }
                   <div>
                     { data.title && <div className="text-base font-bold">{data.title}</div> }
                     { data.dueDate && <div className="text-sm">({displayDate(new Date(data.dueDate), 'datetime')} 마감)</div> }

@@ -18,6 +18,8 @@ async function PostHandler(request:Request) {
     }
   });
 
+  // 공지사항 가져오기
+
   courses.forEach(async course => {
     const usersWithGoogleAccount = await client.user.findMany({
       where: {
@@ -44,8 +46,6 @@ async function PostHandler(request:Request) {
       },
       take: 10
     });
-
-    // console.log(usersWithGoogleAccount)
     
     for (let i = 0; i < usersWithGoogleAccount.length; i++) {
       const user = usersWithGoogleAccount[i];
@@ -65,7 +65,6 @@ async function PostHandler(request:Request) {
           'Authorization': 'Bearer ' + CryptoJS.AES.decrypt(accessToken, process.env.CLASSROOM_CRYPTO_KEY!).toString(CryptoJS.enc.Utf8)
         }
       });
-      // console.log(response)
 
       if (!response.ok) {
         // await client.google.delete({
@@ -94,19 +93,22 @@ async function PostHandler(request:Request) {
       const existingAnnouncementIds = new Set(existingAnnouncements.map(a => a.announcementId));
 
       const newAnnouncements = announcements.announcements.filter((announcement: any) => !existingAnnouncementIds.has(announcement.id));
-      // console.log(newAnnouncements.length, 'new announcements');
+      console.log('New Announcements: ', newAnnouncements.length);
 
-      if (newAnnouncements.length > 0) {
+      if(newAnnouncements.length > 0) {
         let data:any = [];
         for(let j = 0; j < newAnnouncements.length; j++) {
           const announcement = newAnnouncements[j];
-          const teacherResponse = await fetch(`https://classroom.googleapis.com/v1/courses/${course.courseId}/teachers/${announcement.creatorUserId}`, {
+          // https://classroom.googleapis.com/v1/userProfiles/${announcement.creatorUserId}
+          // https://classroom.googleapis.com/v1/courses/${course.courseId}/teachers/${announcement.creatorUserId}
+          const teacherResponse = await fetch(`https://classroom.googleapis.com/v1/userProfiles/${announcement.creatorUserId}`, {
             method: 'GET',
             headers: {
               'Authorization': 'Bearer ' + CryptoJS.AES.decrypt(accessToken, process.env.CLASSROOM_CRYPTO_KEY!).toString(CryptoJS.enc.Utf8)
             }
           });
   
+          console.log('Teacher Response Success: ', teacherResponse.ok)
           if (!teacherResponse.ok) {
             continue;
           }
@@ -114,17 +116,20 @@ async function PostHandler(request:Request) {
           const teacher = await teacherResponse.json();
           console.log(announcement)
 
+          if(announcement.assigneeMode === 'INDIVIDUAL_STUDENTS') continue;
+
           data.push({
             announcementId: announcement.id,
             courseId: course.id,
             content: announcement.text,
-            writer: teacher.profile.name.fullName,
-            profile: teacher.profile.photoUrl,
+            writer: teacher.name.fullName,
+            profile: teacher.photoUrl,
             postCreationTime: announcement.creationTime,
             postUpdateTime: announcement.updateTime,
             analysed: false,
             type: 0,
-            materials: announcement.materials ? true : false
+            materials: announcement.materials ? true : false,
+            alternateLink: announcement.alternateLink
           });
         };
 
@@ -134,6 +139,8 @@ async function PostHandler(request:Request) {
       }
     }
   });
+
+  // 과제 가져오기
 
   courses.forEach(async course => {
     const usersWithGoogleAccount = await client.user.findMany({
@@ -217,7 +224,9 @@ async function PostHandler(request:Request) {
         let data:any = [];
         for(let j = 0; j < newAnnouncements.length; j++) {
           const announcement = newAnnouncements[j];
-          const teacherResponse = await fetch(`https://classroom.googleapis.com/v1/courses/${course.courseId}/teachers/${announcement.creatorUserId}`, {
+          // https://classroom.googleapis.com/v1/userProfiles/${announcement.creatorUserId}
+          // https://classroom.googleapis.com/v1/courses/${course.courseId}/teachers/${announcement.creatorUserId}
+          const teacherResponse = await fetch(`https://classroom.googleapis.com/v1/userProfiles/${announcement.creatorUserId}`, {
             method: 'GET',
             headers: {
               'Authorization': 'Bearer ' + CryptoJS.AES.decrypt(accessToken, process.env.CLASSROOM_CRYPTO_KEY!).toString(CryptoJS.enc.Utf8)
@@ -231,19 +240,22 @@ async function PostHandler(request:Request) {
           const teacher = await teacherResponse.json();
           console.log(announcement)
 
+          if(announcement.assigneeMode === 'INDIVIDUAL_STUDENTS') continue;
+
           data.push({
             announcementId: announcement.id,
             courseId: course.id,
             content: announcement.description ? announcement.description : announcement.title,
             title: announcement.title,
-            writer: teacher.profile.name.fullName,
-            profile: teacher.profile.photoUrl,
+            writer: teacher.name.fullName,
+            profile: teacher.photoUrl,
             postCreationTime: announcement.creationTime,
             postUpdateTime: announcement.updateTime,
             analysed: false,
             type: 1,
             dueDate: announcement.dueDate && announcement.dueTime ? new Date(announcement.dueDate.year, announcement.dueDate.month - 1, announcement.dueDate.day, announcement.dueTime.hours ? announcement.dueTime.hours : 0, announcement.dueTime.minutes ? announcement.dueTime.minutes : 0).toISOString() : null,
-            materials: announcement.materials ? true : false
+            materials: announcement.materials ? true : false,
+            alternateLink: announcement.alternateLink
           });
         };
 

@@ -53,10 +53,14 @@ async function GetHandler() {
 
   const courses = user[0].classroomCourse;
   if(courses.length <= 0) {
+    // return NextResponse.json({
+    //   success: true,
+    //   announcements: []
+    // }, { status: 200 });
     return NextResponse.json({
-      success: true,
-      announcements: []
-    }, { status: 200 });
+      success: false,
+      message: '학교 계정을 연결해주세요'
+    }, { status: 400 });
   }
 
   const announcements = await client.classroomAnnoucement.findMany({
@@ -81,7 +85,8 @@ async function GetHandler() {
       materials: true,
       dueDate: true,
       type: true,
-      title: true
+      title: true,
+      alternateLink: true
     },
     orderBy: {
       postCreationTime: 'desc'
