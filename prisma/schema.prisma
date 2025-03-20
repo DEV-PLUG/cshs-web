@@ -47,6 +47,7 @@ model User {
   grade Int?
   class Int?
   number Int?
+  password String?
   notificationToken String?
   mobileToken String? @db.Text
   allowNotification Boolean @default(true)

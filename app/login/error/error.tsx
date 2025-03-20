@@ -6,13 +6,19 @@ import { signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from 'react'
 import Loading from '@components/loading';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 const Error: NextPage = () => {
   const [success, setSuccess] = useState(false);
+  const error = useSearchParams().get('error');
 
   useEffect(() => {
-    setSuccess(true);
-  }, []);
+    if(error === 'Incorrect-ID-or-PW') {
+      location.href = '/login?error=Incorrect-ID-or-PW';
+    } else {
+      setSuccess(true);
+    }
+  }, [error]);
 
   return (
     <div className='overflow-hidden'>

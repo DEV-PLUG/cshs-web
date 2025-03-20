@@ -6,8 +6,8 @@ import Modal from "@components/modal";
 import { AnimatePresence } from "framer-motion";
 import { signIn, signOut } from "next-auth/react";
 import UpModal from "@components/up-modal";
-import Button from "@components/button";
-import { Textarea } from "@components/input";
+import Button, { SubButton } from "@components/button";
+import Input, { Textarea } from "@components/input";
 import { Link, Tooltip } from "@mui/material";
 import { setNotification } from "@libs/client/redux/notification";
 import { useAppDispatch } from "@libs/client/redux/hooks";
@@ -24,6 +24,9 @@ export default function ProfileMenu() {
   const [ai, setAI] = useState(false);
   const [notification, setNotificationToggle] = useState(false);
   const [nightNotification, setNightNotification] = useState(false);
+  const [pwModal, setPWModal] = useState(false);
+  const [pw, setPW] = useState('');
+  const [pwCheck, setPWCheck] = useState('');
 
   useEffect(() => {
     if(document) setLoad(true);
@@ -51,6 +54,35 @@ export default function ProfileMenu() {
       setLoading(false);
       if(response.success === true) {
         dispatch(setNotification({ type: 'success', text: '설정을 저장했습니다' }));
+      }
+    });
+  }
+
+  async function changePW() {
+    if(loading) return;
+    if(pw !== pwCheck) {
+      return dispatch(setNotification({ type: 'error', text: '비밀번호가 일치하지 않습니다' }));
+    }
+    if(pw.length < 5) {
+      return dispatch(setNotification({ type: 'error', text: '비밀번호는 5자 이상이어야 합니다' }));
+    }
+
+    setLoading(true);
+    await fetch(`/api/user/password`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        password: pw
+      })
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      setLoading(false);
+      if(response.success === true) {
+        dispatch(setNotification({ type: 'success', text: '비밀번호를 변경했습니다' }));
+        setPWModal(false);
       }
     });
   }
@@ -146,6 +178,15 @@ export default function ProfileMenu() {
               </svg>
               <div className="text-base">개인 설정</div>
             </div>
+            <div onClick={() => {
+              setPWModal(true);
+              setProfile(false);
+            }} className="px-3 py-2 flex items-center space-x-2 transition-all cursor-pointer rounded-lg hover:bg-gray-100 text-lightgray-300">
+              <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+              <div className="text-base">비밀번호 변경</div>
+            </div>
             <div className="w-full px-3">
               <div className="w-full h-[1px] my-2 bg-lightgray-100"></div>
             </div>
@@ -157,6 +198,33 @@ export default function ProfileMenu() {
             </div>
           </div>
         </UpModal> }
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait">
+        { pwModal && <Modal handleClose={() => setPWModal(false)}>
+          <div className="w-full md:w-[380px] h-[520px]">
+            <div className="flex justify-end">
+              <div onClick={() => setPWModal(false)} className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer">
+                <svg className="w-6 h-6 p-1 rounded-full stroke-gray-400" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between h-full pb-8">
+              <div>
+                <div className="font-bold text-zinc-800 text-2xl mt-5 mb-5">비밀번호 변경</div>
+                <div className="space-y-2">
+                  <Input placeholder="새 비밀번호" type="password" value={pw} fn={(value:string) => setPW(value)} />
+                  <Input placeholder="새 비밀번호 확인" type="password" value={pwCheck} fn={(value:string) => setPWCheck(value)} />
+                </div>
+              </div>
+              <div>
+                <Button color="blue" loading={loading} fn={() => changePW()}>
+                  변경하기
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Modal> }
       </AnimatePresence>
       <div className="flex md:hidden mb-5 space-x-3 px-4 py-2 mt-2 rounded-2xl transition-all">
         <div className="w-[55px] h-[55px] relative flex justify-center items-center bg-gray-100 border-[1px] border-lightgray-100 rounded-[17px]">

@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { signIn } from "next-auth/react"
 import { useSearchParams } from 'next/navigation'
-import { Suspense, useEffect } from 'react'
+import { Suspense, use, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '@libs/client/redux/notification'
 import useSWR from '@node_modules/swr/dist/core/index.mjs';
@@ -26,7 +26,13 @@ const Login: NextPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(error) dispatch(setNotification({ type: "error", text: "오류가 발생하여 로그인을 완료하지 못했어요" }))
+    if(error) {
+      if(error === 'Incorrect-ID-or-PW') {
+        dispatch(setNotification({ type: "error", text: "아이디 또는 비밀번호를 확인해주세요" }))
+      } else {
+        dispatch(setNotification({ type: "error", text: "오류가 발생하여 로그인을 완료하지 못했어요" }));
+      }
+    }
   }, [error]);
 
   const { data } = useSWR('/api/user');
@@ -35,6 +41,11 @@ const Login: NextPage = () => {
       location.href = `/login/success?callbackUrl=${callbackUrl}`;
     }
   }, [data]);
+
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className='overflow-hidden'>
@@ -54,10 +65,14 @@ const Login: NextPage = () => {
           <div className="md:space-y-2 flex flex-col justify-center items-center overflow-hidden">
             <div className='font-bold text-center text-2xl md:text-3xl mb-5'>학교 계정으로 로그인</div>
             <div className='w-[93vw] md:w-[380px] space-y-1 items-center flex flex-col'>
-              <Input placeholder='아이디' autoFocus />
-              <Input placeholder='비밀번호' />
+              <Input placeholder='아이디' fn={(value:string) => setId(value)} autoFocus />
+              <Input placeholder='비밀번호' type='password' fn={(value:string) => setPw(value)} />
               <div className='pt-2 w-full'>
-                <Button color='blue'>로그인</Button>
+                <Button loading={loading} fn={() => {
+                  if(id === '' || pw === '') return;
+                  setLoading(true);
+                  signIn('credentials', { callbackUrl: `/login/success?callbackUrl=${callbackUrl}`, id: id, password: pw });
+                }} color='blue'>로그인</Button>
               </div>
             </div>
             <div className='flex items-center justify-between w-[93vw] md:w-[380px] py-4'>

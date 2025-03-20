@@ -1,6 +1,8 @@
 import client from "@libs/server/client";
-import { error } from "console";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+
+const bcrypt = require('bcrypt');
 
 export const authOptions = {
   providers: [
@@ -8,6 +10,30 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!
     }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        const user = await client.user.findUnique({
+          where: {
+            userId: req.body?.id
+          }
+        });
+        if(user === null) {
+          throw new Error("Incorrect-ID-or-PW");
+        }
+
+        const isValidPassword = await bcrypt.compare(req.body?.password, user.password);
+        if(isValidPassword) {
+          return { id: user.userId, email: user.email };
+        } else {
+          throw new Error("Incorrect-ID-or-PW");
+        }
+      }
+    })
   ],
   secret: process.env.JWT_SECRET,
   callbacks: {

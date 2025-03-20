@@ -7,9 +7,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { FieldChangeHandlerContext } from '@mui/x-date-pickers/internals';
 
-export default function Input({ type = 'text', value, disabled = false, fn, autoFocus = false, placeholder }:{ type?:'text' | 'number', value?:string | number, disabled?:boolean, fn?(value:string | number):void, autoFocus?:boolean, placeholder?:string }) {
+export default function Input({ type = 'text', value, disabled = false, fn, autoFocus = false, placeholder }:{ type?:'text' | 'number' | 'password', value?:string | number, disabled?:boolean, fn?(value:string | number):void, autoFocus?:boolean, placeholder?:string }) {
   return (
-    <input autoFocus={autoFocus} value={value} disabled={disabled} placeholder={placeholder} className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100" onChange={(e) => {
+    <input type={type} autoFocus={autoFocus} value={value} disabled={disabled} placeholder={placeholder} className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100" onChange={(e) => {
       if(type === 'number' && !isNaN(+e.target.value)) {
         fn && fn(+e.target.value);
       } else fn && fn(e.target.value);
