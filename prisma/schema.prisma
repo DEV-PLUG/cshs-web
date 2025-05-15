@@ -49,6 +49,7 @@ model User {
   number Int?
   password String?
   notificationToken String?
+  seat Int?
   mobileToken String? @db.Text
   allowNotification Boolean @default(true)
   allowNightNotification Boolean @default(false)

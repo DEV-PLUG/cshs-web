@@ -20,6 +20,7 @@ export default function SelectPlace({ fn, handleClose }:{ fn:({id,place}:{id:num
   const handleSearch = (e: { target: { value: string; }; }) => {
     const {value} = {...e.target};
     setPreSearch(value);
+    setSearch(value);
   }
 
   useEffect(() => {

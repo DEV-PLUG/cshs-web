@@ -14,6 +14,7 @@ import SelectMember from "@components/member";
 import Switch from "@components/switch";
 import SelectPlace from "@components/place";
 import { OpacityAnimation } from "@components/animation";
+import PasscardButton from "./passcard";
 
 export default function AddActivityButton() {
   const [modal, setModal] = useState(false);
@@ -72,6 +73,12 @@ export default function AddActivityButton() {
         dispatch(setNotification({ type: "success", text: '활동 승인을 요청했어요' }));
         mutate('/api/activity/me?');
         setModal(false);
+        setCreatedData(response.overlappingActivities)
+        setTimeout(() => {
+          if(response.overlappingActivities.some((activity: any) => activity.activity.length > 0)) {
+            setOverlapModal(true);
+          }
+        }, 200);
       } else {
         dispatch(setNotification({ type: "error", text: response.message }));
       }
@@ -115,8 +122,67 @@ export default function AddActivityButton() {
     if(document) setLoad(true);
   }, []);
 
+  const [overlapModal, setOverlapModal] = useState(false);
+  const [createdData, setCreatedData] = useState<any>(null);
+
   return (
     <div>
+      <AnimatePresence initial={false} mode="wait">
+        { overlapModal && <Modal handleClose={() => setOverlapModal(false)}>
+          <div className="w-full md:w-[380px] h-[520px] relative">
+            <div className="-top-5 -left-5 -right-5 -bottom-5 rounded-2xl absolute bg-gradient-to-b from-blue-100 to-white p-5">
+              <div className="flex justify-end">
+                <div onClick={() => setOverlapModal(false)} className="p-1 rounded-full bg-blue-200/50 hover:bg-blue-200s transition-all cursor-pointer">
+                  <svg className="w-6 h-6 p-1 rounded-full stroke-blue-500" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex flex-col justify-between h-full">
+                <div className="pb-20">
+                  <div className="font-bold text-blue-800 text-2xl mt-5">중복되는 활동이 있습니다</div>
+                  <div className="text-blue-800 text-base mt-1">요청한 활동 시간대에 겹치는 활동이 있는 학생이 있습니다.<br/>해당 학생은 겹치는 시간대를 제외하고<br/>활동이 신청되었습니다.</div>
+                  <div className="overflow-y-auto space-y-3 mt-5">
+                    {createdData && createdData.map((item:any) => {
+                      if(item.activity.length > 0) {
+                        return (
+                          <div key={item.id} className="bg-blue-100 rounded-xl p-2">
+                            <div className="font-bold text-blue-500">{item.name}</div>
+                            { item.activity.map((activity:any) => {
+                              return (
+                                  <div className="text-blue-500 text-sm">
+                                  {activity.perio.split(',').sort((a:string, b:string) => +a - +b)
+                                    .map((period:string) => {
+                                    switch (period) {
+                                      case '0':
+                                      return "7교시";
+                                      case '1':
+                                      return "8교시";
+                                      case '2':
+                                      return "야1";
+                                      case '3':
+                                      return "야2";
+                                      case '4':
+                                      return "야3";
+                                      default:
+                                      return "";
+                                    }
+                                    })
+                                    .join(", ")}교시 - {activity.content}
+                                  </div>
+                              )
+                            }) }
+                          </div>
+                        )
+                      }
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal> }
+      </AnimatePresence>
       <AnimatePresence initial={false} mode="wait">
         { memberModal && <Modal handleClose={() => {
           setMemberModal(false);
@@ -144,7 +210,8 @@ export default function AddActivityButton() {
             setSelectedTeacher(selected);
             setTeacherModal(false);
             setTimeout(() => {
-              setModal(true);
+              setMemberModal(true);
+              dispatch(setNotification({ type: "info", text: "추가 구성원을 선택해주세요" }));
             }, 150);
           }} />
         </Modal> }
@@ -165,14 +232,16 @@ export default function AddActivityButton() {
             setPlace(selected);
             setPlaceModal(false);
             setTimeout(() => {
-              setModal(true);
+              // setModal(true);
+              setTeacherModal(true);
+              dispatch(setNotification({ type: "info", text: "담당 교사를 선택해주세요" }));
             }, 150);
           }} />
         </Modal> }
       </AnimatePresence>
       <AnimatePresence initial={false} mode="wait">
         { modal && <Modal scroll handleClose={() => setModal(false)}>
-          <div className="w-full md:w-[380px] h-[520px]">
+          <div className="w-full md:w-[380px] h-[580px]">
             <div className="flex justify-end">
               <div onClick={() => setModal(false)} className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer">
                 <svg className="w-6 h-6 p-1 rounded-full stroke-gray-400" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -210,6 +279,46 @@ export default function AddActivityButton() {
                 <div>
                   <div className="text-zinc-800 mb-1 mt-5">활동 내용</div>
                   <Input value={content} placeholder="R&E" autoFocus fn={(value:string) => setContent(value)} />
+                </div>
+                <div>
+                  <div className="text-zinc-800 mb-1 mt-5">활동 시간</div>
+                  <div className="flex rounded-full px-1 py-1 bg-gray-100">
+                    <div onClick={() => {
+                      if(time.indexOf(1) === -1) {
+                        setTime([...time, 1]);
+                      } else {
+                        setTime(time.filter((item) => item !== 1));
+                      }
+                    }} className={ time.indexOf(1) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>7교시</div>
+                    <div onClick={() => {
+                      if(time.indexOf(2) === -1) {
+                        setTime([...time, 2]);
+                      } else {
+                        setTime(time.filter((item) => item !== 2));
+                      }
+                    }} className={ time.indexOf(2) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(1) === -1 && 'rounded-l-full'} ${time.indexOf(3) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>8교시</div>
+                    <div onClick={() => {
+                      if(time.indexOf(3) === -1) {
+                        setTime([...time, 3]);
+                      } else {
+                        setTime(time.filter((item) => item !== 3));
+                      }
+                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 1</div>
+                    <div onClick={() => {
+                      if(time.indexOf(4) === -1) {
+                        setTime([...time, 4]);
+                      } else {
+                        setTime(time.filter((item) => item !== 4));
+                      }
+                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 2</div>
+                    <div onClick={() => {
+                      if(time.indexOf(5) === -1) {
+                        setTime([...time, 5]);
+                      } else {
+                        setTime(time.filter((item) => item !== 5));
+                      }
+                    }} className={ time.indexOf(5) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(4) === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div>
+                  </div>
                 </div>
                 <div>
                   <div className="text-zinc-800 mb-1 mt-5">활동 장소</div>
@@ -267,46 +376,6 @@ export default function AddActivityButton() {
                     </div>
                 </div>
                 <div>
-                  <div className="text-zinc-800 mb-1 mt-5">활동 시간</div>
-                  <div className="flex rounded-full px-1 py-1 bg-gray-100">
-                    <div onClick={() => {
-                      if(time.indexOf(1) === -1) {
-                        setTime([...time, 1]);
-                      } else {
-                        setTime(time.filter((item) => item !== 1));
-                      }
-                    }} className={ time.indexOf(1) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>7교시</div>
-                    <div onClick={() => {
-                      if(time.indexOf(2) === -1) {
-                        setTime([...time, 2]);
-                      } else {
-                        setTime(time.filter((item) => item !== 2));
-                      }
-                    }} className={ time.indexOf(2) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(1) === -1 && 'rounded-l-full'} ${time.indexOf(3) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>8교시</div>
-                    <div onClick={() => {
-                      if(time.indexOf(3) === -1) {
-                        setTime([...time, 3]);
-                      } else {
-                        setTime(time.filter((item) => item !== 3));
-                      }
-                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 1</div>
-                    <div onClick={() => {
-                      if(time.indexOf(4) === -1) {
-                        setTime([...time, 4]);
-                      } else {
-                        setTime(time.filter((item) => item !== 4));
-                      }
-                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 2</div>
-                    <div onClick={() => {
-                      if(time.indexOf(5) === -1) {
-                        setTime([...time, 5]);
-                      } else {
-                        setTime(time.filter((item) => item !== 5));
-                      }
-                    }} className={ time.indexOf(5) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(4) === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div>
-                  </div>
-                </div>
-                <div>
                   <div className="text-zinc-800 mb-1 mt-5">담당 교사</div>
                   <InputButton value={ selectedTeacher.length <= 0 ? '이곳을 눌러 선택하세요' : selectedTeacher[0].name } fn={() => {
                     setModal(false);
@@ -335,25 +404,30 @@ export default function AddActivityButton() {
           </div>
         </Modal> }
       </AnimatePresence>
-      { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
-        <div className="md:block hidden">
-          <SubButton color="blue" fn={() => {
-            setContent('');
-            setSelected([]);
-            setSelectedTeacher([]);
-            setModal(true);
-            setPlace(undefined);
-            setTime([]);
-          }}>
-            <div className="flex items-center ml-4 mr-5">
-              <svg className="w-5 h-5 mr-1" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-              활동 승인 요청하기
-            </div>
-          </SubButton>
-        </div>
-      </OpacityAnimation> }
+      <div className="flex items-center space-x-2">
+        { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
+          <PasscardButton/>
+        </OpacityAnimation> }
+        { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
+          <div className="md:block hidden">
+            <SubButton color="blue" fn={() => {
+              setContent('');
+              setSelected([]);
+              setSelectedTeacher([]);
+              setModal(true);
+              setPlace(undefined);
+              setTime([]);
+            }}>
+              <div className="flex items-center ml-4 mr-5">
+                <svg className="w-5 h-5 mr-1" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                활동 승인 요청하기
+              </div>
+            </SubButton>
+          </div>
+        </OpacityAnimation> }
+      </div>
       { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
         <div className="md:hidden block fixed bottom-20 right-4 z-30">
           <CircleButton color="blue" fn={() => {

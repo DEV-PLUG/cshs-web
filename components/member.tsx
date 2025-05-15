@@ -50,6 +50,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
   const handleSearch = (e: { target: { value: string; }; }) => {
     const {value} = {...e.target};
     setPreSearch(value);
+    setSearch(value);
   }
 
   useEffect(() => {
@@ -128,6 +129,19 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
     setSelected([...selected.filter((member) => member.id !== id)]);
   }
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        fn(selected);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selected]);
+
   return (
     <div className="w-[700px] h-[520px]">
       { info === 0 && <OpacityAnimation>
@@ -169,7 +183,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           <div className="h-[520px] w-[1px] bg-lightgray-100 my-3 ml-1"></div>
           { type === 0 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" placeholder="초성으로 검색해보세요." />
+              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
               <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
                 { (favorite && favorite?.success === true) && <div>
                   { (favorite.favorites.length > 0 && searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -198,12 +212,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                         <div onClick={() => selectMember([value.to])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
                             <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              <Image
+                              {value.to.profile && <Image
                                 src={value.to.profile}
                                 width={40}
                                 height={40}
                                 alt="프로필"
-                              />
+                              />}
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.to.name}</div>
@@ -224,12 +238,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                         <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
                             <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              <Image
+                              {value.profile && <Image
                                 src={value.profile}
                                 width={40}
                                 height={40}
                                 alt="프로필"
-                              />
+                              />}
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.name}</div>
@@ -262,7 +276,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div> }
           { type === 1 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" placeholder="초성으로 검색해보세요." />
+              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
               <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
                 { (member && member?.success === true && user && user?.success === true) && <div>
                   { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -281,12 +295,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                         { !(notMe === true && value.id === user.user.id) && <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
                             <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              <Image
+                              {value.profile && <Image
                                 src={value.profile}
                                 width={40}
                                 height={40}
                                 alt="프로필"
-                              />
+                              />}
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.name}</div>
@@ -307,12 +321,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                         { !(notMe === true && value.id === user.user.id) && <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
                             <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              <Image
+                              {value.profile && <Image
                                 src={value.profile}
                                 width={40}
                                 height={40}
                                 alt="프로필"
-                              />
+                              />}
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.name}</div>
@@ -345,7 +359,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div> }
           { type === 2 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" placeholder="초성으로 검색해보세요." />
+              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
               <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
                 { (group && group?.success === true) && <div>
                   { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -412,7 +426,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div> }
           { type === 3 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" placeholder="초성으로 검색해보세요." />
+              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
               <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
                 { (teacher && teacher?.success === true) && <div>
                   { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -431,12 +445,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                         <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
                             <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              <Image
+                              {value.profile && <Image
                                 src={value.profile}
                                 width={40}
                                 height={40}
                                 alt="프로필"
-                              />
+                              />}
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.name}</div>
@@ -452,12 +466,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                         <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
                             <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              <Image
+                              {value.profile && <Image
                                 src={value.profile}
                                 width={40}
                                 height={40}
                                 alt="프로필"
-                              />
+                              />}
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.name}</div>
@@ -495,12 +509,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                     <div onClick={() => unselectMember(value.id)} className="w-full group h-16 hover:bg-gray-100 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                       <div className="flex items-center space-x-2">
                         <div className="w-10 h-10 rounded-xl overflow-hidden">
-                          <Image
+                          {value.profile && <Image
                             src={value.profile}
                             width={40}
                             height={40}
                             alt="프로필"
-                          />
+                          />}
                         </div>
                         <div className="-space-y-0">
                           <div className="text-base font-bold">{value.name}</div>
@@ -519,7 +533,10 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
             </div>
             <div className="w-full h-12">
               <Button fn={() => fn(selected)} scalableHeight color="lightblue">
-                {selected.length}명 선택 완료하기
+                <div className="flex items-center">
+                  {selected.length}명 선택 완료하기
+                  <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200 ml-2">Enter</div>
+                </div>
               </Button>
             </div>
           </div>
@@ -592,7 +609,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                     <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                   </svg>
                 </div>
-                <div className="w-[200px] h-10 bg-gray-200 rounded-xl flex items-center justify-center">정예준</div>
+                <div className="w-[200px] h-10 bg-gray-200 rounded-xl flex items-center justify-center">정진욱</div>
               </div>
               <div className="flex items-center justify-center space-x-5">
                 <div className="w-8 h-8">
@@ -600,7 +617,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                     <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                   </svg>
                 </div>
-                <div className="w-[200px] h-10 bg-gray-200 rounded-xl flex items-center justify-center">최지환</div>
+                <div className="w-[200px] h-10 bg-gray-200 rounded-xl flex items-center justify-center">박성민</div>
               </div>
             </div>
           </div>

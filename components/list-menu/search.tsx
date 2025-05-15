@@ -10,8 +10,10 @@ export default function SearchButton({ searchFn }:{ searchFn?(text:string):void 
 
   const [preSearch, setPreSearch] = useState("");
   const onKeyPress = (e: { key: string; }) => {
+    if(e.key == 'ESCAPE') {
+      setSearchOpen(false);
+    }
     if(e.key == 'Enter') {
-      searchFn && searchFn(preSearch);
       if(preSearch === "") {
         setSearchOpen(false);
       }
@@ -20,6 +22,7 @@ export default function SearchButton({ searchFn }:{ searchFn?(text:string):void 
   const handleSearch = (e: { target: { value: string; }; }) => {
     const {value} = {...e.target};
     setPreSearch(value);
+    searchFn && searchFn(value);
   }
 
   return (

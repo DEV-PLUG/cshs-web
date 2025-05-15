@@ -48,6 +48,46 @@ async function PostHandler(request:Request) {
     message: "사용자 정보를 찾을 수 없어요"
   }, { status: 404 });
 
+  let overlappingActivities:any = [];
+  let i = 0
+  for (const userId of [sender.id, ...req.to]) {
+    const user = await client.user.findUnique({
+      where: {
+        id: userId
+      },
+      select: {
+        id: true,
+        name: true
+      }
+    });
+    overlappingActivities.push({
+      id: userId,
+      name: user?.name,
+      activity: []
+    });
+    for (const time of req.time.sort((a:number, b:number) => a - b)) {
+      const activity = await client.activity.findFirst({
+        where: {
+          relation: {
+            some: {
+              userId: userId
+            }
+          },
+          perio: {
+            contains: time + ''
+          },
+        },
+        select: {
+          id: true,
+          content: true,
+          perio: true,
+        }
+      });
+      if(activity) overlappingActivities[i].activity.push(activity);
+    }
+    i++;
+  }
+
   const activity = await client.activity.create({
     data: {
       content: req.content,
@@ -110,7 +150,8 @@ async function PostHandler(request:Request) {
   });
 
   return NextResponse.json({
-    success: true
+    success: true,
+    overlappingActivities,
   }, { status: 200 });
 }
 

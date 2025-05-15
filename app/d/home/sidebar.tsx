@@ -21,10 +21,10 @@ export default function SideBar() {
       { (meal && timetable) && <div className="space-y-5">
         <OpacityAnimation>
           <div className="bg-gray-50 md:flex hidden cursor-pointer hover:bg-gray-100/70 transition-colors rounded-2xl xl:w-[350px] w-full md:w-[320px] h-[120px] px-7 py-5 items-center space-x-5">
-            <div className="text-4xl tossface">💬</div>
+            <div className="text-4xl tossface">🪪</div>
             <div>
-              <div className="font-bold text-lightgray-300">스마트폰이나 태블릿에서는<br/>모바일 앱을 사용해보세요</div>
-              <div className="text-sm text-lightgray-200 mt-1">모바일 앱에서는 알림을 통해<br/>소식을 놓치지 않을 수 있어요.</div>
+              <div className="font-bold text-lightgray-300">7, 8교시에는 빠른 인원 점검!<br/>패스카드를 이용해보세요</div>
+              <div className="text-sm text-lightgray-200 mt-1">각 학생의 패스카드를 확인하면<br/>승인 여부를 빠르게 확인할 수 있습니다</div>
             </div>
           </div>
         </OpacityAnimation>
@@ -39,7 +39,7 @@ export default function SideBar() {
                 )
               }) }
             </div>
-            <div className="text-xs text-lightgray-200 mt-5">수행평가 일정이나 수업 교체가 있을 때 시간표에 표시됩니다.</div>
+            <div className="text-xs text-lightgray-200 mt-5">일부 수업 교체는 표시되지 않을 수 있습니다.</div>
           </div>
         </OpacityAnimation> }
         { (timetable?.message === '시간표 정보를 찾을 수 없어요') && <OpacityAnimation>

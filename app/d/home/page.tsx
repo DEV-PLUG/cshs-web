@@ -52,19 +52,14 @@ export default function Home() {
             <div className="md:block hidden">
               <MainText/>
             </div>
-            <div className="space-y-0 mt-0 md:mt-0 mt-0-">
+            <div className="space-y-0 mt-0 md:mt-0 mt-0- min-h-[100vh]">
               <Todo/>
             </div>
             <div className="md:hidden block">
               <SideBar/>
             </div>
             <div className="space-y-3 mt-5 md:mt-16">
-              <Announcement/>
-            </div>
-            <div className="mt-20 text-lightgray-200 text-sm md:mb-0 mb-20">
-              <div>
-                창원과학고등학교 전자 활동 승인서<br/>
-              </div>
+              {/* <Announcement/> */}
             </div>
           </div>
           <div className="w-[350px] space-y-3 md:block hidden">
@@ -91,6 +86,12 @@ export default function Home() {
               <div className="text-lightgray-200 mt-2">없음</div>
             </div> */}
             <SideBar/>
+          </div>
+        </div>
+        <div className="mt-20 text-lightgray-200 text-sm md:mb-0 mb-20">
+          <div>
+            창원과학고등학교 전자 활동 승인서<br/>
+            개발: <a className="underline" target="_blank" href="https://github.com/DEV-PLUG">최지환</a>, 운영: 성인혁, 지민겸, 황예린
           </div>
         </div>
       </div>

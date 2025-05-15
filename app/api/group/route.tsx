@@ -39,7 +39,7 @@ async function GetHandler() {
       }
     },
     orderBy: {
-      name: 'asc'
+      id: "asc"
     }
   });
 
