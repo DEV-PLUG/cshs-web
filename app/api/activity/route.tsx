@@ -3,6 +3,7 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 
 // Add Activity
 async function PostHandler(request:Request) {
@@ -48,45 +49,71 @@ async function PostHandler(request:Request) {
     message: "사용자 정보를 찾을 수 없어요"
   }, { status: 404 });
 
-  let overlappingActivities:any = [];
-  let i = 0
-  for (const userId of [sender.id, ...req.to]) {
-    const user = await client.user.findUnique({
-      where: {
-        id: userId
-      },
-      select: {
-        id: true,
-        name: true
-      }
-    });
-    overlappingActivities.push({
-      id: userId,
-      name: user?.name,
-      activity: []
-    });
-    for (const time of req.time.sort((a:number, b:number) => a - b)) {
-      const activity = await client.activity.findFirst({
-        where: {
-          relation: {
-            some: {
-              userId: userId
-            }
-          },
-          perio: {
-            contains: time + ''
-          },
-        },
-        select: {
-          id: true,
-          content: true,
-          perio: true,
+  const userIds = [sender.id, ...req.to];
+  const times = req.time.map((t: number) => t + '');
+
+  // -----------------------------------------------------
+  // 여기서는 queryRaw'Unsafe'를 사용합니다.
+  // 여기서 SQL 인젝션이 발생할 수 있으므로, 주의할 것.
+  // 'userIds와 times는 숫자 배열이므로 SQL 인젝션 위험이 없습니다.' - Copilot
+  // -----------------------------------------------------
+  
+  const today = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const likeConditions = times.map((t: string) => `a.perio LIKE '%${t}%'`).join(' OR ');
+  const overlappingRows: any[] = await client.$queryRawUnsafe(`
+    SELECT 
+      ar."userId" as "userId",
+      a.id as "activityId",
+      a.content as "content",
+      a.perio as "perio"
+    FROM "Activity" a
+    LEFT JOIN "ActivityRelation" ar ON a.id = ar."activityId"
+    WHERE ar."userId" IN (${userIds.join(',')})
+      AND (${likeConditions})
+      AND a.date = '${today}'
+  `);
+
+  // 유저 정보 미리 조회
+  const users = await client.user.findMany({
+    where: { id: { in: userIds } },
+    select: { id: true, name: true }
+  });
+  const userMap = Object.fromEntries(users.map(u => [u.id, u.name]));
+
+  // 유저별, 타임별로 분류
+  let overlappingActivities: any = userIds.map((userId: number) => ({
+    id: userId,
+    name: userMap[userId],
+    activity: []
+  }));
+
+  for (const row of overlappingRows) {
+    const activityTimes = row.perio.split(',').map((t: string) => t.trim());
+    for (const t of times) {
+      if (activityTimes.includes(t)) {
+        const userObj = overlappingActivities.find((u: any) => u.id === row.userId);
+        if (userObj) {
+          // 이미 같은 활동이 추가되어 있는지 확인
+          if (!userObj.activity.some((a: any) => a.id === row.activityId)) {
+            userObj.activity.push({
+              id: row.activityId,
+              content: row.content,
+              perio: row.perio
+            });
+          }
         }
-      });
-      if(activity) overlappingActivities[i].activity.push(activity);
+      }
     }
-    i++;
   }
+
+  // 교사 정보 조회
+  const teacherUser = await client.user.findUnique({
+    where: { id: req.teacher[0] },
+    select: { name: true, notificationToken: true }
+  });
+
+  // 자동 승인 여부 결정
+  const autoApprove = teacherUser?.name === "김정민";
 
   const activity = await client.activity.create({
     data: {
@@ -108,7 +135,7 @@ async function PostHandler(request:Request) {
           id: req.teacher[0]
         }
       },
-      status: 0
+      status: autoApprove ? 1 : 0
     }
   });
 

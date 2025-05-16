@@ -8,6 +8,8 @@ import { useAppDispatch } from "@libs/client/redux/hooks";
 import useSWR from "swr";
 import { OpacityAnimation } from "@components/animation";
 import Button from "@components/button";
+import { AnimatePresence } from "framer-motion";
+import Modal from "@components/modal";
 
 export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
 
@@ -66,9 +68,32 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
       }
     });
   }
+  
+  const [fullMemberModal, setFullMemberModal] = useState(false);
 
   return (
     <div>
+      <AnimatePresence initial={false} mode="wait">
+        { fullMemberModal && <Modal modalType="left" backdropType="transparent" handleClose={() => setFullMemberModal(false)}>
+          <div className="w-full md:w-[320px] h-[340px] -m-4">
+            <div className="flex flex-col h-full p-5 pr-3">
+              <div className="font-bold text-sm text-gray-400 mb-3">추가 구성원 모두 보기</div>
+              <div className="custom-scroll overflow-auto">
+                {
+                  data.relation.map((relation:{ user: { id: number; profile: string; name: string } }) => (
+                    <div key={relation.user.id} className="flex items-center space-x-2 mb-3">
+                      <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden">
+                        { relation.user.profile && <img src={relation.user.profile} alt="" className="w-full h-full object-cover" /> }
+                      </div>
+                      <div className="text-zinc-800 font-bold">{ relation.user.name }</div>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </Modal> }
+      </AnimatePresence>
       <div className="w-full md:w-[380px] h-[520px]">
         <div className="flex justify-end">
           <div onClick={() => fn()} className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer">
@@ -122,13 +147,13 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                 <div className={ data.perio.split(',').indexOf('5') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('4') === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div>
               </div>
             </div>
+            <div className="mb-3">
+              <div className="text-zinc-800 mb-1 mt-5">추가 구성원</div>
+              <InputButton fn={() => setFullMemberModal(true)} value={ data.relation.length <= 0 ? '없음' : data.relation.length === 1 ? data.relation[0].user.name : data.relation.length === 2 ? `${data.relation[0].user.name}, ${data.relation[1].user.name}` : `${data.relation[0].user.name}, ${data.relation[1].user.name} 외 ${data.relation.length - 2}명` }/>
+            </div>
             <div>
               <div className="text-zinc-800 mb-1 mt-5">담당 교사</div>
               <InputButton value={ data.teacher.name }/>
-            </div>
-            <div className="mb-3">
-              <div className="text-zinc-800 mb-1 mt-5">추가 구성원</div>
-              <InputButton value={ data.relation.length <= 0 ? '없음' : data.relation.length === 1 ? data.relation[0].user.name : data.relation.length === 2 ? `${data.relation[0].user.name}, ${data.relation[1].user.name}` : `${data.relation[0].user.name}, ${data.relation[1].user.name} 외 ${data.relation.length - 2}명` }/>
             </div>
           </div>
         </div>

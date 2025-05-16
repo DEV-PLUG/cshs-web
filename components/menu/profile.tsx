@@ -86,7 +86,7 @@ export default function ProfileMenu() {
       }
     });
   }
-
+  
   const { data } = useSWR('/api/user');
   useEffect(() => {
     if(data?.success === true) {

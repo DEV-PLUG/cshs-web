@@ -142,7 +142,7 @@ export default function AddActivityButton() {
                 <div className="pb-20">
                   <div className="font-bold text-blue-800 text-2xl mt-5">중복되는 활동이 있습니다</div>
                   <div className="text-blue-800 text-base mt-1">요청한 활동 시간대에 겹치는 활동이 있는 학생이 있습니다.<br/>해당 학생은 겹치는 시간대를 제외하고<br/>활동이 신청되었습니다.</div>
-                  <div className="overflow-y-auto space-y-3 mt-5">
+                  <div className="overflow-y-auto space-y-3 mt-5 h-[300px]">
                     {createdData && createdData.map((item:any) => {
                       if(item.activity.length > 0) {
                         return (
