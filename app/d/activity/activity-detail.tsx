@@ -151,7 +151,7 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
               <div className="text-zinc-800 mb-1 mt-5">추가 구성원</div>
               <InputButton fn={() => setFullMemberModal(true)} value={ data.relation.length <= 0 ? '없음' : data.relation.length === 1 ? data.relation[0].user.name : data.relation.length === 2 ? `${data.relation[0].user.name}, ${data.relation[1].user.name}` : `${data.relation[0].user.name}, ${data.relation[1].user.name} 외 ${data.relation.length - 2}명` }/>
             </div>
-            <div>
+            <div className="mb-3">
               <div className="text-zinc-800 mb-1 mt-5">담당 교사</div>
               <InputButton value={ data.teacher.name }/>
             </div>

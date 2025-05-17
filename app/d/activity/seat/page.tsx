@@ -12,7 +12,7 @@ export const metadata:Metadata = {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen">
+    <main className="md:flex w-full min-h-screen relative overflow-hidden">
       <Menu/>
       <div className="w-full absolute left-[320px] drop-shadow-2xl z-10 h-[100vh] bg-white md:block hidden"></div>
       <div className="h-[100vh] bg-white z-10 w-full md:border-l-[1px] border-lightgray-100 p-5 md:p-10 overflow-auto">

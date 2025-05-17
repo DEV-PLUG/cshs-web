@@ -9,9 +9,14 @@ async function GetHandler(request:Request) {
   const session = await getServerSessionCM();
   const searchParams = new URL(request.url).searchParams;
   const grade = searchParams.get('grade');
+  const time = searchParams.get('time');
   if(!grade) return NextResponse.json({
     success: false,
     message: 'Invalid grade value'
+  }, { status: 400 });
+  if(!time) return NextResponse.json({
+    success: false,
+    message: 'Invalid time value'
   }, { status: 400 });
 
   const user = await client.user.findMany({
@@ -39,46 +44,34 @@ async function GetHandler(request:Request) {
       name: true,
       grade: true,
       class: true,
-      number: true
-    }
-  });
-  
-  const activity = await client.activityRelation.findMany({
-    where: {
-      user: {
-        grade: +grade
-      },
-      activity: {
-        status: 1,
-        date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
-      }
-    },
-    select: {
-      activity: {
-        select: {
-          id: true,
-          perio: true
-        }
-      },
-      user: {
-        select: {
-          id: true,
-          name: true,
-          grade: true,
-          class: true,
-          number: true
-        }
-      }
+      number: true,
+      seat: true
     }
   });
 
-  const activityWriter = await client.activity.findMany({
+  const activity = await client.activity.findMany({
     where: {
       date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
+      perio: {
+        contains: time
+      },
       status: 1,
-      writer: {
-        grade: +grade
-      }
+      OR: [
+        {
+          writer: {
+            grade: +grade
+          },
+        },
+        {
+          relation: {
+            some: {
+              user: {
+                grade: +grade
+              }
+            }
+          }
+        }
+      ]
     },
     select: {
       id: true,
@@ -91,15 +84,43 @@ async function GetHandler(request:Request) {
           class: true,
           number: true
         }
-      }
+      },
+      content: true,
+      relation: {
+        select: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              grade: true,
+              class: true,
+              number: true,
+              profile: true
+            }
+          }
+        }
+      },
+      place: {
+        select: {
+          id: true,
+          place: true
+        }
+      },
+      teacher: {
+        select: {
+          id: true,
+          name: true,
+          profile: true
+        }
+      },
+      status: true,
     }
   });
 
   return NextResponse.json({
     success: true,
-    activity,
     seat,
-    activityWriter
+    activity
   }, { status: 200 });
 }
 

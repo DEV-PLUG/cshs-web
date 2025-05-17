@@ -9,14 +9,11 @@ import ActivityDetail from "../activity-detail";
 import Modal from "@components/modal";
 import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useAppSelector } from "@libs/client/redux/hooks";
 
 export default function ActivityList() {
 
-  const [userType, setUserType] = useState<null | number>(0);
-  useEffect(() => {
-    if(document && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '1') setUserType(1);
-    if(document && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0') setUserType(0);
-  }, []);
+  const userInfo = useAppSelector(state => state.userInfo);
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<null | { value: string, order: string }>(null);
@@ -38,18 +35,14 @@ export default function ActivityList() {
       <div className="flex justify-between items-center">
         <div className="flex space-x-4 md:space-x-6">
           <Link href='/d/activity'>
-            { userType !== null && <OpacityAnimation>
-              <div className="border-b-0 border-zinc-800 pb-3 cursor-pointer">
-                <div className="font-bold text-lightgray-200 md:text-base text-sm">{userType === 0 ? '내가 요청한 내역' : '담당 내역'}</div>
-              </div>
-            </OpacityAnimation> }
+            { userInfo.name !== '' && <div className="border-b-0 border-zinc-800 pb-3 cursor-pointer">
+                <div className="font-bold text-lightgray-200 md:text-base text-sm">{userInfo.type === 0 ? '내가 요청한 내역' : '담당 내역'}</div>
+              </div> }
           </Link>
           <Link href='/d/activity/all'>
-            { userType !== null && <OpacityAnimation>
-              <div className="border-b-2 border-zinc-800 pb-3 cursor-pointer">
+            { userInfo.name !== '' && <div className="border-b-2 border-zinc-800 pb-3 cursor-pointer">
                 <div className="font-bold md:text-base text-sm">전체 내역</div>
-              </div>
-            </OpacityAnimation> }
+              </div> }
           </Link>
           <div className="border-b-2 border-zinc-800 pb-3 opacity-0">
             <div className="font-bold text-lightgray-200 md:text-base text-sm">전체 내역</div>

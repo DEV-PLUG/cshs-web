@@ -15,12 +15,12 @@ import Switch from "@components/switch";
 import SelectPlace from "@components/place";
 import { OpacityAnimation } from "@components/animation";
 import PasscardButton from "./passcard";
+import { useAppSelector } from "@libs/client/redux/hooks";
 
 export default function AddActivityButton() {
   const [modal, setModal] = useState(false);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [load, setLoad] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -118,12 +118,11 @@ export default function AddActivityButton() {
   const [placeModal, setPlaceModal] = useState(false);
 
   const { data:place_traffic, error } = useSWR(`/api/activity/place-traffic/${place?.id}`);
-  useEffect(() => {
-    if(document) setLoad(true);
-  }, []);
 
   const [overlapModal, setOverlapModal] = useState(false);
   const [createdData, setCreatedData] = useState<any>(null);
+
+  const userInfo = useAppSelector(state => state.userInfo);
 
   return (
     <div>
@@ -405,11 +404,10 @@ export default function AddActivityButton() {
         </Modal> }
       </AnimatePresence>
       <div className="flex items-center space-x-2">
-        { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
+        { userInfo.type === 0 && <OpacityAnimation>
           <PasscardButton/>
         </OpacityAnimation> }
-        { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
-          <div className="md:block hidden">
+        { (userInfo.name !== '' && userInfo.type === 0) && <div className="md:block hidden">
             <SubButton color="blue" fn={() => {
               setContent('');
               setSelected([]);
@@ -425,10 +423,9 @@ export default function AddActivityButton() {
                 활동 승인 요청하기
               </div>
             </SubButton>
-          </div>
-        </OpacityAnimation> }
+          </div> }
       </div>
-      { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' && <OpacityAnimation>
+      { userInfo.type === 0 && <OpacityAnimation>
         <div className="md:hidden block fixed bottom-20 right-4 z-30">
           <CircleButton color="blue" fn={() => {
             setContent('');

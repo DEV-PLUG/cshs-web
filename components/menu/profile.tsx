@@ -10,27 +10,23 @@ import Button, { SubButton } from "@components/button";
 import Input, { Textarea } from "@components/input";
 import { Link, Tooltip } from "@mui/material";
 import { setNotification } from "@libs/client/redux/notification";
-import { useAppDispatch } from "@libs/client/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
 import useSWR from "@node_modules/swr/dist/core/index.mjs";
 import { OpacityAnimation } from "@components/animation";
 import Switch from "@components/switch";
 import Loading from "@components/loading";
+import { setUserInfo } from "@libs/client/redux/userInfo";
 
 export default function ProfileMenu() {
   const [profile, setProfile] = useState(false);
   const [settingModal, setSettingModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [load, setLoad] = useState(false);
   const [ai, setAI] = useState(false);
   const [notification, setNotificationToggle] = useState(false);
   const [nightNotification, setNightNotification] = useState(false);
   const [pwModal, setPWModal] = useState(false);
   const [pw, setPW] = useState('');
   const [pwCheck, setPWCheck] = useState('');
-
-  useEffect(() => {
-    if(document) setLoad(true);
-  }, []);
 
   const dispatch = useAppDispatch();
 
@@ -94,15 +90,14 @@ export default function ProfileMenu() {
       setNotificationToggle(data.user.allowNotification);
       setNightNotification(data.user.allowNightNotification);
 
-      document.cookie = `name=${data.user.name}; path=/;`;
-      document.cookie = `type=${data.user.type}; path=/;`;
+      dispatch(setUserInfo({ name: data.user.name, type: data.user.type, grade: 0, class: 0, number: 0 }));
       if(data.user.type === 0) {
-        document.cookie = `grade=${data.user.grade}; path=/;`;
-        document.cookie = `class=${data.user.class}; path=/;`;
-        document.cookie = `number=${data.user.number}; path=/;`;
+        dispatch(setUserInfo({ name: data.user.name, type: data.user.type, grade: data.user.grade, class: data.user.class, number: data.user.number }));
       }
     }
   }, [data]);
+
+  const userInfo = useAppSelector(state => state.userInfo);
 
   return (
     <>
@@ -168,7 +163,7 @@ export default function ProfileMenu() {
               </svg>
               <div className="text-base">프로필 설정</div>
             </div> */}
-            <div onClick={() => {
+            {/* <div onClick={() => {
               setSettingModal(true);
               setProfile(false);
             }} className="px-3 py-2 flex items-center space-x-2 transition-all cursor-pointer rounded-lg hover:bg-gray-100 text-lightgray-300">
@@ -177,7 +172,7 @@ export default function ProfileMenu() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
               </svg>
               <div className="text-base">개인 설정</div>
-            </div>
+            </div> */}
             <div onClick={() => {
               setPWModal(true);
               setProfile(false);
@@ -234,11 +229,11 @@ export default function ProfileMenu() {
         </div>
         <div className="flex flex-col justify-center">
           <div>
-            { load && <OpacityAnimation>
-              <div className="font-bold text-[17.5px] -mb-0 text-zinc-800">{document?.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1]}</div>
+            { userInfo.name !== '' && <OpacityAnimation>
+              <div className="font-bold text-[17.5px] -mb-0 text-zinc-800">{userInfo.name}</div>
             </OpacityAnimation> }
-            { load && <OpacityAnimation>
-              { document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' ? <div className="text-lightgray-200">{document.cookie.split('; ').find(row => row.startsWith('grade='))?.split('=')[1]}학년 {document.cookie.split('; ').find(row => row.startsWith('class='))?.split('=')[1]}반 {document.cookie.split('; ').find(row => row.startsWith('number='))?.split('=')[1]}번</div> : <div className="text-lightgray-200">교사</div> }
+            { userInfo.name !== '' && <OpacityAnimation>
+              { userInfo.type === 0 ? <div className="text-lightgray-200">{userInfo.grade}학년 {userInfo.class}반 {userInfo.number}번</div> : <div className="text-lightgray-200">교사</div> }
             </OpacityAnimation> }
           </div>
         </div>
@@ -250,7 +245,7 @@ export default function ProfileMenu() {
           </svg>
           <div className="text-sm">로그아웃</div>
         </div>
-        <div onClick={() => {
+        {/* <div onClick={() => {
           setSettingModal(true);
           setProfile(false);
         }} className="px-3 py-2 flex items-center space-x-2 transition-all cursor-pointer rounded-full bg-gray-100 hover:bg-gray-200 text-lightgray-300">
@@ -259,7 +254,7 @@ export default function ProfileMenu() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
           </svg>
           <div className="text-sm">개인 설정</div>
-        </div>
+        </div> */}
       </div>
       <div onClick={() => setProfile(true)} className="hidden xl:flex mb-5 space-x-3 px-4 py-2 mt-2 rounded-2xl hover:bg-gray-100 active:bg-gray-200 transition-all cursor-pointer">
         <div className="w-[55px] h-[55px] relative flex justify-center items-center bg-gray-100 border-[1px] border-lightgray-100 rounded-[17px]">
@@ -268,14 +263,13 @@ export default function ProfileMenu() {
           </svg>
         </div>
         <div className="flex flex-col justify-center">
-          <div>
-            { load && <OpacityAnimation>
-              <div className="font-bold text-[17.5px] -mb-0 text-zinc-800">{document?.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1]}</div>
-            </OpacityAnimation> }
-            { load && <OpacityAnimation>
-              { document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0' ? <div className="text-lightgray-200">{document.cookie.split('; ').find(row => row.startsWith('grade='))?.split('=')[1]}학년 {document.cookie.split('; ').find(row => row.startsWith('class='))?.split('=')[1]}반 {document.cookie.split('; ').find(row => row.startsWith('number='))?.split('=')[1]}번</div> : <div className="text-lightgray-200">교사</div> }
-            </OpacityAnimation> }
-          </div>
+          { userInfo.name !== '' ? <div>
+            <div className="font-bold text-[17.5px] -mb-0 text-zinc-800">{userInfo.name}</div>
+            { userInfo.type === 0 ? <div className="text-lightgray-200">{userInfo.grade}학년 {userInfo.class}반 {userInfo.number}번</div> : <div className="text-lightgray-200">교사</div> }
+          </div> : <div className="space-y-2">
+            <div className="w-16 h-5 animate-pulse bg-gray-200 rounded-md"></div>
+            <div className="w-24 h-4 animate-pulse bg-gray-200 rounded-md"></div>
+          </div> }
         </div>
       </div>
       <div onClick={() => setProfile(true)} className="w-[45px] h-[45px] hidden xl:hidden md:flex justify-center overflow-hidden items-center bg-white border-[1px] border-lightgray-100 rounded-[15px] mx-[3px] mb-3 cursor-pointer">

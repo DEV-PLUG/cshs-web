@@ -11,17 +11,11 @@ import { AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { setNotification } from "@libs/client/redux/notification";
 import errorMessage from "@libs/client/error-message";
-import { useAppDispatch } from "@libs/client/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
 import { SubButton } from "@components/button";
 import Loading from "@components/loading";
 
 export default function ActivityList() {
-
-  const [userType, setUserType] = useState<null | number>(null);
-  useEffect(() => {
-    if(document && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '1') setUserType(1);
-    if(document && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '0') setUserType(0);
-  }, []);
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<null | { value: string, order: string }>(null);
@@ -76,6 +70,8 @@ export default function ActivityList() {
     };
   }, [approveModal]);
 
+  const userInfo = useAppSelector((state) => state.userInfo);
+
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
@@ -105,18 +101,15 @@ export default function ActivityList() {
       <div className="flex justify-between items-center">
         <div className="flex space-x-4 md:space-x-6">
           <Link href='/d/activity'>
-            { userType !== null && <OpacityAnimation>
-              <div className="border-b-2 border-zinc-800 pb-3 cursor-pointer">
-                <div className="font-bold md:text-base text-sm">{userType === 0 ? '내가 요청한 내역' : '담당 내역'}</div>
-              </div>
-            </OpacityAnimation> }
+            { userInfo.name !== '' && <div className="border-b-2 border-zinc-800 pb-3 cursor-pointer">
+                <div className="font-bold md:text-base text-sm">{userInfo.type === 0 ? '내가 요청한 내역' : '담당 내역'}</div>
+              </div> }
           </Link>
           <Link href='/d/activity/all'>
-            { userType !== null && <OpacityAnimation>
+            { userInfo.name !== '' && 
               <div className="border-b-0 border-zinc-800 pb-3 cursor-pointer">
                 <div className="font-bold text-lightgray-200 md:text-base text-sm">전체 내역</div>
-              </div>
-            </OpacityAnimation> }
+              </div> }
           </Link>
           <div className="border-b-2 border-zinc-800 pb-3 opacity-0">
             <div className="font-bold text-lightgray-200 md:text-base text-sm">전체 내역</div>
@@ -158,7 +151,7 @@ export default function ActivityList() {
                     <th scope="col" className="px-6 py-3 !font-medium">
                       활동 시간
                     </th>
-                    { userType === 1 && <th scope="col" className="px-6 py-3 !font-medium">
+                    { userInfo.type === 1 && <th scope="col" className="px-6 py-3 !font-medium">
                       승인
                     </th> }
                   </tr>
@@ -233,7 +226,7 @@ export default function ActivityList() {
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
                           {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
                         </td>
-                        { userType === 1 && <td className="px-6 py-2 w-[40px]">
+                        { userInfo.type === 1 && <td className="px-6 py-2 w-[40px]">
                           <div className="bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center px-3 py-3 flex items-center cursor-pointer rounded-[10px] text-blue-500" onClick={(e) => {
                             e.stopPropagation();
                             setApproveId(activity.id);

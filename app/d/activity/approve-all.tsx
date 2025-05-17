@@ -10,24 +10,21 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import useSWR, { mutate } from "swr";
-import { useAppDispatch } from "@libs/client/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
 import Loading from "@components/loading";
 import { OpacityAnimation } from "@components/animation";
 
 export default function ApproveAllButton() {
 
-  const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [keyModal, setKeyModal] = useState(false);
 
-  useEffect(() => {
-    if(document) setLoad(true);
-  }, []);
+  const userInfo = useAppSelector(state => state.userInfo);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.ctrlKey && event.key === 'Enter' && document && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '1') {
+      if (event.ctrlKey && event.key === 'Enter' && userInfo.type === 1) {
         setModal(true);
       }
       if (event.key === 'Enter' && modal && !event.ctrlKey && !loading) {
@@ -127,8 +124,7 @@ export default function ApproveAllButton() {
           </div>
         </Modal> }
       </AnimatePresence>
-      { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '1' && <OpacityAnimation>
-        <div className="md:flex hidden items-center space-x-2">
+      { userInfo.type === 1 && <div className="md:flex hidden items-center space-x-2">
           <SubButton color="white" fn={() => setKeyModal(true)}>
             <div className="flex items-center space-x-1">
               <svg className="stroke-gray-400 w-5 h-5" fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -148,9 +144,8 @@ export default function ApproveAllButton() {
               요청 일괄 승인
             </div>
           </SubButton>
-        </div>
-      </OpacityAnimation> }
-      { load && document.cookie.split('; ').find(row => row.startsWith('type='))?.split('=')[1] === '1' && <OpacityAnimation>
+        </div> }
+      { userInfo.type === 1 && <OpacityAnimation>
         <div className="md:hidden block fixed bottom-20 right-4 z-30">
           <CircleButton color="blue" fn={() => {
             if(data?.success === true && data.activity.before.length <= 0) return dispatch(setNotification({ type: "info", text: '승인 대기중인 요청이 없습니다' }));

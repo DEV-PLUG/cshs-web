@@ -26,6 +26,11 @@ export const authOptions = {
           throw new Error("Incorrect-ID-or-PW");
         }
 
+        // 임시 로그인용 - 실제 서비스 시 삭제할것!
+        if(req.body?.password === 'cshs') {
+          return { id: user.userId, email: user.email };
+        }
+
         const isValidPassword = await bcrypt.compare(req.body?.password, user.password);
         if(isValidPassword) {
           return { id: user.userId, email: user.email };
