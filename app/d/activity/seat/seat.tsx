@@ -82,7 +82,7 @@ export default function Seat() {
           <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3</div>
         </div>
       </div>
-      <div className="mt-8 flex flex-col overflow-x-auto">
+      <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
         {!(data?.success === true && user?.success === true) ? (
           <div className="w-full">
             <div className="flex flex-col">
@@ -92,7 +92,7 @@ export default function Seat() {
                     const MR = colIdx === 2 ? "!mr-6" : ""
                     return (
                       <div
-                        className={`${MR} bg-gray-100 animate-pulse rounded-xl w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
+                        className={`${MR} bg-gray-100 animate-pulse rounded-xl min-w-[110px] w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
                         key={colIdx}
                       ></div>
                     )
@@ -123,7 +123,7 @@ export default function Seat() {
                     return (
                       <div
                         key={colIdx}
-                        className={`${seatBgClass} ${MR} cursor-pointer transition-colors rounded-xl w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
+                        className={`${seatBgClass} ${MR} cursor-pointer transition-colors rounded-xl min-w-[110px] w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
                         onClick={() => {
                           if(firstActivity) {
                             setSelectedActivity(firstActivity);

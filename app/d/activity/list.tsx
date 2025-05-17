@@ -269,13 +269,61 @@ export default function ActivityList() {
             </div>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="font-bold text-xl md:text-2xl text-zinc-800 flex items-center">
+            <div className="md:flex items-center justify-between">
+              <div className="font-bold md:mb-0 mb-1 text-xl md:text-2xl text-zinc-800 flex items-center">
                 승인된 내역
                 <div>
                   { (data && data.success === true && data.activity.finished.length > 0) && <OpacityAnimation><div className="text-blue-500 ml-2">{data.activity.finished.length}</div></OpacityAnimation> }
                 </div>
               </div>
+              { data?.success === true && <OpacityAnimation>
+                <div className="flex items-center space-x-1">
+                  {["1", "2", "3", "4", "5"].map((perio, idx) => {
+                    // 각 교시에 해당하는 승인된 활동이 있는지 확인
+                    const finishedList = data?.activity?.finished.filter(
+                      (activity: any) => activity.perio.split(",").includes(perio)
+                    );
+                    const hasFinished = finishedList.length > 0;
+                    // 가장 빨리 생성된 활동 찾기 (createdAt 기준, 없으면 id 기준)
+                    let firstActivity = null;
+                    if (hasFinished) {
+                      firstActivity = [...finishedList].sort((a: any, b: any) => {
+                        if (a.createdAt && b.createdAt) {
+                          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                        }
+                        return a.id - b.id;
+                      })[0];
+                    }
+                    const label =
+                      perio === "1" ? "7교시" :
+                      perio === "2" ? "8교시" :
+                      perio === "3" ? "야자1" :
+                      perio === "4" ? "야자2" :
+                      "야자3";
+                    return (
+                      <div
+                        key={perio}
+                        className={`py-1 px-2 rounded-lg text-sm ${
+                          hasFinished
+                            ? "bg-blue-100 hover:bg-blue-200 transition-colors text-blue-500 font-bold cursor-pointer"
+                            : "bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer text-zinc-500"
+                        }`}
+                        onClick={() => {
+                          if (hasFinished && firstActivity) {
+                            setSelectedActivity({
+                              ...firstActivity,
+                              mutateActivity: mutateActivity
+                            });
+                            setDetailModal(true);
+                          }
+                        }}
+                      >
+                        {label}
+                      </div>
+                    );
+                  })}
+                </div>
+              </OpacityAnimation> }
             </div>
             <div className="relative overflow-x-auto">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[800px]">
