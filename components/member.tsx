@@ -103,7 +103,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
   function selectMember(member:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[]) {
     let tempSelected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[] = [];
     member.forEach((value) => {
-      if(limit && selected.length + tempSelected.length >= limit) {
+      if(limit && selected.length + tempSelected.length >= limit && limit !== 1) {
         return dispatch(setNotification({ type: 'error', text: `최대 ${limit}명까지만 선택할 수 있어요` }));
       }
       if(value.id === user?.user?.id) {
@@ -112,6 +112,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
         }
       }
       if(!selected.some((member) => member.id === value.id) && !(notMe === true && value.id === user?.user?.id)) {
+        if(limit === 1) tempSelected = [];
         tempSelected.push({
           id: value.id,
           class: value.class,
@@ -123,7 +124,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
       }
     });
 
-    setSelected([...selected, ...tempSelected]);
+    if(limit === 1) setSelected([...tempSelected]);
+    else setSelected([...selected, ...tempSelected]);
   }
   function unselectMember(id:number) {
     setSelected([...selected.filter((member) => member.id !== id)]);
