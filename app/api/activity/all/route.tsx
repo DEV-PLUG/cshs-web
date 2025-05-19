@@ -58,6 +58,20 @@ async function GetHandler(request:Request) {
                   }
                 }
               }
+            },
+            { 
+              place: {
+                place: {
+                  contains: search
+                }
+              }
+            },
+            {
+              teacher: {
+                name: {
+                  contains: search
+                }
+              }
             }
           ] : undefined,
         }
@@ -130,6 +144,20 @@ async function GetHandler(request:Request) {
                       contains: search
                     }
                   }
+                }
+              }
+            },
+            { 
+              place: {
+                place: {
+                  contains: search
+                }
+              }
+            },
+            {
+              teacher: {
+                name: {
+                  contains: search
                 }
               }
             }
