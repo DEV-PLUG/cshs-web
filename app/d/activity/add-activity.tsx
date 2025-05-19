@@ -189,7 +189,7 @@ export default function AddActivityButton() {
             setModal(true);
           }, 150);
         }}>
-          <SelectMember selected={selected} fn={(selected) => {
+          <SelectMember disableGroup disableFavorite selected={selected} fn={(selected) => {
             setSelected(selected);
             setMemberModal(false);
             setTimeout(() => {
