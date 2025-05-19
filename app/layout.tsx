@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./fonts/pretendard.css";
 import { SWRProvider } from "@libs/client/swr-provider";
 import Notification from "@components/notification";
 import Providers from "./providers";
