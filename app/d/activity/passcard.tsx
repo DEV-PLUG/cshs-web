@@ -50,11 +50,11 @@ export default function PasscardButton() {
               <div className="flex flex-col justify-between h-full">
                 <div className="pb-20">
                   <div className="font-bold text-green-800 text-2xl mt-5">
-                    { data?.activity?.perio.includes('1') && '7교시 활동 승인됨' }
-                    { data?.activity?.perio.includes('2') && '8교시 활동 승인됨' }
-                    { data?.activity?.perio.includes('3') && '야자 1교시 활동 승인됨' }
-                    { data?.activity?.perio.includes('4') && '야자 2교시 활동 승인됨' }
-                    { data?.activity?.perio.includes('5') && '야자 3교시 활동 승인됨' }
+                    { time === 1 && data?.activity?.perio.includes('1') && '7교시 활동 승인됨' }
+                    { time === 2 && data?.activity?.perio.includes('2') && '8교시 활동 승인됨' }
+                    { time === 3 && data?.activity?.perio.includes('3') && '야자 1교시 활동 승인됨' }
+                    { time === 4 && data?.activity?.perio.includes('4') && '야자 2교시 활동 승인됨' }
+                    { time === 5 && data?.activity?.perio.includes('5') && '야자 3교시 활동 승인됨' }
                   </div>
                   <div className="text-green-800 text-base mt-1">이 카드를 제시하면 담당 교사가 승인 여부를 즉시 확인할 수 있습니다.</div>
                   {/* <div className="flex items-center space-x-5 mt-10">
