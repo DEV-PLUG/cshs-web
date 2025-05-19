@@ -124,10 +124,13 @@ export default function ActivityList() {
                           { activity.writer.name }
                         </td>
                         <td className="px-6 py-2">
-                          { activity.relation.map((student:any, index:number) => {
-                            if(activity.relation.length !== index + 1) return student.user.name + ', ';
-                            return student.user.name
-                          }) }
+                          {activity.relation.length > 2
+                            ? `${activity.relation[0].user.name}, ${activity.relation[1].user.name} 외 ${activity.relation.length - 2}명`
+                            : activity.relation.map((student: any, index: number) => {
+                                if (activity.relation.length !== index + 1) return student.user.name + ', ';
+                                return student.user.name;
+                              })
+                          }
                           { activity.relation.length === 0 && '없음' }
                         </td>
                         <td className="px-6 py-2">
@@ -255,10 +258,13 @@ export default function ActivityList() {
                           { activity.writer.name }
                         </td>
                         <td className="px-6 py-2">
-                          { activity.relation.map((student:any, index:number) => {
-                            if(activity.relation.length !== index + 1) return student.user.name + ', ';
-                            return student.user.name
-                          }) }
+                          {activity.relation.length > 2
+                            ? `${activity.relation[0].user.name}, ${activity.relation[1].user.name} 외 ${activity.relation.length - 2}명`
+                            : activity.relation.map((student: any, index: number) => {
+                                if (activity.relation.length !== index + 1) return student.user.name + ', ';
+                                return student.user.name;
+                              })
+                          }
                           { activity.relation.length === 0 && '없음' }
                         </td>
                         <td className="px-6 py-2">
