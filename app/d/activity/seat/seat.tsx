@@ -8,6 +8,7 @@ import { OpacityAnimation } from "@components/animation";
 import { AnimatePresence } from "framer-motion";
 import Modal from "@components/modal";
 import ActivityDetail from "../activity-detail";
+import displayPerio, { isWeekend } from "@libs/client/perio-display";
 
 export default function Seat() {
 
@@ -54,6 +55,41 @@ export default function Seat() {
   const [detailModal, setDetailModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<any>(null);
 
+  function CustomSeat({ seatNumber, horizontal = false }: { seatNumber:number, horizontal?: boolean }) {
+    // 학년에 따라 백의 자리 결정
+    const seatUser = data.seat?.find((u:any) => u.seat === seatNumber);
+    // 해당 좌석 유저의 승인된 활동 존재 여부 확인
+    const hasApprovedActivity = !!seatActivityMap[seatNumber];
+    const seatBgClass = hasApprovedActivity
+      ? "bg-blue-100 hover:bg-blue-200"
+      : "bg-gray-100 hover:bg-gray-200";
+    // 가장 빠른 activity 정보
+    const firstActivity = seatActivityMap[seatNumber];
+    return (
+      <div
+        className={horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
+        onClick={() => {
+          if(firstActivity) {
+            setSelectedActivity(firstActivity);
+            setDetailModal(true);
+          }
+        }}
+      >
+        {seatUser ? (
+          <>
+            <div className={ hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
+            <div className={ hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
+              {seatUser.grade}{seatUser.class}{seatUser.number < 10 ? `0${seatUser.number}` : seatUser.number}
+            </div>
+            {/* 필요하다면 firstActivity 정보 활용 가능 */}
+          </>
+        ) : (
+          <div className="text-lightgray-200 text-xs">비어있음</div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
@@ -75,14 +111,14 @@ export default function Seat() {
       <div className="w-full h-[1px] mb-5 bg-lightgray-100"></div>
       <div className="flex">
         <div className="flex rounded-full px-1 py-1 bg-gray-100 md:w-auto w-full text-sm">
-          <div onClick={() => setTime('1')} className={ time === '1' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>7교시</div>
-          <div onClick={() => setTime('2')} className={ time === '2' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>8교시</div>
-          <div onClick={() => setTime('3')} className={ time === '3' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 1</div>
-          <div onClick={() => setTime('4')} className={ time === '4' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 2</div>
-          <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3</div>
+          <div onClick={() => setTime('1')} className={ time === '1' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(1)}</div>
+          <div onClick={() => setTime('2')} className={ time === '2' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(2)}</div>
+          <div onClick={() => setTime('3')} className={ time === '3' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(3, 2)}</div>
+          <div onClick={() => setTime('4')} className={ time === '4' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(4, 2)}</div>
+          {!isWeekend() && <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3</div>}
         </div>
       </div>
-      <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
+      { grade !== 3 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
         {!(data?.success === true && user?.success === true) ? (
           <div className="w-full">
             <div className="flex flex-col">
@@ -150,7 +186,191 @@ export default function Seat() {
             </div>
           </OpacityAnimation>
         )}
-      </div>
+      </div> : <div className="mt-8 mb-10 flex overflow-x-auto space-x-10">
+        {!(data?.success === true && user?.success === true) ? (
+          <div className="space-x-10 flex">
+            <div className="space-y-2 mt-20">
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="space-x-2 flex"> 
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-14"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-10"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="space-x-2 flex"> 
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[85px] h-[60px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-14"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-10"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+                <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="space-y-2 mt-20">
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+              <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
+            </div>
+          </div>
+        ) : <OpacityAnimation>
+          <div className="space-x-10 flex">
+            <div className="space-y-2 mt-20">
+              <CustomSeat seatNumber={311} />
+              <CustomSeat seatNumber={312} />
+              <CustomSeat seatNumber={313} />
+              <CustomSeat seatNumber={314} />
+              <CustomSeat seatNumber={315} />
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="space-x-2 flex"> 
+                <CustomSeat seatNumber={301} horizontal={true} />
+                <CustomSeat seatNumber={302} horizontal={true} />
+                <CustomSeat seatNumber={303} horizontal={true} />
+                <CustomSeat seatNumber={304} horizontal={true} />
+                <CustomSeat seatNumber={305} horizontal={true} />
+              </div>
+              <div className="space-x-2 flex mt-14"> 
+                <CustomSeat seatNumber={321} />
+                <CustomSeat seatNumber={322} />
+                <CustomSeat seatNumber={323} />
+                <CustomSeat seatNumber={324} />
+                <CustomSeat seatNumber={325} />
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <CustomSeat seatNumber={326} />
+                <CustomSeat seatNumber={327} />
+                <CustomSeat seatNumber={328} />
+                <CustomSeat seatNumber={329} />
+                <CustomSeat seatNumber={330} />
+              </div>
+              <div className="space-x-2 flex mt-10"> 
+                <CustomSeat seatNumber={331} />
+                <CustomSeat seatNumber={332} />
+                <CustomSeat seatNumber={333} />
+                <CustomSeat seatNumber={334} />
+                <CustomSeat seatNumber={335} />
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <CustomSeat seatNumber={336} />
+                <CustomSeat seatNumber={337} />
+                <CustomSeat seatNumber={338} />
+                <CustomSeat seatNumber={339} />
+                <CustomSeat seatNumber={340} />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="space-x-2 flex"> 
+                <CustomSeat seatNumber={306} horizontal={true} />
+                <CustomSeat seatNumber={307} horizontal={true} />
+                <CustomSeat seatNumber={308} horizontal={true} />
+                <CustomSeat seatNumber={309} horizontal={true} />
+                <CustomSeat seatNumber={310} horizontal={true} />
+              </div>
+              <div className="space-x-2 flex mt-14"> 
+                <CustomSeat seatNumber={341} />
+                <CustomSeat seatNumber={342} />
+                <CustomSeat seatNumber={343} />
+                <CustomSeat seatNumber={344} />
+                <CustomSeat seatNumber={345} />
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <CustomSeat seatNumber={346} />
+                <CustomSeat seatNumber={347} />
+                <CustomSeat seatNumber={348} />
+                <CustomSeat seatNumber={349} />
+                <CustomSeat seatNumber={350} />
+              </div>
+              <div className="space-x-2 flex mt-10"> 
+                <CustomSeat seatNumber={351} />
+                <CustomSeat seatNumber={352} />
+                <CustomSeat seatNumber={353} />
+                <CustomSeat seatNumber={354} />
+                <CustomSeat seatNumber={355} />
+              </div>
+              <div className="space-x-2 flex mt-2"> 
+                <CustomSeat seatNumber={356} />
+                <CustomSeat seatNumber={357} />
+                <CustomSeat seatNumber={358} />
+                <CustomSeat seatNumber={359} />
+                <CustomSeat seatNumber={360} />
+              </div>
+            </div>
+            <div className="space-y-2 mt-20">
+              <CustomSeat seatNumber={316} />
+              <CustomSeat seatNumber={317} />
+              <CustomSeat seatNumber={318} />
+              <CustomSeat seatNumber={319} />
+              <CustomSeat seatNumber={320} />
+            </div>
+          </div>
+        </OpacityAnimation> }
+      </div> }
     </>
   );
 }

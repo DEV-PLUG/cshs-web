@@ -36,7 +36,7 @@ export default function ApproveAllButton() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [modal]);
+  }, [modal, userInfo]);
 
   const dispatch = useAppDispatch();
 

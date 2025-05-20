@@ -14,6 +14,7 @@ import errorMessage from "@libs/client/error-message";
 import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
 import { SubButton } from "@components/button";
 import Loading from "@components/loading";
+import displayPerio, { isWeekend } from "@libs/client/perio-display";
 
 export default function ActivityList() {
 
@@ -56,6 +57,8 @@ export default function ActivityList() {
     });
   }
 
+  const userInfo = useAppSelector((state) => state.userInfo);
+
   const [approveModal, setApproveModal] = useState(false);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -69,8 +72,6 @@ export default function ActivityList() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [approveModal]);
-
-  const userInfo = useAppSelector((state) => state.userInfo);
 
   return (
     <>
@@ -214,17 +215,9 @@ export default function ActivityList() {
                         </td>
                         <td className="px-6 py-2">
                           {displayDate(activity.createdAt, 'date')}<br/>
-                          {activity.perio.split(',').sort()[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort()[0] === '2' && '8교시'}
-                          {activity.perio.split(',').sort()[0] === '3' && '야자 1교시'}
-                          {activity.perio.split(',').sort()[0] === '4' && '야자 2교시'}
-                          {activity.perio.split(',').sort()[0] === '5' && '야자 3교시'}
+                          {displayPerio(+activity.perio.split(',').sort()[0])}
                           {' ~ '}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '3' && '야자 1교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
+                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0])}
                         </td>
                         { userInfo.type === 1 && <td className="px-6 py-2 w-[40px]">
                           <div className="bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center px-3 py-3 flex items-center cursor-pointer rounded-[10px] text-blue-500" onClick={(e) => {
@@ -276,7 +269,7 @@ export default function ActivityList() {
                   { (data && data.success === true && data.activity.finished.length > 0) && <OpacityAnimation><div className="text-blue-500 ml-2">{data.activity.finished.length}</div></OpacityAnimation> }
                 </div>
               </div>
-              { data?.success === true && <OpacityAnimation>
+              { (data?.success === true && userInfo.type === 0) && <OpacityAnimation>
                 <div className="flex items-center space-x-1">
                   {["1", "2", "3", "4", "5"].map((perio, idx) => {
                     // 각 교시에 해당하는 승인된 활동이 있는지 확인
@@ -294,12 +287,8 @@ export default function ActivityList() {
                         return a.id - b.id;
                       })[0];
                     }
-                    const label =
-                      perio === "1" ? "7교시" :
-                      perio === "2" ? "8교시" :
-                      perio === "3" ? "야자1" :
-                      perio === "4" ? "야자2" :
-                      "야자3";
+                    const label = displayPerio(+perio, 2);
+                    if(isWeekend() && perio === '5') return;
                     return (
                       <div
                         key={perio}
@@ -407,17 +396,9 @@ export default function ActivityList() {
                         </td>
                         <td className="px-6 py-2">
                           {displayDate(activity.createdAt, 'date')}<br/>
-                          {activity.perio.split(',').sort()[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort()[0] === '2' && '8교시'}
-                          {activity.perio.split(',').sort()[0] === '3' && '야자 1교시'}
-                          {activity.perio.split(',').sort()[0] === '4' && '야자 2교시'}
-                          {activity.perio.split(',').sort()[0] === '5' && '야자 3교시'}
+                          {displayPerio(+activity.perio.split(',').sort()[0])}
                           {' ~ '}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '1' && '7교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '2' && '8교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '3' && '야자 1교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '4' && '야자 2교시'}
-                          {activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0] === '5' && '야자 3교시'}
+                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0])}
                         </td>
                       </tr>
                     )

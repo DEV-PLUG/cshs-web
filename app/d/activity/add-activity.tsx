@@ -16,6 +16,7 @@ import SelectPlace from "@components/place";
 import { OpacityAnimation } from "@components/animation";
 import PasscardButton from "./passcard";
 import { useAppSelector } from "@libs/client/redux/hooks";
+import displayPerio, { isWeekend } from "@libs/client/perio-display";
 
 export default function AddActivityButton() {
   const [modal, setModal] = useState(false);
@@ -154,15 +155,15 @@ export default function AddActivityButton() {
                                     .map((period:string) => {
                                     switch (period) {
                                       case '0':
-                                      return "7교시";
+                                      return displayPerio(1);
                                       case '1':
-                                      return "8교시";
+                                      return displayPerio(2);
                                       case '2':
-                                      return "야1";
+                                      return displayPerio(3, 3);
                                       case '3':
-                                      return "야2";
+                                      return displayPerio(4, 3);
                                       case '4':
-                                      return "야3";
+                                      return displayPerio(5, 3);
                                       default:
                                       return "";
                                     }
@@ -288,35 +289,35 @@ export default function AddActivityButton() {
                       } else {
                         setTime(time.filter((item) => item !== 1));
                       }
-                    }} className={ time.indexOf(1) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>7교시</div>
+                    }} className={ time.indexOf(1) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>{displayPerio(1)}</div>
                     <div onClick={() => {
                       if(time.indexOf(2) === -1) {
                         setTime([...time, 2]);
                       } else {
                         setTime(time.filter((item) => item !== 2));
                       }
-                    }} className={ time.indexOf(2) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(1) === -1 && 'rounded-l-full'} ${time.indexOf(3) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>8교시</div>
+                    }} className={ time.indexOf(2) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(1) === -1 && 'rounded-l-full'} ${time.indexOf(3) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(2)}</div>
                     <div onClick={() => {
                       if(time.indexOf(3) === -1) {
                         setTime([...time, 3]);
                       } else {
                         setTime(time.filter((item) => item !== 3));
                       }
-                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 1</div>
+                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(3, 2)}</div>
                     <div onClick={() => {
                       if(time.indexOf(4) === -1) {
                         setTime([...time, 4]);
                       } else {
                         setTime(time.filter((item) => item !== 4));
                       }
-                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>야자 2</div>
-                    <div onClick={() => {
+                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(4, 2)}</div>
+                    { !isWeekend() && <div onClick={() => {
                       if(time.indexOf(5) === -1) {
                         setTime([...time, 5]);
                       } else {
                         setTime(time.filter((item) => item !== 5));
                       }
-                    }} className={ time.indexOf(5) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(4) === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div>
+                    }} className={ time.indexOf(5) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(4) === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div> }
                   </div>
                 </div>
                 <div>
@@ -334,43 +335,43 @@ export default function AddActivityButton() {
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">7교시 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(1)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">7교시 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(1)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">8교시 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(2)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">8교시 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(2)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">야자 1교시 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(3)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">야자 1교시 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(3)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">야자 2교시 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(4)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">야자 2교시 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(4)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">야자 3교시 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(5)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">야자 3교시 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(5)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length}팀)</div>
                       </div> }
                     </div>
                 </div>
