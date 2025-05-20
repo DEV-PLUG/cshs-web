@@ -52,7 +52,7 @@ export default function Home() {
             <div className="md:block hidden">
               <MainText/>
             </div>
-            <div className="space-y-0 mt-0 md:mt-0 mt-0- min-h-[100vh]">
+            <div className="space-y-0 mt-0 md:mt-0 mt-0- md:min-h-[100vh]">
               <Todo/>
             </div>
             <div className="md:hidden block">
