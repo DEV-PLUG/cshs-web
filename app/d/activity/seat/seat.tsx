@@ -30,11 +30,16 @@ export default function Seat() {
   useEffect(() => {
     if (data?.activity && data?.seat) {
       // 좌석별로 가장 빨리 생성된 activity를 매핑
-      const map: {[seatId: number]: any} = {};
+      const map: { [seatId: number]: any } = {};
       data.seat.forEach((seatUser: any) => {
-        const userActivities = data.activity.filter(
-          (a: any) => a.writer?.id === seatUser.id
-        );
+        const userActivities = data.activity.filter((a: any) => {
+          // writer 또는 relation에 포함된 경우
+          const isWriter = a.writer?.id === seatUser.id;
+          const isRelated =
+            Array.isArray(a.relation) &&
+            a.relation.some((rel: any) => rel.user.id === seatUser.id);
+          return isWriter || isRelated;
+        });
         if (userActivities.length > 0) {
           // createdAt이 빠른 순으로 정렬 (createdAt이 없으면 id 기준)
           userActivities.sort((a: any, b: any) => {
