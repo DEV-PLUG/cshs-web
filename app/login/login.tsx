@@ -74,7 +74,8 @@ const Login: NextPage = () => {
         }} className="w-full h-[100vh] bg-cover opacity-70 bg-opacity-0 overflow-hidden min-h-[800px]"></div>
         <div className='fixed right-0 left-0 bottom-7 hidden justify-center items-center md:flex'>
           <div className='mx-auto p-3 rounded-xl bg-blue-100 text-sm md:block hiddenq'>
-            <div className='text-blue-500 text-center'>비밀번호 변경 등 문의: <span className='underline'>14c76@csh-h.gne.go.kr</span></div>
+            {/* <div className='text-blue-500 text-center'>비밀번호 변경 등 문의: <span className='underline'>14c76@csh-h.gne.go.kr</span></div> */}
+            <div className='text-blue-500 text-center'>교사 아이디는 기존과 동일, 학생 아이디는 학번입니다.<br/>베타 테스트 기간 비밀번호(모든 아이디 공통): cshs<br/>테스트 학생 아이디 '1130'으로 활승 요청을 테스트할 수 있습니다.</div>
           </div>
         </div>
         <div className='absolute z-20 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-full xl:w-[750px] mt-7'>
