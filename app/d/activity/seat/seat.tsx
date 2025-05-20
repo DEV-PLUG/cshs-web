@@ -22,7 +22,7 @@ export default function Seat() {
     }
   }, [user]);
 
-  const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}`);
+  const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}`, { refreshInterval: 10000 });
 
   // 추가: 좌석별 가장 빠른 activity를 저장할 상태
   const [seatActivityMap, setSeatActivityMap] = useState<{[seatId: number]: any}>({});

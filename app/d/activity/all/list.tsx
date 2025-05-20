@@ -18,7 +18,7 @@ export default function ActivityList() {
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<null | { value: string, order: string }>(null);
-  const { data, error } = useSWR(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }`, { refreshInterval: 30000 });
+  const { data, error } = useSWR(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }`, { refreshInterval: 10000 });
   function mutateActivity() {
     mutate(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }`);
   }
