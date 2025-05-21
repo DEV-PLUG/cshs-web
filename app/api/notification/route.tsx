@@ -12,7 +12,8 @@ async function GetHandler() {
     where: {
       user: {
         email: session.user.email
-      }
+      },
+      read: false
     },
     select: {
       id: true,

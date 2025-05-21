@@ -6,11 +6,11 @@ import { NextResponse } from "next/server";
 
 // Get all activity of the user
 async function GetHandler(request:Request) {
-  const session = await getServerSessionCM();
   const searchParams = new URL(request.url).searchParams;
   const search = searchParams.get('search');
   const sort = searchParams.get('sort');
   const order = searchParams.get('order');
+  const date = searchParams.get('date');
   
   let orderObject:{} = { updatedAt: 'desc' };
   if (sort && sort !== 'createdAt' && sort !== 'deadline' && sort !== 'updatedAt') {
@@ -30,6 +30,8 @@ async function GetHandler(request:Request) {
       [sort]: order
     };
   }
+
+  const dateCondition = date ? new Date(date).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '') : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
 
   const beforeActivity = await client.activity.findMany({
     where: {
@@ -76,7 +78,7 @@ async function GetHandler(request:Request) {
           ] : undefined,
         }
       ],
-      date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
+      date: dateCondition,
       status: 0,
     },
     select: {
@@ -164,7 +166,7 @@ async function GetHandler(request:Request) {
           ] : undefined,
         }
       ],
-      date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
+      date: dateCondition,
       status: 1
     },
     select: {

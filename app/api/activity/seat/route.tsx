@@ -10,6 +10,10 @@ async function GetHandler(request:Request) {
   const searchParams = new URL(request.url).searchParams;
   const grade = searchParams.get('grade');
   const time = searchParams.get('time');
+  const date = searchParams.get('date');
+
+  const dateCondition = date ? new Date(date).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '') : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+
   if(!grade) return NextResponse.json({
     success: false,
     message: 'Invalid grade value'
@@ -51,7 +55,7 @@ async function GetHandler(request:Request) {
 
   const activity = await client.activity.findMany({
     where: {
-      date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
+      date: dateCondition,
       perio: {
         contains: time
       },

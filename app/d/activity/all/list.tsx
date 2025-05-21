@@ -18,9 +18,10 @@ export default function ActivityList() {
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<null | { value: string, order: string }>(null);
-  const { data, error } = useSWR(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }`, { refreshInterval: 10000 });
+  const [date, setDate] = useState<null | Date>(null);
+  const { data, error } = useSWR(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }${ date ? `&date=${date}` : '' }`, { refreshInterval: 10000 });
   function mutateActivity() {
-    mutate(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }`);
+    mutate(`/api/activity/all?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }${ date ? `&date=${date}` : '' }`);
   }
 
   const [detailModal, setDetailModal] = useState(false);
@@ -49,7 +50,7 @@ export default function ActivityList() {
             <div className="font-bold text-lightgray-200 md:text-base text-sm">전체 내역</div>
           </div>
         </div>
-        <ListMenu searchFn={setSearch} sortFn={setSort} data={{ sort }} />
+        <ListMenu searchFn={setSearch} sortFn={setSort} calendarFn={setDate} data={{ sort, date }} />
       </div>
       <div className="w-full h-[1px] mt-0 bg-lightgray-100"></div>
       <div className="mt-5 flex justify-between space-x-5 mb-20 md:mb-0">

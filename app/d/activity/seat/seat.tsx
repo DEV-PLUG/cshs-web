@@ -9,6 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import Modal from "@components/modal";
 import ActivityDetail from "../activity-detail";
 import displayPerio, { isWeekend } from "@libs/client/perio-display";
+import CalendarButton from "@components/list-menu/calendar";
 
 export default function Seat() {
 
@@ -22,7 +23,8 @@ export default function Seat() {
     }
   }, [user]);
 
-  const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}`, { refreshInterval: 10000 });
+  const [date, setDate] = useState<Date | null>(null);
+  const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}${ date ? `&date=${date}` : '' }`, { refreshInterval: 10000 });
 
   // 추가: 좌석별 가장 빠른 activity를 저장할 상태
   const [seatActivityMap, setSeatActivityMap] = useState<{[seatId: number]: any}>({});
@@ -102,15 +104,20 @@ export default function Seat() {
           <ActivityDetail data={selectedActivity} fn={() => setDetailModal(false)} />
         </Modal> }
       </AnimatePresence>
-      <div className="flex space-x-4 md:space-x-6 md:text-base text-sm">
-        <div onClick={() => setGrade(1)} className={ grade === 1 ? "border-b-2 border-zinc-800 pb-3 cursor-pointer" : "border-b-0 border-zinc-800 pb-3 cursor-pointer" }>
-          <div className={ grade === 1 ? "font-bold" : "font-bold text-lightgray-200" }>1학년</div>
+      <div className="flex justify-between items-center">
+        <div className="flex space-x-4 md:space-x-6">
+          <div onClick={() => setGrade(1)} className={ grade === 1 ? "border-b-2 border-zinc-800 pb-3 cursor-pointer" : "border-b-0 border-zinc-800 pb-3 cursor-pointer" }>
+            <div className={ grade === 1 ? "font-bold" : "font-bold text-lightgray-200" }>1학년</div>
+          </div>
+          <div onClick={() => setGrade(2)} className={ grade === 2 ? "border-b-2 border-zinc-800 pb-3 cursor-pointer" : "border-b-0 border-zinc-800 pb-3 cursor-pointer" }>
+            <div className={ grade === 2 ? "font-bold" : "font-bold text-lightgray-200" }>2학년</div>
+          </div>
+          <div onClick={() => setGrade(3)} className={ grade === 3 ? "border-b-2 border-zinc-800 pb-3 cursor-pointer" : "border-b-0 border-zinc-800 pb-3 cursor-pointer" }>
+            <div className={ grade === 3 ? "font-bold" : "font-bold text-lightgray-200" }>3학년</div>
+          </div>
         </div>
-        <div onClick={() => setGrade(2)} className={ grade === 2 ? "border-b-2 border-zinc-800 pb-3 cursor-pointer" : "border-b-0 border-zinc-800 pb-3 cursor-pointer" }>
-          <div className={ grade === 2 ? "font-bold" : "font-bold text-lightgray-200" }>2학년</div>
-        </div>
-        <div onClick={() => setGrade(3)} className={ grade === 3 ? "border-b-2 border-zinc-800 pb-3 cursor-pointer" : "border-b-0 border-zinc-800 pb-3 cursor-pointer" }>
-          <div className={ grade === 3 ? "font-bold" : "font-bold text-lightgray-200" }>3학년</div>
+        <div className="flex space-x-1 -mt-3 items-center relative">
+          <CalendarButton calendarFn={setDate} date={date} />
         </div>
       </div>
       <div className="w-full h-[1px] mb-5 bg-lightgray-100"></div>

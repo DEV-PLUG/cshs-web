@@ -51,7 +51,9 @@ async function GetHandler() {
   const existingTimetable = await client.timetable.findMany({
     where: {
       affiliationSchoolId: school.id,
-      date: formatDate
+      date: formatDate,
+      grade: user.grade ?? undefined,
+      class: user.class ?? undefined
     },
     orderBy: {
       perio: 'asc'
