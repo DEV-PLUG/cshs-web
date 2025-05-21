@@ -41,7 +41,7 @@ async function GetHandler(request:Request) {
     }
   });
 
-  const dateCondition = date ? new Date(date).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '') : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const dateCondition = date ? date : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
 
   if(user[0].type === 0) {
     const beforeActivity = await client.activity.findMany({

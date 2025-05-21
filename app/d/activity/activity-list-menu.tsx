@@ -8,7 +8,7 @@ import SortButton from "@components/list-menu/sort";
 import { useRouter, usePathname } from "next/navigation";
 import CalendarButton from "@components/list-menu/calendar";
 
-export default function ListMenu({ searchFn, sortFn, calendarFn, data }:{ searchFn?(text:string):void, sortFn?(data:any):void, calendarFn?(data:Date):void, data:any }) {
+export default function ListMenu({ searchFn, sortFn, calendarFn, data }:{ searchFn?(text:string):void, sortFn?(data:any):void, calendarFn?(data:string):void, data:any }) {
   const [downloadModal, setDownloadModal] = useState(false);
   
   const sortList = [

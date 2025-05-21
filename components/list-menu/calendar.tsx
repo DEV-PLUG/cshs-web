@@ -6,16 +6,44 @@ import Modal from "@components/modal";
 import UpModal from "@components/up-modal";
 import { DateInput } from "@components/input";
 
-export default function CalendarButton({ calendarFn, date }:{ calendarFn?(date:Date):void, date:null|Date }) {
+export default function CalendarButton({ calendarFn, date }:{ calendarFn?(date:string):void, date:null|string }) {
   const [sortModal, setSortModal] = useState(false);
 
   return (
     <div className="relative">
       <AnimatePresence initial={false} mode="wait">
         { sortModal && <UpModal handleClose={() => setSortModal(false)}>
-          <div className="w-[330px] h-auto top-12 overflow-hidden  right-0 rounded-xl bg-white border-lightgray-100 drop-shadow-2xl absolute">
-            <DateInput value={date ? date : new Date()} fn={calendarFn} />
-          </div>
+            <div className="w-[330px] h-auto top-12 overflow-hidden  right-0 rounded-xl bg-white border-lightgray-100 drop-shadow-2xl absolute">
+            <DateInput
+              value={
+              date
+                ? (() => {
+                  // date is in 'yyyyMMdd' format, e.g., '2025520'
+                  if(date.length === 8) {
+                    const y = Number(date.slice(0, 4));
+                    const m = Number(date.slice(4, 6)) - 1; // JS months are 0-based
+                    const d = Number(date.slice(6, 8));
+                    return new Date(y, m, d);
+                  } else {
+                    const y = Number(date.slice(0, 4));
+                    const m = Number(date.slice(4, 5)) - 1; // JS months are 0-based
+                    const d = Number(date.slice(5, 7));
+                    return new Date(y, m, d);
+                  }
+                })()
+                : new Date()
+              }
+              fn={(date: Date) =>
+              calendarFn &&
+              calendarFn(
+                new Date(date)
+                .toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })
+                .replaceAll(".", "")
+                .replaceAll(" ", "")
+              )
+              }
+            />
+            </div>
         </UpModal> }
       </AnimatePresence>
       <div onClick={() => setSortModal(true)} className={ (date && !(date && new Date(date).getFullYear() === new Date().getFullYear() && new Date(date).getMonth() === new Date().getMonth() && new Date(date).getDate() === new Date().getDate())) ? "px-2 py-2 hover:bg-blue-200 bg-blue-100 text-blue-500 transition-all rounded-md cursor-pointer" : "px-2 py-2 hover:bg-gray-100 text-lightgray-200 transition-all rounded-md cursor-pointer" }>

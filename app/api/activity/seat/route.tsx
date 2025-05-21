@@ -12,7 +12,7 @@ async function GetHandler(request:Request) {
   const time = searchParams.get('time');
   const date = searchParams.get('date');
 
-  const dateCondition = date ? new Date(date).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '') : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const dateCondition = date ? date : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
 
   if(!grade) return NextResponse.json({
     success: false,

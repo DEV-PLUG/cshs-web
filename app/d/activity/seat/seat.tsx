@@ -23,7 +23,7 @@ export default function Seat() {
     }
   }, [user]);
 
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<string | null>(null);
   const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}${ date ? `&date=${date}` : '' }`, { refreshInterval: 10000 });
 
   // 추가: 좌석별 가장 빠른 activity를 저장할 상태

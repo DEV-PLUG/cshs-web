@@ -31,7 +31,7 @@ async function GetHandler(request:Request) {
     };
   }
 
-  const dateCondition = date ? new Date(date).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '') : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const dateCondition = date ? date : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
 
   const beforeActivity = await client.activity.findMany({
     where: {

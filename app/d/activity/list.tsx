@@ -20,11 +20,15 @@ export default function ActivityList() {
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<null | { value: string, order: string }>(null);
-  const [date, setDate] = useState<null | Date>(null);
+  const [date, setDate] = useState<null | string>(null);
   const { data, error } = useSWR(`/api/activity/me?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }${ date ? `&date=${date}` : '' }`, { refreshInterval: 10000 });
   function mutateActivity() {
     mutate(`/api/activity/me?${ search ? `search=${search}` : '' }${ sort ? `&sort=${sort.value}&order=${sort.order}` : '' }${ date ? `&date=${date}` : '' }`);
   }
+
+  useEffect(() => {
+    console.log(date);
+  }, [date]);
 
   const [detailModal, setDetailModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState(null);
