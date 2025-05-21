@@ -46,7 +46,7 @@ export default function CalendarButton({ calendarFn, date }:{ calendarFn?(date:s
             </div>
         </UpModal> }
       </AnimatePresence>
-      <div onClick={() => setSortModal(true)} className={ (date && !(date && new Date(date).getFullYear() === new Date().getFullYear() && new Date(date).getMonth() === new Date().getMonth() && new Date(date).getDate() === new Date().getDate())) ? "px-2 py-2 hover:bg-blue-200 bg-blue-100 text-blue-500 transition-all rounded-md cursor-pointer" : "px-2 py-2 hover:bg-gray-100 text-lightgray-200 transition-all rounded-md cursor-pointer" }>
+      <div onClick={() => setSortModal(true)} className={ (date && !(date && date === new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll(".", "").replaceAll(" ", ""))) ? "px-2 py-2 hover:bg-blue-200 bg-blue-100 text-blue-500 transition-all rounded-md cursor-pointer" : "px-2 py-2 hover:bg-gray-100 text-lightgray-200 transition-all rounded-md cursor-pointer" }>
         <svg className="w-5 h-5" fill="none" strokeWidth={2.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
         </svg>
