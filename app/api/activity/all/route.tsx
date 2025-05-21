@@ -97,7 +97,10 @@ async function GetHandler(request:Request) {
             select: {
               name: true,
               profile: true,
-              id: true
+              id: true,
+              grade: true,
+              class: true,
+              number: true
             }
           }
         }
@@ -185,7 +188,10 @@ async function GetHandler(request:Request) {
             select: {
               name: true,
               profile: true,
-              id: true
+              id: true,
+              grade: true,
+              class: true,
+              number: true
             }
           }
         }

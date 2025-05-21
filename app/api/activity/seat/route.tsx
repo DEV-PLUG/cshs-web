@@ -49,7 +49,8 @@ async function GetHandler(request:Request) {
       grade: true,
       class: true,
       number: true,
-      seat: true
+      seat: true,
+      profile: true,
     }
   });
 
@@ -86,7 +87,8 @@ async function GetHandler(request:Request) {
           name: true,
           grade: true,
           class: true,
-          number: true
+          number: true,
+          profile: true
         }
       },
       content: true,

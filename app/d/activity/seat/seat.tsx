@@ -33,6 +33,7 @@ export default function Seat() {
     if (data?.activity && data?.seat) {
       // 좌석별로 가장 빨리 생성된 activity를 매핑
       const map: { [seatId: number]: any } = {};
+      const approved: any[] = [];
       data.seat.forEach((seatUser: any) => {
         const userActivities = data.activity.filter((a: any) => {
           // writer 또는 relation에 포함된 경우
@@ -51,11 +52,17 @@ export default function Seat() {
             return a.id - b.id;
           });
           map[seatUser.seat] = userActivities[0];
+          // 승인된 활동이 있으면 approvedUser에 추가
+          if (userActivities[0].status === 1) {
+            approved.push(seatUser);
+          }
         }
       });
       setSeatActivityMap(map);
+      setApprovedUser(approved);
     } else {
       setSeatActivityMap({});
+      setApprovedUser([]);
     }
   }, [data]);
 
@@ -72,6 +79,8 @@ export default function Seat() {
       : "bg-gray-100 hover:bg-gray-200";
     // 가장 빠른 activity 정보
     const firstActivity = seatActivityMap[seatNumber];
+
+    // if(hasApprovedActivity) setApprovedUser([...approvedUser, seatUser]);
     return (
       <div
         className={horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
@@ -97,11 +106,58 @@ export default function Seat() {
     );
   }
 
+  const [approvedUser, setApprovedUser] = useState<any[]>([]);
+  const [fullMemberModal, setFullMemberModal] = useState(false);
+
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
         { detailModal && <Modal scroll handleClose={() => setDetailModal(false)}>
           <ActivityDetail data={selectedActivity} fn={() => setDetailModal(false)} />
+        </Modal> }
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait">
+        { fullMemberModal && <Modal scroll handleClose={() => setFullMemberModal(false)}>
+          <div className="w-full md:w-[380px] h-[520px]">
+            <div className="flex justify-end">
+              <div onClick={() => setFullMemberModal(false)} className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer">
+                <svg className="w-6 h-6 p-1 rounded-full stroke-gray-400" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </div>
+            </div>
+            <div className="flex flex-col h-full mt-5">
+              <div className="font-bold text-sm text-gray-400 mb-3">승인된 학생 모두 보기</div>
+              <div>
+                {
+                  approvedUser
+                    .slice()
+                    .sort((a, b) => {
+                      if (a.grade !== b.grade) return a.grade - b.grade;
+                      if (a.class !== b.class) return a.class - b.class;
+                      return a.number - b.number;
+                    })
+                    .map((user: { id: number; profile: string; name: string, grade: number, class: number, number: number }) => (
+                      <div key={user.id} className="flex items-center space-x-2 mb-3">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden">
+                          { user.profile && <img src={user.profile} alt="" className="w-full h-full object-cover" /> }
+                        </div>
+                        <div>
+                          <div className="text-zinc-800 font-bold">{ user.name }</div>
+                          <div className="text-gray-400 text-sm">{user.grade}학년 {user.class}반 {user.number}번</div>
+                        </div>
+                      </div>
+                    ))
+                }
+              </div>
+              { approvedUser.length === 0 && <div className="mt-20">
+                  <svg className="w-10 h-10 stroke-gray-400 mx-auto" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                  </svg>
+                <div className="mt-2 text-center text-sm text-lightgray-200">승인된 학생이 없어요<br/>승인된 학생이 있으면 이곳에 표시됩니다</div>
+              </div> }
+            </div>
+          </div>
         </Modal> }
       </AnimatePresence>
       <div className="flex justify-between items-center">
@@ -129,6 +185,7 @@ export default function Seat() {
           <div onClick={() => setTime('4')} className={ time === '4' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(4, 2)}</div>
           {!isWeekend() && <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3</div>}
         </div>
+        <div onClick={() => setFullMemberModal(true)} className={ "rounded-full text-sm flex items-center justify-center w-full py-1 md:w-[160px] md:py-2 text-blue-500 text-center cursor-pointer hover:bg-blue-200 transition-colors bg-blue-100 ml-2" }>승인된 학생만 보기</div>
       </div>
       { grade !== 3 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
         {!(data?.success === true && user?.success === true) ? (
@@ -151,50 +208,52 @@ export default function Seat() {
           </div>
         ) : (
           <OpacityAnimation>
-            <div className="w-full flex flex-col">
-              {[...Array(14)].map((_, rowIdx) => (
-                <div className={ (rowIdx+1)%2 === 0 ? "flex space-x-1 !mb-6" : "flex space-x-1 mb-1" } key={rowIdx}>
-                  {[...Array(6)].map((_, colIdx) => {
-                    // 학년에 따라 백의 자리 결정
-                    const base = grade === 1 ? 200 : grade === 2 ? 300 : 400;
-                    const seatNumber = base + 1 + rowIdx * 6 + colIdx;
-                    if (seatNumber > base + 84) return null;
-                    const seatUser = data.seat?.find((u:any) => u.seat === seatNumber);
-                    // 해당 좌석 유저의 승인된 활동 존재 여부 확인
-                    const hasApprovedActivity = !!seatActivityMap[seatNumber];
-                    const seatBgClass = hasApprovedActivity
-                      ? "bg-blue-100 hover:bg-blue-200"
-                      : "bg-gray-100 hover:bg-gray-200";
-                    const MR = colIdx === 2 ? "!mr-6" : ""
-                    // 가장 빠른 activity 정보
-                    const firstActivity = seatActivityMap[seatNumber];
-                    return (
-                      <div
-                        key={colIdx}
-                        className={`${seatBgClass} ${MR} cursor-pointer transition-colors rounded-xl min-w-[110px] w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
-                        onClick={() => {
-                          if(firstActivity) {
-                            setSelectedActivity(firstActivity);
-                            setDetailModal(true);
-                          }
-                        }}
-                      >
-                        {seatUser ? (
-                          <>
-                            <div className={ hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
-                            <div className={ hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
-                              {seatUser.grade}{seatUser.class}{seatUser.number < 10 ? `0${seatUser.number}` : seatUser.number}
-                            </div>
-                            {/* 필요하다면 firstActivity 정보 활용 가능 */}
-                          </>
-                        ) : (
-                          <div className="text-lightgray-200 text-xs">비어있음</div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
+            <div className="w-full flex justify-between">
+              <div className="w-full flex flex-col">
+                {[...Array(14)].map((_, rowIdx) => (
+                  <div className={ (rowIdx+1)%2 === 0 ? "flex space-x-1 !mb-6" : "flex space-x-1 mb-1" } key={rowIdx}>
+                    {[...Array(6)].map((_, colIdx) => {
+                      // 학년에 따라 백의 자리 결정
+                      const base = grade === 1 ? 200 : grade === 2 ? 300 : 400;
+                      const seatNumber = base + 1 + rowIdx * 6 + colIdx;
+                      if (seatNumber > base + 84) return null;
+                      const seatUser = data.seat?.find((u:any) => u.seat === seatNumber);
+                      // 해당 좌석 유저의 승인된 활동 존재 여부 확인
+                      const hasApprovedActivity = !!seatActivityMap[seatNumber];
+                      const seatBgClass = hasApprovedActivity
+                        ? "bg-blue-100 hover:bg-blue-200"
+                        : "bg-gray-100 hover:bg-gray-200";
+                      const MR = colIdx === 2 ? "!mr-6" : ""
+                      // 가장 빠른 activity 정보
+                      const firstActivity = seatActivityMap[seatNumber];
+                      return (
+                        <div
+                          key={colIdx}
+                          className={`${seatBgClass} ${MR} cursor-pointer transition-colors rounded-xl min-w-[110px] w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
+                          onClick={() => {
+                            if(firstActivity) {
+                              setSelectedActivity(firstActivity);
+                              setDetailModal(true);
+                            }
+                          }}
+                        >
+                          {seatUser ? (
+                            <>
+                              <div className={ hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
+                              <div className={ hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
+                                {seatUser.grade}{seatUser.class}{seatUser.number < 10 ? `0${seatUser.number}` : seatUser.number}
+                              </div>
+                              {/* 필요하다면 firstActivity 정보 활용 가능 */}
+                            </>
+                          ) : (
+                            <div className="text-lightgray-200 text-xs">비어있음</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
             </div>
           </OpacityAnimation>
         )}

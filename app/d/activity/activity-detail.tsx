@@ -56,12 +56,15 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
               <div className="font-bold text-sm text-gray-400 mb-3">추가 구성원 모두 보기</div>
               <div className="custom-scroll overflow-auto">
                 {
-                  data.relation.map((relation:{ user: { id: number; profile: string; name: string } }) => (
+                  data.relation.map((relation:{ user: { id: number; profile: string; name: string, grade: number, class: number, number: number } }) => (
                     <div key={relation.user.id} className="flex items-center space-x-2 mb-3">
                       <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden">
                         { relation.user.profile && <img src={relation.user.profile} alt="" className="w-full h-full object-cover" /> }
                       </div>
-                      <div className="text-zinc-800 font-bold">{ relation.user.name }</div>
+                      <div>
+                        <div className="text-zinc-800 font-bold">{ relation.user.name }</div>
+                        <div className="text-gray-400 text-sm">{relation.user.grade}학년 {relation.user.class}반 {relation.user.number}번</div>
+                      </div>
                     </div>
                   ))
                 }
