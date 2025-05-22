@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
 import { SubButton } from "@components/button";
 import Loading from "@components/loading";
 import displayPerio, { isWeekend } from "@libs/client/perio-display";
+import PasscardModal from "@components/info/passcard";
 
 export default function ActivityList() {
 
@@ -78,8 +79,30 @@ export default function ActivityList() {
     };
   }, [approveModal]);
 
+  const [passcardModal, setPasscardModal] = useState(false);
+  useEffect(() => {
+    if(document?.cookie.indexOf('passcard-info-modal=') === -1) {
+      setTimeout(() => {
+        setPasscardModal(true);
+      }, 500);
+    }
+  }, []);
+
   return (
     <>
+      <AnimatePresence initial={false} mode="wait">
+        { passcardModal && <Modal handleClose={() => setPasscardModal(false)}>
+          <PasscardModal fn={() => {
+            setPasscardModal(false);
+
+            // const expires = new Date();
+            // expires.setDate(expires.getDate() + 30);
+            // document.cookie = `classroom-info-modal=true; expires=${expires.toUTCString()}; path=/`;
+
+            document.cookie = `passcard-info-modal=true; path=/`;
+          }} />
+        </Modal> }
+      </AnimatePresence>
       <AnimatePresence initial={false} mode="wait">
         { approveModal && <Modal handleClose={() => setApproveModal(false)}>
           <div className="md:w-[300px] h-auto">

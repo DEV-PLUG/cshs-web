@@ -11,16 +11,19 @@ import { useAppDispatch } from "@libs/client/redux/hooks";
 import useSWR from "swr";
 import { setNotification } from "@libs/client/redux/notification";
 import displayDate from "@libs/client/time-display";
+import PasscardModal from "@components/info/passcard";
 
 export default function SideBar() {
   const { data:meal } = useSWR('/api/school/meal');
   const { data:timetable } = useSWR('/api/school/time-table');
+
+  const [passcardModal, setPasscardModal] = useState(false);
   
   return (
     <>
       { (meal && timetable) && <div className="space-y-5">
         <OpacityAnimation>
-          <div className="bg-gray-50 md:flex hidden cursor-pointer hover:bg-gray-100/70 transition-colors rounded-2xl xl:w-[350px] w-full md:w-[320px] h-[120px] px-7 py-5 items-center space-x-5">
+          <div onClick={() => setPasscardModal(true)} className="bg-gray-50 md:flex hidden cursor-pointer hover:bg-gray-100/70 transition-colors rounded-2xl xl:w-[350px] w-full md:w-[320px] h-[120px] px-7 py-5 items-center space-x-5">
             <div className="text-4xl tossface">🪪</div>
             <div>
               <div className="font-bold text-lightgray-300">7, 8교시에는 빠른 인원 점검!<br/>패스카드를 이용해보세요</div>
@@ -125,6 +128,19 @@ export default function SideBar() {
       </div> }
       { (!timetable) && <div className="rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] my-5 md:block hidden"></div> }
       { (!meal) && <div className="rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] md:block hidden"></div> }
+      <AnimatePresence initial={false} mode="wait">
+        { passcardModal && <Modal handleClose={() => setPasscardModal(false)}>
+          <PasscardModal fn={() => {
+            setPasscardModal(false);
+
+            // const expires = new Date();
+            // expires.setDate(expires.getDate() + 30);
+            // document.cookie = `classroom-info-modal=true; expires=${expires.toUTCString()}; path=/`;
+
+            document.cookie = `passcard-info-modal=true; path=/`;
+          }} />
+        </Modal> }
+      </AnimatePresence>
     </>
   )
 }

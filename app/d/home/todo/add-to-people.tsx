@@ -85,7 +85,7 @@ export default function AddToMeButton() {
             // expires.setDate(expires.getDate() + 30);
             // document.cookie = `classroom-info-modal=true; expires=${expires.toUTCString()}; path=/`;
 
-            document.cookie = `classroom-info-modal=true; path=/`;
+            // document.cookie = `classroom-info-modal=true; path=/`;
           }} />
         </Modal> }
       </AnimatePresence>
@@ -168,17 +168,18 @@ export default function AddToMeButton() {
       </AnimatePresence>
       <div className="md:block hidden">
         <SubButton color="blue" fn={() => {
-          if(document.cookie.indexOf('classroom-info-modal=') === -1) {
-            setClassroomModal(true);
-          } else {
-            setModal(true);
-          }
+          // if(document.cookie.indexOf('classroom-info-modal=') === -1) {
+          //   setClassroomModal(true);
+          // } else {
+          //   setModal(true);
+          // }
           setDateModal(false);
           setDate(dayjs(new Date()).toDate());
           setTitle('');
           setDescription('');
           setSelected([]);
           setToMe(false);
+          setModal(true);
         }}>
           <svg className="w-5 h-5 mr-2" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
@@ -188,17 +189,18 @@ export default function AddToMeButton() {
       </div>
       <div className="md:hidden block fixed bottom-20 right-4 z-30">
         <CircleButton color="blue" fn={() => {
-          if(document.cookie.indexOf('classroom-info-modal=') === -1) {
-            setClassroomModal(true);
-          } else {
-            setModal(true);
-          }
+          // if(document.cookie.indexOf('classroom-info-modal=') === -1) {
+          //   setClassroomModal(true);
+          // } else {
+          //   setModal(true);
+          // }
           setDateModal(false);
           setDate(dayjs(new Date()).toDate());
           setTitle('');
           setDescription('');
           setSelected([]);
           setToMe(false);
+          setModal(true);
         }}>
           <div className="mx-3">
             <svg className="w-6 h-6 m-[5px]" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

@@ -177,7 +177,7 @@ export default function Seat() {
         </div>
       </div>
       <div className="w-full h-[1px] mb-5 bg-lightgray-100"></div>
-      <div className="flex">
+      <div className="md:flex">
         <div className="flex rounded-full px-1 py-1 bg-gray-100 md:w-auto w-full text-sm">
           <div onClick={() => setTime('1')} className={ time === '1' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(1)}</div>
           <div onClick={() => setTime('2')} className={ time === '2' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(2)}</div>
@@ -185,7 +185,7 @@ export default function Seat() {
           <div onClick={() => setTime('4')} className={ time === '4' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>{displayPerio(4, 2)}</div>
           {!isWeekend() && <div onClick={() => setTime('5')} className={ time === '5' ? "rounded-full w-full py-1 md:w-[100px] md:py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer" : "rounded-full w-full py-1 md:w-[100px] md:py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-colors" }>야자 3</div>}
         </div>
-        <div onClick={() => setFullMemberModal(true)} className={ "rounded-full text-sm flex items-center justify-center w-full py-1 md:w-[160px] md:py-2 text-blue-500 text-center cursor-pointer hover:bg-blue-200 transition-colors bg-blue-100 ml-2" }>승인된 학생만 보기</div>
+        <div onClick={() => setFullMemberModal(true)} className={ "rounded-full text-sm flex items-center justify-center w-full py-2 md:w-[160px] md:py-2 text-blue-500 text-center cursor-pointer hover:bg-blue-200 transition-colors bg-blue-100 md:ml-2 md:mt-0 mt-3" }>승인된 학생만 보기</div>
       </div>
       { grade !== 3 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
         {!(data?.success === true && user?.success === true) ? (
