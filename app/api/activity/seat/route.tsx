@@ -60,7 +60,9 @@ async function GetHandler(request:Request) {
       perio: {
         contains: time
       },
-      status: 1,
+      status: {
+        gte: 1
+      },
       OR: [
         {
           writer: {

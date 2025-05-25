@@ -198,7 +198,13 @@ async function DeleteHandler(request:Request) {
           email: true
         }
       },
-      status: true
+      status: true,
+      teacher: {
+        select: {
+          id: true,
+          email: true
+        }
+      }
     }
   });
   if(!activity) {
@@ -207,10 +213,16 @@ async function DeleteHandler(request:Request) {
       message: 'Todo not found'
     }, { status: 404 });
   }
-  if(activity.writer?.email !== session.user.email) {
+  if(activity.writer?.email !== session.user.email && activity.status !== 2) {
     return NextResponse.json({
       success: false,
       message: 'You are not the writer of this activity'
+    }, { status: 400 });
+  }
+  if(activity.status === 2 && activity.teacher?.email !== session.user.email) {
+    return NextResponse.json({
+      success: false,
+      message: '교사가 작성한 활동은 삭제할 수 없어요'
     }, { status: 400 });
   }
 

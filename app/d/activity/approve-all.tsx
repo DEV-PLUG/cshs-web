@@ -125,26 +125,26 @@ export default function ApproveAllButton() {
         </Modal> }
       </AnimatePresence>
       { userInfo.type === 1 && <div className="md:flex hidden items-center space-x-2">
-          <SubButton color="white" fn={() => setKeyModal(true)}>
-            <div className="flex items-center space-x-1">
-              <svg className="stroke-gray-400 w-5 h-5" fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
-              </svg>
-              <div className="font-bold">단축키 도움말</div>
-            </div>
-          </SubButton>
-          <SubButton color="blue" fn={() => {
-            if(data?.success === true && data.activity.before.length <= 0) return dispatch(setNotification({ type: "info", text: '승인 대기중인 요청이 없습니다' }));
-            setModal(true);
-          }}>
-            <div className="flex items-center ml-4 mr-5">
-              <svg className="w-5 h-5 mr-1" fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-              </svg>
-              요청 일괄 승인
-            </div>
-          </SubButton>
-        </div> }
+        <SubButton color="white" fn={() => setKeyModal(true)}>
+          <div className="flex items-center space-x-1">
+            <svg className="stroke-gray-400 w-5 h-5" fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+            </svg>
+            <div className="font-semibold">단축키 도움말</div>
+          </div>
+        </SubButton>
+        <SubButton color="blue" fn={() => {
+          if(data?.success === true && data.activity.before.length <= 0) return dispatch(setNotification({ type: "info", text: '승인 대기중인 요청이 없습니다' }));
+          setModal(true);
+        }}>
+          <div className="flex items-center ml-4 mr-5">
+            <svg className="w-5 h-5 mr-1" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            요청 일괄 승인
+          </div>
+        </SubButton>
+      </div> }
       { userInfo.type === 1 && <OpacityAnimation>
         <div className="md:hidden block fixed bottom-20 right-4 z-30">
           <CircleButton color="blue" fn={() => {

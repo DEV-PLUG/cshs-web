@@ -217,7 +217,9 @@ async function GetHandler(request:Request) {
           }
         ],
         date: dateCondition,
-        status: 1
+        status: {
+          gte: 1
+        }
       },
       select: {
         id: true,
@@ -249,7 +251,8 @@ async function GetHandler(request:Request) {
         teacher: {
           select: {
             name: true,
-            profile: true
+            profile: true,
+            id: true
           }
         },
         place: {
@@ -426,7 +429,9 @@ async function GetHandler(request:Request) {
           }
         ],
         date: dateCondition,
-        status: 1
+        status: {
+          gte: 1
+        }
       },
       select: {
         id: true,
@@ -458,7 +463,8 @@ async function GetHandler(request:Request) {
         teacher: {
           select: {
             name: true,
-            profile: true
+            profile: true,
+            id: true
           }
         },
         place: {

@@ -43,7 +43,7 @@ export function SubButton({ children, color, loading = false, disabled = false, 
   return (
     <div onClick={() => {
       if(!loading && fn) fn();
-    }} className={ color === 'white' ? "border border-lightgray-100 hover:bg-gray-50 text-sm transition-all font-bold text-lightgray-200 justify-center w-[150px] py-3 flex items-center cursor-pointer rounded-[10px]" : color === 'lightblue' ? `bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center min-w-[140px] py-3 flex items-center cursor-pointer rounded-[10px] text-blue-500` : color === 'lightgreen' ? `bg-green-500/20 hover:bg-green-600/20 text-sm transition-all font-bold justify-center min-w-[140px] py-3 flex items-center cursor-pointer rounded-[10px] text-green-500` : `bg-${color}-500 hover:bg-${color}-600 text-sm transition-all font-bold text-white justify-center min-w-[140px] py-3 flex items-center cursor-pointer rounded-[10px]` }>
+    }} className={ color === 'white' ? "border border-lightgray-100 hover:bg-gray-50 text-sm transition-all font-semibold text-lightgray-200 justify-center w-[150px] py-3 flex items-center cursor-pointer rounded-[10px]" : color === 'lightblue' ? `bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-semibold justify-center min-w-[140px] py-3 flex items-center cursor-pointer rounded-[10px] text-blue-500` : color === 'lightgreen' ? `bg-green-500/20 hover:bg-green-600/20 text-sm transition-all font-semibold justify-center min-w-[140px] py-3 flex items-center cursor-pointer rounded-[10px] text-green-500` : `bg-${color}-500 hover:bg-${color}-600 text-sm transition-all font-semibold text-white justify-center min-w-[140px] py-3 flex items-center cursor-pointer rounded-[10px]` }>
       {children}
     </div>
   )

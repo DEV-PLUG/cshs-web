@@ -25,7 +25,7 @@ export default function AddActivityButton() {
 
   const dispatch = useDispatch();
 
-  async function postTodo() {
+  async function postActivity() {
     if(loading) return;
 
     if(content.length <= 0 || content.length > 20) {
@@ -397,7 +397,7 @@ export default function AddActivityButton() {
             </div>
             <div className="absolute bottom-5 w-full right-0 left-0 pl-5 pr-5 md:pr-7">
               <div className="w-full md:w-[380px] h-8 bg-white -bottom-5 absolute"></div>
-              <Button color="blue" loading={loading} fn={() => postTodo()}>
+              <Button color="blue" loading={loading} fn={() => postActivity()}>
                 요청하기
               </Button>
             </div>

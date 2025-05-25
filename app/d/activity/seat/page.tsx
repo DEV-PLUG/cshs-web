@@ -5,6 +5,7 @@ import Seat from "./seat";
 import { Metadata } from "next";
 import MobileBottomMenu from "@components/menu/mobile";
 import AddActivityButton from "../add-activity";
+import AddTeacherActivityButton from "../add-teacher-activity";
 
 export const metadata:Metadata = {
   title: '활동 승인 - 자리 배치',
@@ -25,8 +26,10 @@ export default function Home() {
               <div className="font-bold text-2xl md:text-3xl text-zinc-800 cursor-pointer">자리 배치</div>
             </Link>
           </div>
-          <div className="w-2 h-[44px] md:block hidden">
-            {/* 정렬을 위한 것이므로 삭제하지 마세요 */}
+          <div className="flex">
+            <div className="md:block flex md:h-[44px]">
+              <AddTeacherActivityButton/>
+            </div>
           </div>
           <MobileBottomMenu/>
         </div>

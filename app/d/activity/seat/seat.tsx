@@ -13,8 +13,8 @@ import CalendarButton from "@components/list-menu/calendar";
 
 export default function Seat() {
 
-  const [grade, setGrade] = useState(1);
-  const [time, setTime] = useState('1');
+  // const [grade, setGrade] = useState(1);
+  // const [time, setTime] = useState('1');
 
   const { data:user } = useSWR('/api/user');
   useEffect(() => {
@@ -22,6 +22,46 @@ export default function Seat() {
       if(user.user.grade) setGrade(user.user.grade);
     }
   }, [user]);
+
+  // grade, time 초기값을 쿼리스트링에서 가져오도록 useState 인자에서 처리
+  function getInitialGrade() {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const urlGrade = params.get('grade');
+      if (urlGrade && !isNaN(Number(urlGrade))) return Number(urlGrade);
+    }
+    return 1;
+  }
+  function getInitialTime() {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const urlTime = params.get('time');
+      if (urlTime) return urlTime;
+    }
+    return '1';
+  }
+
+  const [grade, setGrade] = useState(getInitialGrade);
+  const [time, setTime] = useState(getInitialTime);
+
+  useEffect(() => {
+    if(typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const urlGrade = params.get('grade');
+      const urlTime = params.get('time');
+      if(urlGrade && !isNaN(Number(urlGrade))) setGrade(Number(urlGrade));
+      if(urlTime) setTime(urlTime);
+    }
+  }, [window]);
+
+  // grade, time이 바뀔 때마다 URL 쿼리스트링에 반영
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('grade', String(grade));
+    params.set('time', String(time));
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+  }, [grade, time]);
 
   const [date, setDate] = useState<string | null>(null);
   const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}${ date ? `&date=${date}` : '' }`, { refreshInterval: 10000 });
@@ -53,7 +93,7 @@ export default function Seat() {
           });
           map[seatUser.seat] = userActivities[0];
           // 승인된 활동이 있으면 approvedUser에 추가
-          if (userActivities[0].status === 1) {
+          if (userActivities[0].status === 1 || userActivities[0].status === 2) {
             approved.push(seatUser);
           }
         }
@@ -74,13 +114,32 @@ export default function Seat() {
     const seatUser = data.seat?.find((u:any) => u.seat === seatNumber);
     // 해당 좌석 유저의 승인된 활동 존재 여부 확인
     const hasApprovedActivity = !!seatActivityMap[seatNumber];
-    const seatBgClass = hasApprovedActivity
-      ? "bg-blue-100 hover:bg-blue-200"
-      : "bg-gray-100 hover:bg-gray-200";
-    // 가장 빠른 activity 정보
-    const firstActivity = seatActivityMap[seatNumber];
+    // status가 2인 활동이 하나라도 있는지 확인
+    const hasStatus2Activity = data.activity?.some((a:any) => {
+      const isWriter = a.writer?.id === seatUser?.id;
+      const isRelated = Array.isArray(a.relation) && a.relation.some((rel: any) => rel.user.id === seatUser?.id);
+      return (isWriter || isRelated) && a.status === 2;
+    });
+    // 배경색 결정: status 2 > blue > gray
+    let seatBgClass = "bg-gray-100 hover:bg-gray-200";
+    if (hasStatus2Activity) {
+      seatBgClass = "bg-yellow-100 hover:bg-yellow-200";
+    } else if (hasApprovedActivity) {
+      seatBgClass = "bg-blue-100 hover:bg-blue-200";
+    }
+    let firstActivity = seatActivityMap[seatNumber];
+    if(hasStatus2Activity) {
+      // status가 2인 활동 중 가장 먼저 생성된 것
+      const status2List = data.activity.filter((a:any) => {
+        const isWriter = a.writer?.id === seatUser?.id;
+        const isRelated = Array.isArray(a.relation) && a.relation.some((rel: any) => rel.user.id === seatUser?.id);
+        return (isWriter || isRelated) && a.status === 2;
+      });
+      if(status2List.length > 0) {
+        firstActivity = status2List[0];
+      }
+    }
 
-    // if(hasApprovedActivity) setApprovedUser([...approvedUser, seatUser]);
     return (
       <div
         className={horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
@@ -93,8 +152,8 @@ export default function Seat() {
       >
         {seatUser ? (
           <>
-            <div className={ hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
-            <div className={ hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
+            <div className={ hasStatus2Activity ? 'font-bold text-yellow-500' : hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
+            <div className={ hasStatus2Activity ? 'text-xs text-yellow-500' : hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
               {seatUser.grade}{seatUser.class}{seatUser.number < 10 ? `0${seatUser.number}` : seatUser.number}
             </div>
             {/* 필요하다면 firstActivity 정보 활용 가능 */}
@@ -218,14 +277,35 @@ export default function Seat() {
                       const seatNumber = base + 1 + rowIdx * 6 + colIdx;
                       if (seatNumber > base + 84) return null;
                       const seatUser = data.seat?.find((u:any) => u.seat === seatNumber);
+                      // status가 2인 활동이 하나라도 있는지 확인
+                      const hasStatus2Activity = data.activity?.some((a:any) => {
+                        const isWriter = a.writer?.id === seatUser?.id;
+                        const isRelated = Array.isArray(a.relation) && a.relation.some((rel: any) => rel.user.id === seatUser?.id);
+                        return (isWriter || isRelated) && a.status === 2;
+                      });
                       // 해당 좌석 유저의 승인된 활동 존재 여부 확인
                       const hasApprovedActivity = !!seatActivityMap[seatNumber];
-                      const seatBgClass = hasApprovedActivity
-                        ? "bg-blue-100 hover:bg-blue-200"
-                        : "bg-gray-100 hover:bg-gray-200";
+                      // 배경색 결정: status 2 > blue > gray
+                      let seatBgClass = "bg-gray-100 hover:bg-gray-200";
+                      if (hasStatus2Activity) {
+                        seatBgClass = "bg-yellow-100 hover:bg-yellow-200";
+                      } else if (hasApprovedActivity) {
+                        seatBgClass = "bg-blue-100 hover:bg-blue-200";
+                      }
                       const MR = colIdx === 2 ? "!mr-6" : ""
                       // 가장 빠른 activity 정보
-                      const firstActivity = seatActivityMap[seatNumber];
+                      let firstActivity = seatActivityMap[seatNumber];
+                      if (hasStatus2Activity) {
+                        // status가 2인 활동 중 가장 먼저 생성된 것
+                        const status2List = data.activity.filter((a:any) => {
+                          const isWriter = a.writer?.id === seatUser?.id;
+                          const isRelated = Array.isArray(a.relation) && a.relation.some((rel: any) => rel.user.id === seatUser?.id);
+                          return (isWriter || isRelated) && a.status === 2;
+                        });
+                        if(status2List.length > 0) {
+                          firstActivity = status2List[0];
+                        }
+                      }
                       return (
                         <div
                           key={colIdx}
@@ -239,8 +319,8 @@ export default function Seat() {
                         >
                           {seatUser ? (
                             <>
-                              <div className={ hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
-                              <div className={ hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
+                              <div className={ hasStatus2Activity ? 'font-bold text-yellow-500' : hasApprovedActivity ? "font-bold text-blue-500" : "font-bold" }>{seatUser.name}</div>
+                              <div className={ hasStatus2Activity ? 'text-xs text-yellow-500' : hasApprovedActivity ? "text-xs text-blue-500" : "text-xs text-zinc-500" }>
                                 {seatUser.grade}{seatUser.class}{seatUser.number < 10 ? `0${seatUser.number}` : seatUser.number}
                               </div>
                               {/* 필요하다면 firstActivity 정보 활용 가능 */}

@@ -12,6 +12,9 @@ async function GetHandler() {
     where: {
       writer: {
         email: session.user.email
+      },
+      status: {
+        not: 2
       }
     },
     select: {
