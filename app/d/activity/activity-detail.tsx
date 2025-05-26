@@ -4,7 +4,7 @@ import Input, { DateInput, InputButton, Textarea } from "@components/input";
 import { setNotification } from "@libs/client/redux/notification";
 import { useEffect, useState } from "react";
 import errorMessage from "@libs/client/error-message";
-import { useAppDispatch } from "@libs/client/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
 import useSWR from "swr";
 import { OpacityAnimation } from "@components/animation";
 import Button from "@components/button";
@@ -16,7 +16,7 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
 
   const dispatch = useAppDispatch();
 
-  const { data:user, error } = useSWR('/api/user');
+  const { data:user } = useSWR('/api/user');
 
   const [loading, setLoading] = useState(false);
   async function deleteActivity() {
@@ -48,6 +48,8 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
   
   const [fullMemberModal, setFullMemberModal] = useState(false);
 
+  const userInfo = useAppSelector(state => state.userInfo);
+
   return (
     <div>
       <AnimatePresence initial={false} mode="wait">
@@ -74,6 +76,12 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
           </div>
         </Modal> }
       </AnimatePresence>
+      { (location.href.includes("seat") && userInfo.type === 1) && <div onClick={() => data?.addTeacherActivity && data?.addTeacherActivity()} className="absolute -top-14 left-0 bg-blue-100 px-3 pl-4 p-3 rounded-xl transition-colors hover:bg-blue-200 flex items-center justify-between w-full space-x-2 text-blue-500 cursor-pointer">
+        <div className="text-sm">해당 학생 결석, 지각, 외출 등 기록하기</div>
+        <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </div> }
       <div className="w-full md:w-[380px] h-[520px]">
         <div className="flex justify-end">
           <div onClick={() => fn()} className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer">

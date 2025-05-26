@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import useSWR from 'swr';
 import { OpacityAnimation } from "@components/animation";
 import { AnimatePresence } from "framer-motion";
@@ -10,6 +8,9 @@ import Modal from "@components/modal";
 import ActivityDetail from "../activity-detail";
 import displayPerio, { isWeekend } from "@libs/client/perio-display";
 import CalendarButton from "@components/list-menu/calendar";
+import { useAppSelector } from "@libs/client/redux/hooks";
+import { AddTeacherActivityContent } from "../add-teacher-activity";
+import SelectMember from "@components/member";
 
 export default function Seat() {
 
@@ -23,45 +24,29 @@ export default function Seat() {
     }
   }, [user]);
 
-  // grade, time 초기값을 쿼리스트링에서 가져오도록 useState 인자에서 처리
-  function getInitialGrade() {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const urlGrade = params.get('grade');
-      if (urlGrade && !isNaN(Number(urlGrade))) return Number(urlGrade);
-    }
-    return 1;
-  }
-  function getInitialTime() {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const urlTime = params.get('time');
-      if (urlTime) return urlTime;
-    }
-    return '1';
-  }
-
-  const [grade, setGrade] = useState(getInitialGrade);
-  const [time, setTime] = useState(getInitialTime);
+  const [grade, setGrade] = useState(1);
+  const [time, setTime] = useState('1');
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if(typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const urlGrade = params.get('grade');
-      const urlTime = params.get('time');
-      if(urlGrade && !isNaN(Number(urlGrade))) setGrade(Number(urlGrade));
-      if(urlTime) setTime(urlTime);
-    }
-  }, [window]);
+    const params = new URLSearchParams(window.location.search);
+    const urlGrade = params.get('grade');
+    const urlTime = params.get('time');
+    if(urlGrade && !isNaN(Number(urlGrade))) setGrade(Number(urlGrade));
+    if(urlTime) setTime(urlTime);
+    setReady(true);
+  }, []);
 
   // grade, time이 바뀔 때마다 URL 쿼리스트링에 반영
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    params.set('grade', String(grade));
-    params.set('time', String(time));
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({}, '', newUrl);
-  }, [grade, time]);
+    if(ready) {
+      const params = new URLSearchParams(window.location.search);
+      params.set('grade', String(grade));
+      params.set('time', String(time));
+      const newUrl = `${window.location.pathname}?${params.toString()}`;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [grade, time, ready]);
 
   const [date, setDate] = useState<string | null>(null);
   const { data } = useSWR(`/api/activity/seat?grade=${grade}&time=${time}${ date ? `&date=${date}` : '' }`, { refreshInterval: 10000 });
@@ -109,6 +94,8 @@ export default function Seat() {
   const [detailModal, setDetailModal] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<any>(null);
 
+  const userInfo = useAppSelector((state) => state.userInfo);
+
   function CustomSeat({ seatNumber, horizontal = false }: { seatNumber:number, horizontal?: boolean }) {
     // 학년에 따라 백의 자리 결정
     const seatUser = data.seat?.find((u:any) => u.seat === seatNumber);
@@ -144,9 +131,13 @@ export default function Seat() {
       <div
         className={horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
         onClick={() => {
+          setSelected([seatUser]);
           if(firstActivity) {
             setSelectedActivity(firstActivity);
             setDetailModal(true);
+          }
+          else if(userInfo.type === 1) {
+            setAddActivityModal(true);
           }
         }}
       >
@@ -167,12 +158,45 @@ export default function Seat() {
 
   const [approvedUser, setApprovedUser] = useState<any[]>([]);
   const [fullMemberModal, setFullMemberModal] = useState(false);
+  const [addActivityModal, setAddActivityModal] = useState(false);
+  const [memberModal, setMemberModal] = useState(false);
+  const [selected, setSelected] = useState<any>(null);
 
   return (
     <>
       <AnimatePresence initial={false} mode="wait">
         { detailModal && <Modal scroll handleClose={() => setDetailModal(false)}>
-          <ActivityDetail data={selectedActivity} fn={() => setDetailModal(false)} />
+          <ActivityDetail data={{...selectedActivity, addTeacherActivity: () => {
+            setDetailModal(false);
+            setTimeout(() => {
+              setAddActivityModal(true);
+            }, 300);
+          }}} fn={() => setDetailModal(false)} />
+        </Modal> }
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait">
+        { memberModal && <Modal handleClose={() => {
+          setMemberModal(false);
+          setTimeout(() => {
+            setAddActivityModal(true);
+          }, 150);
+        }}>
+          <SelectMember disableGroup disableFavorite limit={1} selected={selected} fn={(selected) => {
+            setSelected(selected);
+            setMemberModal(false);
+            setTimeout(() => {
+              setAddActivityModal(true);
+            }, 150);
+          }} />
+        </Modal> }
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait">
+        { addActivityModal && <Modal handleClose={() => setAddActivityModal(false)}>
+          <AddTeacherActivityContent
+            fn={() => setAddActivityModal(false)}
+            memberFn={(value:boolean) => setMemberModal(value)}
+            selectedInput={selected}
+          />
         </Modal> }
       </AnimatePresence>
       <AnimatePresence initial={false} mode="wait">
@@ -311,9 +335,13 @@ export default function Seat() {
                           key={colIdx}
                           className={`${seatBgClass} ${MR} cursor-pointer transition-colors rounded-xl min-w-[110px] w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
                           onClick={() => {
+                            setSelected([seatUser]);
                             if(firstActivity) {
                               setSelectedActivity(firstActivity);
                               setDetailModal(true);
+                            }
+                            else if(userInfo.type === 1) {
+                              setAddActivityModal(true);
                             }
                           }}
                         >
