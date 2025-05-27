@@ -127,6 +127,14 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
               </div>
+              <div className="bg-blue-500/10 backdrop-blur-sm text-sm text-blue-500 space-x-2 p-1 px-2 rounded-lg absolute top-[58px] left-[50px] flex z-10">
+                <svg className="w-5 h-5" dataSlot="icon" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                </svg>
+                <div>
+                  여기서 그룹에 추가할<br/>구성원을 선택하세요
+                </div>
+              </div>
             </div> }
             { !disableStudent && <div className="flex items-center">
               { type === 1 && <div className="w-1 h-6 bg-blue-500 rounded-r-lg absolute"></div> }
