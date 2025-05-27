@@ -12,6 +12,7 @@ import errorMessage from "@libs/client/error-message";
 import hansearch from "hangul-search";
 import { AnimatePresence } from "framer-motion";
 import Modal from "./modal";
+import UpModal from "./up-modal";
 
 // Select Members Modal
 export default function SelectMember({ fn, disableTeacher = true, disableFavorite = false, disableGroup = false, disableStudent = false, limit, selected:inputSelected, notMe = true, modalFn }:{ fn:(selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[])=>void, disableTeacher?:boolean, disableFavorite?:boolean, disableGroup?:boolean, disableStudent?:boolean, limit?:number, selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[], notMe?:boolean, modalFn?:(value:boolean)=>void }) {
@@ -71,10 +72,12 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
   }, [search, type, group, teacher]);
 
   const [selected, setSelected] = useState<{ id: number, class: number, grade: number, number: number, profile: string, name: string }[]>([]);
+  const [groupSelected, setGroupSelected] = useState<{ id: number, class: number, grade: number, number: number, profile: string, name: string }[]>([]);
+
   function selectMember(member:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[]) {
     let tempSelected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[] = [];
     member.forEach((value) => {
-      if(limit && selected.length + tempSelected.length >= limit && limit !== 1) {
+      if(limit && selected.length + tempSelected.length >= limit && limit !== 1 && addGroupStatus === false) {
         return dispatch(setNotification({ type: 'error', text: `최대 ${limit}명까지만 선택할 수 있어요` }));
       }
       if(value.id === user?.user?.id) {
@@ -83,7 +86,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
         }
       }
       if(!selected.some((member) => member.id === value.id) && !(notMe === true && value.id === user?.user?.id)) {
-        if(limit === 1) tempSelected = [];
+        if(limit === 1 && addGroupStatus === false) tempSelected = [];
         tempSelected.push({
           id: value.id,
           class: value.class,
@@ -95,16 +98,25 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
       }
     });
 
-    if(limit === 1) setSelected([...tempSelected]);
-    else setSelected([...selected, ...tempSelected]);
+    if(addGroupStatus === false) {
+      if(limit === 1) setSelected([...tempSelected]);
+      else setSelected([...selected, ...tempSelected]);
+    } else if(addGroupStatus === true) {
+      setGroupSelected([...groupSelected, ...tempSelected]);
+    }
   }
   function unselectMember(id:number) {
-    setSelected([...selected.filter((member) => member.id !== id)]);
+    if(addGroupStatus === true) setGroupSelected([...groupSelected.filter((member) => member.id !== id)]);
+    else setSelected([...selected.filter((member) => member.id !== id)]);
   }
+
+  const [addGroupInfoModal, setAddGroupInfoModal] = useState(false);
+  const [addGroupStatus, setAddGroupStatus] = useState(false);
+  const [groupName, setGroupName] = useState('');
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && !addGroupStatus) {
         fn(selected);
       }
     };
@@ -113,7 +125,44 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selected]);
+  }, [selected, addGroupStatus]);
+
+  const [loading, setLoading] = useState(false);
+  async function createGroup() {
+    if(loading) return;
+
+    if(groupName.length <= 0 || groupName.length > 20) {
+      setType(0);
+      return dispatch(setNotification({ type: "error", text: "그룹 이름은 비어있거나 20자 이상일 수 없어요" }));
+    }
+    if(groupSelected.length <= 0) {
+      setType(1);
+      return dispatch(setNotification({ type: "error", text: "한 명 이상의 구성원을 선택하세요" }));
+    }
+
+    setLoading(true);
+    await fetch(`/api/user/group`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        to: selected.map((member) => member.id),
+        name: groupName
+      })
+    })
+    .then((response) => response.json())
+    .then((response) => {
+      setLoading(false);
+      if(response.success === true) {
+        dispatch(setNotification({ type: "success", text: '그룹을 생성했어요' }));
+        mutate('/api/user/group');
+        setAddGroupStatus(false);
+      } else {
+        dispatch(setNotification({ type: "error", text: response.message }));
+      }
+    });
+  }
 
   return (
     <div className="w-[700px] h-[520px]">
@@ -127,14 +176,18 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
               </div>
-              <div className="bg-blue-500/10 backdrop-blur-sm text-sm text-blue-500 space-x-2 p-1 px-2 rounded-lg absolute top-[58px] left-[50px] flex z-10">
-                <svg className="w-5 h-5" dataSlot="icon" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                </svg>
-                <div>
-                  여기서 그룹에 추가할<br/>구성원을 선택하세요
-                </div>
-              </div>
+              <AnimatePresence initial={false} mode="wait">
+                {addGroupInfoModal && <UpModal handleClose={() => setAddGroupInfoModal(false)}>
+                  <div className="bg-blue-500/10 w-[160px] backdrop-blur-sm text-sm text-blue-500 space-x-2 p-1 px-2 rounded-lg absolute top-[30px] left-[-2px] flex z-10">
+                    <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                    <div>
+                      여기서 그룹에 추가할<br/>구성원을 선택하세요
+                    </div>
+                  </div>
+                </UpModal>}
+              </AnimatePresence>
             </div> }
             { !disableStudent && <div className="flex items-center">
               { type === 1 && <div className="w-1 h-6 bg-blue-500 rounded-r-lg absolute"></div> }
@@ -163,10 +216,20 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div>
           <div className="h-[520px] w-[1px] bg-lightgray-100 my-3 ml-1"></div>
           { type === 0 && <div className="w-full h-[540px] rounded-r-2xl p-3">
-            <OpacityAnimation>
+            { addGroupStatus === false ? <OpacityAnimation>
               <div className="flex items-center w-full space-x-2">
                 <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
-                { type === 0 && <div className="w-10 h-10">
+                { type === 0 && <div onClick={() => {
+                  setGroupName('');
+                  setGroupSelected([]);
+                  setAddGroupStatus(true);
+                  setTimeout(() => {
+                    setAddGroupInfoModal(true);
+                    setTimeout(() => {
+                      setAddGroupInfoModal(false);
+                    }, 2000);
+                  }, 300);
+                }} className="w-10 h-10">
                   <div className="w-10 h-10 cursor-pointer flex items-center justify-center bg-blue-100 hover:bg-blue-200 transition-colors text-blue-500 rounded-xl">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -193,7 +256,17 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                           <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
                         <div className="w-full h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">나만의 그룹이 없어요<br/>그룹을 만들어보세요</div>
-                        <div className="bg-blue-100 hover:bg-blue-200 cursor-pointer transition-colors p-1 rounded-lg text-sm text-blue-500 px-2">나만의 그룹 만들기</div>
+                        <div onClick={() => {
+                          setGroupName('');
+                          setGroupSelected([]);
+                          setAddGroupStatus(true);
+                          setTimeout(() => {
+                            setAddGroupInfoModal(true);
+                            setTimeout(() => {
+                              setAddGroupInfoModal(false);
+                            }, 2000);
+                          }, 300);
+                        }} className="bg-blue-100 hover:bg-blue-200 cursor-pointer transition-colors p-1 rounded-lg text-sm text-blue-500 px-2">나만의 그룹 만들기</div>
                       </div>
                     </OpacityAnimation>
                   </div> }
@@ -253,7 +326,17 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   )
                 }) }
               </div>
-            </OpacityAnimation>
+            </OpacityAnimation> : <OpacityAnimation>
+              <div onClick={() => setAddGroupStatus(false)} className="mb-5 text-sm text-gray-500 flex items-center space-x-1 mt-1 cursor-pointer">
+                <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+                <div>구성원 선택으로 돌아가기</div>
+              </div>
+              {/* <div className="font-bold text-blue-500 text-lg mb-5">나만의 그룹 만들기</div> */}
+              <div>그룹 이름</div>
+              <Input fn={(value:string) => setGroupName(value)} value={groupName} autoFocus placeholder="그룹 이름(과제연구 팀원 등)" />
+            </OpacityAnimation> }
           </div> }
           { type === 1 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
@@ -479,7 +562,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
             </OpacityAnimation>
           </div> }
           <div className="w-full h-[540px] rounded-r-2xl bg-gray-50 flex items-center justify-between flex-col p-3">
-            <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
+            { addGroupStatus === false ? <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
               <div className="mb-2 flex items-center justify-between">
                 <div className="text-lightgray-200 text-sm">선택됨 - {selected.length}명</div>
                 <div onClick={() => setSelected([])} className="text-lightgray-200 text-sm cursor-pointer">전체삭제</div>
@@ -511,14 +594,67 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   </OpacityAnimation>
                 )
               }) }
-            </div>
+            </div> : <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="text-lightgray-200 text-sm">선택됨 - {groupSelected.length}명</div>
+                <div onClick={() => setGroupSelected([])} className="text-lightgray-200 text-sm cursor-pointer">전체삭제</div>
+              </div>
+              { groupSelected.map((value:any, index:number) => {
+                return (
+                  <OpacityAnimation key={value.id}>
+                    <div onClick={() => unselectMember(value.id)} className="w-full group h-16 hover:bg-gray-100 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-10 h-10 rounded-xl overflow-hidden">
+                          {value.profile && <Image
+                            src={value.profile}
+                            width={40}
+                            height={40}
+                            alt="프로필"
+                          />}
+                        </div>
+                        <div className="-space-y-0">
+                          <div className="text-base font-bold">{value.name}</div>
+                          { value.number ? <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div> : <div className="text-sm text-lightgray-200">교사</div> }
+                        </div>
+                      </div>
+                      <div className="cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity">
+                        <svg className="w-5 h-5 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                      </div>
+                    </div>
+                  </OpacityAnimation>
+                )
+              }) }
+            </div> }
             <div className="w-full h-12">
-              <Button fn={() => fn(selected)} scalableHeight color="lightblue">
-                <div className="flex items-center">
-                  {selected.length}명 선택 완료하기
-                  <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200 ml-2">Enter</div>
-                </div>
-              </Button>
+              <AnimatePresence initial={false} mode="wait">
+                {addGroupInfoModal && <UpModal handleClose={() => setAddGroupInfoModal(false)}>
+                  <div className="bg-blue-500/10 w-[270px] backdrop-blur-sm text-sm text-blue-500 space-x-2 p-1 px-2 rounded-lg absolute bottom-[10px] left-[20px] flex z-10">
+                    <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                    </svg>
+                    <div className="text-center w-full">
+                      아래 버튼을 눌러 그룹 생성을 완료하세요
+                    </div>
+                  </div>
+                </UpModal>}
+              </AnimatePresence>
+              { addGroupStatus === true && <Button fn={() => createGroup()} scalableHeight color="blue">
+                <OpacityAnimation>
+                  <div className="flex items-center">
+                    그룹 생성하기
+                  </div>
+                </OpacityAnimation>
+              </Button> }
+              { addGroupStatus === false && <Button fn={() => fn(selected)} scalableHeight color="lightblue">
+                <OpacityAnimation>
+                  <div className="flex items-center">
+                    {selected.length}명 선택 완료하기
+                    <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200 ml-2">Enter</div>
+                  </div>
+                </OpacityAnimation>
+              </Button> }
             </div>
           </div>
         </div>

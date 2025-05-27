@@ -2,17 +2,17 @@
 
 import { CircularProgress } from "@mui/material";
 
-export default function Button({ children, color, loading = false, disabled = false, fn, scalableHeight }:{ children:any, color:'blue' | 'lightblue', loading?:boolean, disabled?:boolean, fn?():void, scalableHeight?:boolean }) {
+export default function Button({ children, color, loading = false, disabled = false, fn, scalableHeight = false }:{ children:any, color:'blue' | 'lightblue', loading?:boolean, disabled?:boolean, fn?():void, scalableHeight?:boolean }) {
 
   // 별도 표시하지 않더라도 CTA 버튼을 의미합니다.
   // 되도록 sclableHeight를 사용하지 않는 것을 권장합니다.
 
   return (
     <>
-      { color !== 'lightblue' ? <div className="bg-white rounded-xl">
+      { color !== 'lightblue' ? <div className={`bg-white rounded-xl ${scalableHeight && 'h-full'}`}>
         <div onClick={() => {
           if(!loading && fn) fn();
-        }} className={ disabled ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full py-4 flex items-center rounded-xl relative` : loading ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full py-4 flex items-center rounded-xl relative` : `bg-${color}-500 hover:bg-${color}-600 text-md transition-all text-white justify-center w-full py-4 flex items-center cursor-pointer rounded-xl relative` }>
+        }} className={ disabled ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-${color}-500 hover:bg-${color}-600 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
           <div>{children}</div>
           { loading && <div className='absolute right-5 top-1/2 -translate-y-1/2 w-[20px] h-[20px]'>
             <CircularProgress color="inherit" size={20} />
@@ -26,7 +26,7 @@ export default function Button({ children, color, loading = false, disabled = fa
       </div> : <div className={`rounded-xl ${scalableHeight && 'h-full'}`}>
         <div onClick={() => {
           if(!loading && fn) fn();
-        }} className={ disabled ? `bg-blue-500/10 text-md transition-all text-blue-500/50 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-blue-500/10 text-md transition-all text-blue-500 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-blue-500/20 hover:bg-blue-600/20 text-md transition-all text-blue-500 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
+        }} className={ disabled ? `bg-blue-500/10 text-md transition-all text-blue-500/50 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-blue-500/10 text-md transition-all text-blue-500 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-blue-500/20 hover:bg-blue-600/20 text-md transition-all text-blue-500 justify-center w-full ${scalableHeight === true ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
           <div>{children}</div>
           { loading && <div className='absolute right-5 top-1/2 -translate-y-1/2 w-[20px] h-[20px]'>
             <CircularProgress color="inherit" size={20} />
