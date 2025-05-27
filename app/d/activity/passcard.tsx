@@ -33,7 +33,7 @@ export default function PasscardButton() {
       setTime(null);
     }
   }, []);
-  const { data } = useSWR(`/api/activity/passcard?time=${time}`);
+  const { data } = useSWR(`/api/activity/passcard?time=${time}`, { refreshInterval: 10000 });
 
   return (
     <div>

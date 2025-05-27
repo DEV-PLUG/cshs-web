@@ -63,9 +63,8 @@ model User {
   googleId Int?
 
   receivedTodo Todo[] @relation("ReceivedTodoUser")
+  ownedGroup Group[] @relation("OwnedGroup")
   sendedTodo Todo[] @relation("SendedTodoUser")
-  favoritesFrom Favorite[] @relation("FavoriteFromUser")
-  favoritesTo Favorite[] @relation("FavoriteToUser")
   group GroupRelation[] @relation("GroupUser")
   classroomCourse ClassroomCourseRelation[] @relation("ClassroomCourse")
   joinedActivity ActivityRelation[] @relation("ActivityUser")
@@ -179,16 +178,6 @@ model ClassroomCourseRelation {
   updatedAt DateTime @updatedAt
 }
 
-model Favorite {
-  id Int @id @default(autoincrement())
-  from User @relation("FavoriteFromUser", fields: [fromId], references: [id], onDelete: Cascade)
-  fromId Int
-  to User @relation("FavoriteToUser", fields: [toId], references: [id], onDelete: Cascade)
-  toId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Meal {
   id Int @id @default(autoincrement())
   affiliationSchool School @relation("SchoolMeal", fields: [affiliationSchoolId], references: [id])
@@ -233,6 +222,8 @@ model Group {
   relation GroupRelation[] @relation("GroupRelation")
   school School @relation("Group", fields: [schoolId], references: [id])
   schoolId Int
+  user User @relation("OwnedGroup", fields: [userId], references: [id])
+  userId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -243,15 +234,6 @@ model GroupRelation {
   userId Int
   group Group @relation("GroupRelation", fields: [groupId], references: [id], onDelete: Cascade)
   groupId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Broadcast {
-  id Int @id @default(autoincrement())
-  text String?
-  place String?
-  person String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -267,18 +249,9 @@ model Todo {
   receiverId Int?
   sender User @relation("SendedTodoUser", fields: [senderId], references: [id])
   senderId Int
-  survey Survey? @relation("TodoSurvey", fields: [surveyId], references: [id])
-  surveyId Int?
   mainTodo Todo? @relation("MainTodo", fields: [mainTodoId], references: [id], onDelete: Cascade)
   mainTodoId Int?
   relationTodo Todo[] @relation("MainTodo")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Survey {
-  id Int @id @default(autoincrement())
-  todo Todo[] @relation("TodoSurvey")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

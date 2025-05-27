@@ -10,9 +10,11 @@ import { OpacityAnimation } from "./animation";
 import { useAppDispatch } from "@libs/client/redux/hooks";
 import errorMessage from "@libs/client/error-message";
 import hansearch from "hangul-search";
+import { AnimatePresence } from "framer-motion";
+import Modal from "./modal";
 
 // Select Members Modal
-export default function SelectMember({ fn, disableTeacher = true, disableFavorite = false, disableGroup = false, disableStudent = false, limit, selected:inputSelected, notMe = true }:{ fn:(selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[])=>void, disableTeacher?:boolean, disableFavorite?:boolean, disableGroup?:boolean, disableStudent?:boolean, limit?:number, selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[], notMe?:boolean }) {
+export default function SelectMember({ fn, disableTeacher = true, disableFavorite = false, disableGroup = false, disableStudent = false, limit, selected:inputSelected, notMe = true, modalFn }:{ fn:(selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[])=>void, disableTeacher?:boolean, disableFavorite?:boolean, disableGroup?:boolean, disableStudent?:boolean, limit?:number, selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[], notMe?:boolean, modalFn?:(value:boolean)=>void }) {
   const [info, setInfo] = useState(0);
   const [type, setType] = useState(0);
 
@@ -28,7 +30,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
   }, []);
 
   const dispatch = useAppDispatch();
-  const { data:favorite, error:favoriteError } = useSWR('/api/user/favorite');
+  const { data:favorite, error:favoriteError } = useSWR('/api/user/group');
   const { data:member, error:memberError } = useSWR('/api/member');
   const { data:group, error:groupError } = useSWR('/api/group');
   const { data:teacher, error:teacherError } = useSWR('/api/member/teacher');
@@ -55,7 +57,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
 
   useEffect(() => {
     if(type === 0 && favorite?.success === true) {
-      setSearchedResult(hansearch([...favorite?.favorites.map((value:any) => value.to)], search));
+      setSearchedResult(hansearch(favorite.groups, search));
     }
     if(type === 1 && member?.success === true) {
       setSearchedResult(hansearch(member.members, search));
@@ -67,37 +69,6 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
       setSearchedResult(hansearch(teacher.teachers, search));
     }
   }, [search, type, group, teacher]);
-
-  async function deleteFavorite(id:number) {
-    await fetch(`/api/user/favorite`, {
-      method: 'DELETE',
-      body: JSON.stringify({ to: id }),
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      if(response.success === true) {
-        dispatch(setNotification({ type: 'success', text: '해당 즐겨찾기를 제거했어요' }));
-        mutate('/api/user/favorite');
-      } else {
-        dispatch(setNotification({ type: 'error', text: response.message }));
-      }
-    });
-  }
-  async function postFavorite(id:number) {
-    await fetch(`/api/user/favorite`, {
-      method: 'POST',
-      body: JSON.stringify({ to: id }),
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      if(response.success === true) {
-        dispatch(setNotification({ type: 'success', text: '해당 즐겨찾기를 추가했어요' }));
-        mutate('/api/user/favorite');
-      } else {
-        dispatch(setNotification({ type: 'error', text: response.message }));
-      }
-    });
-  }
 
   const [selected, setSelected] = useState<{ id: number, class: number, grade: number, number: number, profile: string, name: string }[]>([]);
   function selectMember(member:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[]) {
@@ -152,8 +123,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
             { !disableFavorite && <div className="flex items-center">
               { type === 0 && <div className="w-1 h-6 bg-blue-500 rounded-r-lg absolute"></div> }
               <div onClick={() => setType(0)} className="w-10 h-10 ml-1 cursor-pointer rounded-lg hover:bg-gray-100 flex items-center justify-center transition-colors">
-                <svg className={ type !== 0 ? "fill-lightgray-100 stroke-lightgray-100 w-7 h-7" : "fill-blue-500 stroke-blue-500 w-7 h-7" } fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                <svg className={ type !== 0 ? "fill-lightgray-100 stroke-lightgray-100 w-7 h-7" : "fill-blue-500 stroke-blue-500 w-7 h-7" } fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                 </svg>
               </div>
             </div> }
@@ -185,30 +156,40 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           <div className="h-[520px] w-[1px] bg-lightgray-100 my-3 ml-1"></div>
           { type === 0 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
+              <div className="flex items-center w-full space-x-2">
+                <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
+                { type === 0 && <div className="w-10 h-10">
+                  <div className="w-10 h-10 cursor-pointer flex items-center justify-center bg-blue-100 hover:bg-blue-200 transition-colors text-blue-500 rounded-xl">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                  </div>
+                </div> }
+              </div>
               <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
                 { (favorite && favorite?.success === true) && <div>
-                  { (favorite.favorites.length > 0 && searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  { (favorite.groups.length > 0 && searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <OpacityAnimation>
                       <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
                         <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
                       </div>
                     </OpacityAnimation>
                   </div> }
-                  { favorite.favorites.length <= 0 && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  { favorite.groups.length <= 0 && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <OpacityAnimation>
                       <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
-                        <div className="w-full h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">즐겨찾기에 추가된<br/>구성원이 없어요</div>
+                        <div className="w-full h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">나만의 그룹이 없어요<br/>그룹을 만들어보세요</div>
+                        <div className="bg-blue-100 hover:bg-blue-200 cursor-pointer transition-colors p-1 rounded-lg text-sm text-blue-500 px-2">나만의 그룹 만들기</div>
                       </div>
                     </OpacityAnimation>
                   </div> }
-                  { search === '' ? favorite.favorites.map((value:any, index:number) => {
+                  { search === '' ? favorite.groups.map((value:any, index:number) => {
                     return (
                       <OpacityAnimation key={value.id}>
                         <div onClick={() => selectMember([value.to])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
@@ -225,11 +206,6 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                               <div className="text-base font-bold">{value.to.name}</div>
                               <div className="text-sm text-lightgray-200">{value.to.grade}학년 {value.to.class}반 {value.to.number}번</div>
                             </div>
-                          </div>
-                          <div className="cursor-pointer" onClick={() => deleteFavorite(value.to.id)}>
-                            <svg className="w-5 h-5 fill-yellow-500 stroke-yellow-500" fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                            </svg>
                           </div>
                         </div>
                       </OpacityAnimation>
@@ -251,11 +227,6 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                               <div className="text-base font-bold">{value.name}</div>
                               <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
                             </div>
-                          </div>
-                          <div className="cursor-pointer" onClick={() => deleteFavorite(value.id)}>
-                            <svg className="w-5 h-5 fill-yellow-500 stroke-yellow-500" fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                            </svg>
                           </div>
                         </div>
                       </OpacityAnimation>
@@ -582,8 +553,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div>
           <div className="flex flex-col justify-between h-full pb-0">
             <div className="mt-[300px]">
-              <div className="font-bold text-2xl">조직을 선택해<br/>구성원을 다중 선택하세요.</div>
-              <div className="text-base text-lightgray-200 mt-2">조직을 선택하면 해당 조직에 속한<br/>구성원이 모두 선택됩니다.</div>
+              <div className="font-bold text-2xl">공개 그룹을 선택해<br/>구성원을 다중 선택하세요.</div>
+              <div className="text-base text-lightgray-200 mt-2">그룹을 선택하면 해당 그룹에 속한<br/>구성원이 모두 선택됩니다.</div>
             </div>
             <div className="absolute bottom-5 right-5">
               <SubButton color="lightblue" fn={() => setInfo(3)}>
@@ -625,8 +596,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div>
           <div className="flex flex-col justify-between h-full pb-0">
             <div className="mt-[300px]">
-              <div className="font-bold text-2xl">즐겨찾기를 통해<br/>빠르게 선택하세요.</div>
-              <div className="text-base text-lightgray-200 mt-2">내 R&E 팀원, 동아리 부원들을 즐겨찾기하면,<br/>빠르게 선택할 수 있습니다.</div>
+              <div className="font-bold text-2xl">나만의 그룹을 만들어<br/>구성원을 추가할 수 있습니다.</div>
+              <div className="text-base text-lightgray-200 mt-2">내 R&E 팀원, 동아리 부원들을 그룹에 추가하면,<br/>빠르게 선택할 수 있습니다.</div>
             </div>
             <div className="absolute bottom-5 right-5">
               <SubButton color="lightblue" fn={() => {

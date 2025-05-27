@@ -1,16 +1,16 @@
 import withHandler from "@libs/server/withHandler";
 import client from "@libs/server/client";
-import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
 
-// Get all groups of the user's school
+// Get all groups of the user's
 async function GetHandler() {
-  // id 1인 사용자는 관리자 계정으로 가정
+  const session = await getServerSessionCM();
+  
   const groups = await client.group.findMany({
     where: {
       user: {
-        id: 1
+        email: session.user.email
       }
     },
     select: {
