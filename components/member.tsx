@@ -86,7 +86,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           return dispatch(setNotification({ type: 'info', text: '나를 제외한 그룹 구성원을 선택했어요' }));
         }
       }
-      if(!selected.some((member) => member.id === value.id) && !(notMe === true && value.id === user?.user?.id)) {
+      if(((addGroupStatus === false && !selected.some((member) => member.id === value.id)) || (addGroupStatus === true && !groupSelected.some((member) => member.id === value.id))) && !(notMe === true && value.id === user?.user?.id)) {
         if(limit === 1 && addGroupStatus === false) tempSelected = [];
         tempSelected.push({
           id: value.id,
