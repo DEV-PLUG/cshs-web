@@ -131,13 +131,15 @@ export default function Seat() {
       <div
         className={horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
         onClick={() => {
-          setSelected([seatUser]);
-          if(firstActivity) {
-            setSelectedActivity(firstActivity);
-            setDetailModal(true);
-          }
-          else if(userInfo.type === 1) {
-            setAddActivityModal(true);
+          if(seatUser) {
+            setSelected([seatUser]);
+            if(firstActivity) {
+              setSelectedActivity(firstActivity);
+              setDetailModal(true);
+            }
+            else if(userInfo.type === 1) {
+              setAddActivityModal(true);
+            }
           }
         }}
       >
@@ -335,13 +337,15 @@ export default function Seat() {
                           key={colIdx}
                           className={`${seatBgClass} ${MR} cursor-pointer transition-colors rounded-xl min-w-[110px] w-[110px] h-[50px] flex flex-col justify-center items-center text-center`}
                           onClick={() => {
-                            setSelected([seatUser]);
-                            if(firstActivity) {
-                              setSelectedActivity(firstActivity);
-                              setDetailModal(true);
-                            }
-                            else if(userInfo.type === 1) {
-                              setAddActivityModal(true);
+                            if(seatUser) {
+                              setSelected([seatUser]);
+                              if(firstActivity) {
+                                setSelectedActivity(firstActivity);
+                                setDetailModal(true);
+                              }
+                              else if(userInfo.type === 1) {
+                                setAddActivityModal(true);
+                              }
                             }
                           }}
                         >
