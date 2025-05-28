@@ -3,7 +3,6 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 
 // Add Activity
 async function PostHandler(request:Request) {

@@ -13,6 +13,7 @@ import hansearch from "hangul-search";
 import { AnimatePresence } from "framer-motion";
 import Modal from "./modal";
 import UpModal from "./up-modal";
+import { CircularProgress } from "@node_modules/@mui/material";
 
 // Select Members Modal
 export default function SelectMember({ fn, disableTeacher = true, disableFavorite = false, disableGroup = false, disableStudent = false, limit, selected:inputSelected, notMe = true, modalFn }:{ fn:(selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[])=>void, disableTeacher?:boolean, disableFavorite?:boolean, disableGroup?:boolean, disableStudent?:boolean, limit?:number, selected:{ id: number, class: number, grade: number, number: number, profile: string, name: string }[], notMe?:boolean, modalFn?:(value:boolean)=>void }) {
@@ -141,23 +142,82 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
     }
 
     setLoading(true);
+    if(selectedGroup === null) {
+      await fetch(`/api/user/group`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          to: groupSelected.map((member) => member.id),
+          name: groupName
+        })
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        setLoading(false);
+        if(response.success === true) {
+          dispatch(setNotification({ type: "success", text: '그룹을 생성했어요' }));
+          mutate('/api/user/group');
+          setAddGroupStatus(false);
+          setType(0);
+        } else {
+          dispatch(setNotification({ type: "error", text: response.message }));
+        }
+      });
+    } else {
+      await fetch(`/api/user/group`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          to: groupSelected.map((member) => member.id),
+          name: groupName,
+          id: selectedGroup
+        })
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        setLoading(false);
+        if(response.success === true) {
+          dispatch(setNotification({ type: "success", text: '그룹을 저장했어요' }));
+          mutate('/api/user/group');
+          setAddGroupStatus(false);
+          setType(0);
+          setSelectedGroup(null);
+        } else {
+          dispatch(setNotification({ type: "error", text: response.message }));
+        }
+      });
+    }
+  }
+
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  async function deleteGroup() {
+    if(deleteLoading) return;
+
+    setDeleteLoading(true);
     await fetch(`/api/user/group`, {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        to: selected.map((member) => member.id),
-        name: groupName
+        id: selectedGroup
       })
     })
     .then((response) => response.json())
     .then((response) => {
-      setLoading(false);
+      setDeleteLoading(false);
       if(response.success === true) {
-        dispatch(setNotification({ type: "success", text: '그룹을 생성했어요' }));
+        dispatch(setNotification({ type: "success", text: '그룹을 삭제했어요' }));
         mutate('/api/user/group');
         setAddGroupStatus(false);
+        setType(0);
+        setSelectedGroup(null);
       } else {
         dispatch(setNotification({ type: "error", text: response.message }));
       }
@@ -273,20 +333,35 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   { search === '' ? favorite.groups.map((value:any, index:number) => {
                     return (
                       <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([value.to])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                        <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              {value.to.profile && <Image
-                                src={value.to.profile}
-                                width={40}
-                                height={40}
-                                alt="프로필"
-                              />}
+                            <div className="w-10 h-10 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+                              <svg className="w-7 h-7 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                              </svg>
                             </div>
                             <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.to.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.to.grade}학년 {value.to.class}반 {value.to.number}번</div>
+                              <div className="text-base font-bold">{value.name}</div>
+                              <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
                             </div>
+                          </div>
+                          <div onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedGroup(value.id);
+                            setGroupName(value.name);
+                            setGroupSelected([...value.relation.map((value:any) => ({
+                              id: value.user.id,
+                              class: value.user.class,
+                              grade: value.user.grade,
+                              number: value.user.number,
+                              profile: value.user.profile,
+                              name: value.user.name
+                            }))]);
+                            setAddGroupStatus(true);
+                          }} className="w-7 h-7 hover:bg-gray-100 transition-colors text-gray-400 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
                           </div>
                         </div>
                       </OpacityAnimation>
@@ -294,19 +369,16 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   }) : searchedResult.items.map((value:any, index:number) => {
                     return (
                       <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                        <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
                           <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              {value.profile && <Image
-                                src={value.profile}
-                                width={40}
-                                height={40}
-                                alt="프로필"
-                              />}
+                            <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
+                              <svg className="w-7 h-7 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                              </svg>
                             </div>
                             <div className="-space-y-0">
                               <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
+                              <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
                             </div>
                           </div>
                         </div>
@@ -327,7 +399,10 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                 }) }
               </div>
             </OpacityAnimation> : <OpacityAnimation>
-              <div onClick={() => setAddGroupStatus(false)} className="mb-5 text-sm text-gray-500 flex items-center space-x-1 mt-1 cursor-pointer">
+              <div onClick={() => {
+                setAddGroupStatus(false);
+                setSelectedGroup(null);
+              }} className="mb-5 text-sm text-gray-500 flex items-center space-x-1 mt-1 cursor-pointer">
                 <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
@@ -336,6 +411,14 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
               {/* <div className="font-bold text-blue-500 text-lg mb-5">나만의 그룹 만들기</div> */}
               <div>그룹 이름</div>
               <Input fn={(value:string) => setGroupName(value)} value={groupName} autoFocus placeholder="그룹 이름(과제연구 팀원 등)" />
+              { selectedGroup !== null && <div>
+                <div className="mt-5 mb-1">그룹 삭제하기</div>
+                <div className="flex">
+                  <SubButton loading={deleteLoading} color="lightblue" fn={() => deleteGroup()}>
+                    { deleteLoading ? <CircularProgress color="inherit" size={20} /> : '그룹 삭제하기' }
+                  </SubButton>
+                </div>
+              </div> }
             </OpacityAnimation> }
           </div> }
           { type === 1 && <div className="w-full h-[540px] rounded-r-2xl p-3">
@@ -640,10 +723,10 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
                   </div>
                 </UpModal>}
               </AnimatePresence>
-              { addGroupStatus === true && <Button fn={() => createGroup()} scalableHeight color="blue">
+              { addGroupStatus === true && <Button loading={loading} fn={() => createGroup()} scalableHeight color="blue">
                 <OpacityAnimation>
                   <div className="flex items-center">
-                    그룹 생성하기
+                    { selectedGroup === null ? '그룹 생성하기' : '저장하기' }
                   </div>
                 </OpacityAnimation>
               </Button> }
