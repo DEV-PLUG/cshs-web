@@ -23,7 +23,14 @@ async function GetHandler() {
       type: true,
       allowNotification: true,
       allowAI: true,
-      allowNightNotification: true
+      allowNightNotification: true,
+      affiliationSchool: {
+        select: {
+          id: true,
+          ATPT_OFCDC_SC_CODE: true,
+          SD_SCHUL_CODE: true
+        }
+      }
     }
   });
   if(user.length <= 0) {
