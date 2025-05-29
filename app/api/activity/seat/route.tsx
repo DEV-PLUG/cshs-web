@@ -3,6 +3,7 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
+import formatedDate from "@libs/client/formated-date";
 
 // Get activity of specific grade
 async function GetHandler(request:Request) {
