@@ -55,7 +55,7 @@ async function PostHandler(request:Request) {
         }
       },
       perio: req.time.join(','),
-      date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
+      date: formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })),
       teacher: {
         connect: {
           email: session.user.email

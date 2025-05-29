@@ -3,6 +3,7 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
+import formatedDate from "@libs/client/formated-date";
 
 async function GetHandler(request:Request) {
   const session = await getServerSessionCM();
@@ -12,7 +13,7 @@ async function GetHandler(request:Request) {
     return NextResponse.json({ success: false, activity: null }, { status: 200 });
   }
 
-  const today = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const today = formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
 
   const activity = await client.activity.findFirst({
     where: {

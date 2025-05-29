@@ -6,6 +6,7 @@ import Modal from "@components/modal";
 import UpModal from "@components/up-modal";
 import { DateInput } from "@components/input";
 import displayDate from "@libs/client/time-display";
+import formatedDate from "@libs/client/formated-date";
 
 export default function CalendarButton({ calendarFn, date }:{ calendarFn?(date:string):void, date:null|string }) {
   const [sortModal, setSortModal] = useState(false);
@@ -25,14 +26,6 @@ export default function CalendarButton({ calendarFn, date }:{ calendarFn?(date:s
     }
   } else {
     dateObj = new Date();
-  }
-
-  const formatedDate = (dateStr:string) => {
-    const date = new Date(dateStr);
-    const year = date.getFullYear();
-    const month = date.getMonth()+1;
-    const day = date.getDate();
-    return year+""+(("00"+month.toString()).slice(-2))+""+(("00"+day.toString()).slice(-2));
   }
 
   return (

@@ -3,6 +3,7 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
+import formatedDate from "@libs/client/formated-date";
 
 // Get all activity of the user
 async function GetHandler(request:Request) {
@@ -31,7 +32,7 @@ async function GetHandler(request:Request) {
     };
   }
 
-  const dateCondition = date ? date : new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const dateCondition = date ? date : formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
 
   const beforeActivity = await client.activity.findMany({
     where: {

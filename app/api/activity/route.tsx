@@ -3,6 +3,7 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
+import formatedDate from "@libs/client/formated-date";
 
 // Add Activity
 async function PostHandler(request:Request) {
@@ -57,7 +58,7 @@ async function PostHandler(request:Request) {
   // 'userIds와 times는 숫자 배열이므로 SQL 인젝션 위험이 없습니다.' - Copilot
   // -----------------------------------------------------
   
-  const today = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '');
+  const today = formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
   const likeConditions = times.map((t: string) => `a.perio LIKE '%${t}%'`).join(' OR ');
   const overlappingRows: any[] = await client.$queryRawUnsafe(`
     SELECT 
@@ -128,7 +129,7 @@ async function PostHandler(request:Request) {
         }
       },
       perio: req.time.join(','),
-      date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', ''),
+      date: formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })),
       teacher: {
         connect: {
           id: req.teacher[0]

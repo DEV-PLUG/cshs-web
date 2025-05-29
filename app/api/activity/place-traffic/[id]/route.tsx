@@ -1,6 +1,7 @@
 import withHandler from "@libs/server/withHandler";
 import client from "@libs/server/client";
 import { NextResponse } from "next/server";
+import formatedDate from "@libs/client/formated-date";
 
 // Get traffic of the selected place
 async function GetHandler(request:Request, {params}:{params:{id:string}}) {
@@ -14,7 +15,7 @@ async function GetHandler(request:Request, {params}:{params:{id:string}}) {
   const activity = await client.activity.findMany({
     where: {
       placeId: parseInt(id),
-      date: new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('.', '').replaceAll(' ', '')
+      date: formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }))
     },
     select: {
       id: true,
