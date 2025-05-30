@@ -90,7 +90,7 @@ export function AddTeacherActivityContent({ fn, contentInput = '결석', timeInp
           <div className="pb-20">
             <div className="font-bold text-zinc-800 text-2xl mt-5">활동 기록하기</div>
             <div className="text-blue-500 bg-blue-100 text-sm p-2 rounded-xl mt-5">
-              기록하면 해당 학생의 좌석이 주황색으로 표시되며, 학생이 해당 기록을 임의로 삭제할 수 없습니다.
+              기록하면 해당 학생의 좌석이 노란색으로 표시되며, 학생이 해당 기록을 임의로 삭제할 수 없습니다.
             </div>
             <div>
               <div className="text-zinc-800 mb-1 mt-5">내용</div>

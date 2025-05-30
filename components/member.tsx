@@ -158,6 +158,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
         setLoading(false);
         if(response.success === true) {
           dispatch(setNotification({ type: "success", text: '그룹을 생성했어요' }));
+          setSearch('');
+          setPreSearch('');
           mutate('/api/user/group');
           setAddGroupStatus(false);
           setType(0);
@@ -182,6 +184,8 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
         setLoading(false);
         if(response.success === true) {
           dispatch(setNotification({ type: "success", text: '그룹을 저장했어요' }));
+          setSearch('');
+          setPreSearch('');
           mutate('/api/user/group');
           setAddGroupStatus(false);
           setType(0);
