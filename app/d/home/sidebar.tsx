@@ -16,18 +16,21 @@ import PasscardModal from "@components/info/passcard";
 
 export default function SideBar() {
   const now = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" });
-  const today = new Date(now);
+  const today = new Date(now.replaceAll('. ', '/').replaceAll('.', '')); // Safari 호환을 위해 '.'를 '-'로 변경
   const year = today.getFullYear();
-  const month = today.getMonth()+1;
+  const month = today.getMonth() + 1;
   const day = today.getDate();
-  const formatDate = year+""+(("00"+month.toString()).slice(-2))+""+(("00"+day.toString()).slice(-2));
+  const formatDate = year + "" + (("00" + month.toString()).slice(-2)) + "" + (("00" + day.toString()).slice(-2));
+
+  useEffect(() => {
+    console.log(now, new Date(now));
+  }, [])
 
   const { data:user, error:userError } = useSWR('/api/user');
 
   const [passcardModal, setPasscardModal] = useState(false);
 
   const [ date, setDate ] = useState<null | string>(formatDate);
-
 
   const getMealData = async (date:string | null) => {
     const school = user.user.affiliationSchool;
@@ -129,7 +132,6 @@ export default function SideBar() {
     }
   }
 
-
   const [ meal, setMeal ] = useState<any>(null);
   const [ timetable, setTimeTable ] = useState<any>(null);
 
@@ -150,9 +152,6 @@ export default function SideBar() {
     fetchTimetable();
   }, [date, user]);
 
-
-
-  
   return (
     <>
       { (meal && timetable) && <div className="space-y-5">
