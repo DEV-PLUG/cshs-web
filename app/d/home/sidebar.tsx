@@ -13,24 +13,21 @@ import useSWR from "swr";
 import { setNotification } from "@libs/client/redux/notification";
 import displayDate from "@libs/client/time-display";
 import PasscardModal from "@components/info/passcard";
+import formatedDate from "@libs/client/formated-date";
 
 export default function SideBar() {
-  const now = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" });
-  const today = new Date(now.replaceAll('. ', '/').replaceAll('.', '')); // Safari 호환을 위해 '.'를 '-'로 변경
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const day = today.getDate();
-  const formatDate = year + "" + (("00" + month.toString()).slice(-2)) + "" + (("00" + day.toString()).slice(-2));
-
+  const now = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }).replaceAll('. ', '/').replaceAll('.', ''); // Safari 호환을 위해 '.'를 '-'로 변경
+  const formatDate = formatedDate(now)
+  const [ date, setDate ] = useState<null | string>(formatDate);
+  
   useEffect(() => {
     console.log(now, new Date(now));
   }, [])
 
   const { data:user, error:userError } = useSWR('/api/user');
+  const { data:timetable } = useSWR(`/api/school/time-table?date=${date}`);
 
   const [passcardModal, setPasscardModal] = useState(false);
-
-  const [ date, setDate ] = useState<null | string>(formatDate);
 
   const getMealData = async (date:string | null) => {
     const school = user.user.affiliationSchool;
@@ -89,51 +86,9 @@ export default function SideBar() {
     }
   }
 
-  const getTimeTableData = async (date:string | null) => {
-    const school = user.user.affiliationSchool;
-    const timetableResponse = await fetch(`https://open.neis.go.kr/hub/hisTimetable?Type=json&pIndex=1&pSize=100&ATPT_OFCDC_SC_CODE=${school.ATPT_OFCDC_SC_CODE}&SD_SCHUL_CODE=${school.SD_SCHUL_CODE}&TI_FROM_YMD=${date}&ALL_TI_YMD=${date}&TI_TO_YMD=${date}&GRADE=${user.user.grade}&CLASS_NM=${user.user.class}`);
-    if (!timetableResponse.ok) {
-      return {
-        success: false,
-        message: '시간표 정보를 가져오는 데 실패했습니다'
-      };
-    }
-    const timetableData = await timetableResponse.json();
   
-    if(timetableData?.RESULT?.MESSAGE === '해당하는 데이터가 없습니다.') {
-      return {
-        success: false,
-        message: '시간표 정보를 찾을 수 없어요'
-      };
-    }
-  
-    if (timetableData.hisTimetable) {
-      const timetableRows = timetableData.hisTimetable[1].row;
-      let timetableCreate = [];
-      for(const timetableRow of timetableRows) {
-        timetableCreate.push({
-          affiliationSchoolId: school.id,
-          date: timetableRow.ALL_TI_YMD,
-          perio: +timetableRow.PERIO,
-          subject: timetableRow.ITRT_CNTNT,
-          class: +timetableRow.CLASS_NM,
-          grade: +timetableRow.GRADE
-        });
-      }
-      return {
-        success: true,
-        timetable: timetableCreate
-      };
-    } else {
-      return {
-        success: false,
-        message: '시간표 정보를 찾을 수 없어요'
-      };
-    }
-  }
 
   const [ meal, setMeal ] = useState<any>(null);
-  const [ timetable, setTimeTable ] = useState<any>(null);
 
   useEffect(() => {
     if (!user || userError || !date) return;
@@ -143,13 +98,7 @@ export default function SideBar() {
       setMeal(mealResult);
     };
 
-    const fetchTimetable = async () => {
-      const timetableResult = await getTimeTableData(date);
-      setTimeTable(timetableResult);
-    };
-
     fetchMeal();
-    fetchTimetable();
   }, [date, user]);
 
   return (

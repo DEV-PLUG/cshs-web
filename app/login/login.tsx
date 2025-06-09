@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense, use, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '@libs/client/redux/notification'
-import useSWR from '@node_modules/swr/dist/core/index.mjs';
+import useSWR from 'swr';
 import Input from '@components/input';
 import Button from '@components/button';
 
