@@ -29,7 +29,7 @@
     "framer-motion": "^11.1.7",
     "hangul-search": "^1.4.2",
     "kadvice": "^2.0.2",
-    "next": "^14.2.20",
+    "next": "^15.3.3",
     "next-auth": "^4.24.7",
     "node-jose-tools": "^2.0.4",
     "openai": "^4.80.1",
