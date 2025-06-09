@@ -5,7 +5,7 @@ import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
 
 // Get timetable of today
-async function GetHandler() {
+async function GetHandler(req: Request) {
   const session = await getServerSessionCM();
 
   const user = await client.user.findUnique({
@@ -35,18 +35,24 @@ async function GetHandler() {
   if(user.type !== 0) {
     return NextResponse.json({
       success: false,
-      message: '학생만 이용할 수 있어요'
+      message: '선생님은 시간표를 표시할 필요가 없어요.'
     }, { status: 400 });
   }
 
   const school = user.affiliationSchool;
-  const date = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" });
-  const today = new Date(date);
-  const year = today.getFullYear();
-  const month = today.getMonth()+1;
-  const day = today.getDate();
 
-  const formatDate = year+""+(("00"+month.toString()).slice(-2))+""+(("00"+day.toString()).slice(-2));
+  const dateParams = new URL(req.url).searchParams.get("date");
+
+  let formatDate = dateParams
+  
+  if (formatDate == "" || formatDate == null || formatDate == undefined) {
+    const date = new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" });
+    const today = new Date(date);
+    const year = today.getFullYear();
+    const month = today.getMonth()+1;
+    const day = today.getDate();
+    formatDate = year+""+(("00"+month.toString()).slice(-2))+""+(("00"+day.toString()).slice(-2));
+  }
 
   const existingTimetable = await client.timetable.findMany({
     where: {
@@ -91,7 +97,7 @@ async function GetHandler() {
             id: school.id
           }
         },
-        date: date,
+        date: formatDate,
         grade: user.grade!,
         class: user.class!,
         perio: 0,

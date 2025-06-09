@@ -11,7 +11,7 @@ import Input, { Textarea } from "@components/input";
 import { Link, Tooltip } from "@mui/material";
 import { setNotification } from "@libs/client/redux/notification";
 import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
-import useSWR from "@node_modules/swr/dist/core/index.mjs";
+import useSWR from "swr";
 import { OpacityAnimation } from "@components/animation";
 import Switch from "@components/switch";
 import Loading from "@components/loading";
