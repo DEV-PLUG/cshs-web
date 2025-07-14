@@ -26,7 +26,6 @@ model School {
   address String
   ATPT_OFCDC_SC_CODE String
   SD_SCHUL_CODE String
-  admin User[] @relation("SchoolAdmin")
   member User[] @relation("SchoolMember")
   group Group[] @relation("Group")
   meal Meal[] @relation("SchoolMeal")
@@ -54,9 +53,8 @@ model User {
   allowNotification Boolean @default(true)
   allowNightNotification Boolean @default(false)
   allowAI Boolean @default(true)
+  admin Boolean @default(false)
 
-  managedSchool School? @relation("SchoolAdmin", fields: [mangedSchoolId], references: [id])
-  mangedSchoolId Int?
   affiliationSchool School? @relation("SchoolMember", fields: [affiliationSchoolId], references: [id])
   affiliationSchoolId Int?
   google Google? @relation("GoogleAccount")
