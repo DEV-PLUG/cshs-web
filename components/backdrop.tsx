@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function Backdrop({ children, onClick, backdropType }:{ children:any, onClick:any, backdropType:'black' | 'transparent' }) {
   return (
     <motion.div
-      className={ backdropType === 'black' ? "bg-black/20 fixed top-0 bottom-0 left-0 right-0 z-40" : "bg-black/0 fixed top-0 bottom-0 left-0 right-0 z-40 w-[100vw] h-[100vh]" }
+      className={ backdropType === 'black' ? "bg-black/20 fixed top-0 bottom-0 left-0 right-0 z-40 !m-0" : "bg-black/0 fixed top-0 bottom-0 left-0 right-0 z-40 w-[100vw] h-[100vh] !m-0" }
       onClick={onClick}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
