@@ -236,6 +236,7 @@ model GroupRelation {
   groupId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@unique([groupId, userId])
 }
 
 model Todo {

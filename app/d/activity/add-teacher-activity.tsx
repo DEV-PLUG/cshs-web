@@ -18,7 +18,7 @@ import PasscardButton from "./passcard";
 import { useAppSelector } from "@libs/client/redux/hooks";
 import displayPerio, { isWeekend } from "@libs/client/perio-display";
 
-export function AddTeacherActivityContent({ fn, contentInput = '결석', timeInput = [], selectedInput = [], memberFn }:{ fn():void, contentInput?:string, timeInput?:number[], selectedInput?:{ id: number; class: number; grade: number; number: number; profile: string; name: string; }[], memberFn:(value:boolean) => void }) {
+export function AddTeacherActivityContent({ fn, contentInput = '결석', timeInput = [], selectedInput = [], memberFn, timeFn }:{ fn():void, contentInput?:string, timeInput?:number[], selectedInput?:{ id: number; class: number; grade: number; number: number; profile: string; name: string; }[], memberFn:(value:boolean) => void, timeFn:(value:number[]) => void }) {
   const [content, setContent] = useState(contentInput);
   const [loading, setLoading] = useState(false);
 
@@ -75,6 +75,9 @@ export function AddTeacherActivityContent({ fn, contentInput = '결석', timeInp
   const [selected, setSelected] = useState<{ id: number; class: number; grade: number; number: number; profile: string; name: string; }[]>(selectedInput);
 
   const [time, setTime] = useState<number[]>(timeInput);
+  useEffect(() => {
+    if(timeFn) timeFn(time);
+  }, [time]);
 
   return (
     <div>
@@ -196,7 +199,7 @@ export default function AddTeacherActivityButton() {
       </AnimatePresence>
       <AnimatePresence initial={false} mode="wait">
         { modal && <Modal handleClose={() => setModal(false)}>
-          <AddTeacherActivityContent fn={() => setModal(false)} memberFn={(value:boolean) => setMemberModal(value)} contentInput={content} timeInput={time} selectedInput={selected} />
+          <AddTeacherActivityContent timeFn={(time:number[]) => setTime(time)} fn={() => setModal(false)} memberFn={(value:boolean) => setMemberModal(value)} contentInput={content} timeInput={time} selectedInput={selected} />
         </Modal> }
       </AnimatePresence>
       <div className="flex items-center space-x-2">

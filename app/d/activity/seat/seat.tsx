@@ -163,6 +163,7 @@ export default function Seat() {
   const [addActivityModal, setAddActivityModal] = useState(false);
   const [memberModal, setMemberModal] = useState(false);
   const [selected, setSelected] = useState<any>(null);
+  const [recoredTime, setRecordTime] = useState<number[]>([]);
 
   return (
     <>
@@ -195,9 +196,11 @@ export default function Seat() {
       <AnimatePresence initial={false} mode="wait">
         { addActivityModal && <Modal handleClose={() => setAddActivityModal(false)}>
           <AddTeacherActivityContent
+            timeFn={(time:number[]) => setRecordTime(time)}
             fn={() => setAddActivityModal(false)}
             memberFn={(value:boolean) => setMemberModal(value)}
             selectedInput={selected}
+            timeInput={recoredTime}
           />
         </Modal> }
       </AnimatePresence>
