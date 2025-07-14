@@ -24,6 +24,7 @@ async function GetHandler() {
       allowNotification: true,
       allowAI: true,
       allowNightNotification: true,
+      admin: true,
       affiliationSchool: {
         select: {
           id: true,
