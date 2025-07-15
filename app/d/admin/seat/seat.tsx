@@ -12,12 +12,10 @@ import { useAppDispatch } from "@libs/client/redux/hooks";
 import Loading from "@components/loading";
 
 export default function Seat() {
-
-  const { data:user } = useSWR('/api/user');
-
   const [grade, setGrade] = useState(1);
+  const [ready, setReady] = useState(false);
 
-  const { data } = useSWR(`/api/admin/seat?grade=${grade}`, { refreshInterval: 10000 });
+  const { data } = useSWR(`/api/admin/seat?grade=${grade}`);
 
   function CustomSeat({ seatNumber, horizontal = false }: { seatNumber:number, horizontal?: boolean }) {
     // 학년에 따라 백의 자리 결정
@@ -52,8 +50,9 @@ export default function Seat() {
 
   const [localSeat, setLocalSeat] = useState<any>([]);
   useEffect(() => {
-    if(data?.success === true && user?.success === true) {
+    if(data?.success === true) {
       setLocalSeat(data.seat);
+      setReady(true);
     }
   }, [data]);
 
@@ -158,7 +157,7 @@ export default function Seat() {
         </Button>
       </div>
       { grade !== 3 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
-        {!(data?.success === true && user?.success === true) ? (
+        {!(ready) ? (
           <div className="w-full">
             <div className="flex flex-col">
               {[...Array(14)].map((_, rowIdx) => (
@@ -222,7 +221,7 @@ export default function Seat() {
           </OpacityAnimation>
         )}
       </div> : <div className="mt-8 mb-10 flex overflow-x-auto space-x-10">
-        {!(data?.success === true && user?.success === true) ? (
+        {!(ready) ? (
           <div className="space-x-10 flex">
             <div className="space-y-2 mt-20">
               <div className="rounded-lg w-[65px] h-[100px] bg-gray-100 animate-pulse"></div>
