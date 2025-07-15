@@ -11,9 +11,10 @@ export default function ListMenu({ searchFn, sortFn, data }:{ searchFn?(text:str
   const [downloadModal, setDownloadModal] = useState(false);
   
   const sortList = [
-    { name: '생성일', value: 'createdAt' },
+    // 주석 풀면 이거 sql queryraw 돌릴때 createdAt에 A 대문자 들어간거 때문에 이상한 에러남요.
+    // { name: '생성일', value: 'createdAt' },
     { name: '마감일', value: 'deadline' },
-    { name: '변경일', value: 'updatedAt' }
+    // { name: '변경일', value: 'updatedAt' }
   ];
   
   return (

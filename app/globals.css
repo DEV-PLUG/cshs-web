@@ -32,6 +32,9 @@ body { font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Ro
 .tossface {
   font-family: "TossFace", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
+.font-faces { 
+  font-family: 'wqkgMjAyNC0uIOywveybkOqzvO2VmeqzoOuTse2Vmeq1kCAxNOq4sCDstZzsp4DtmZguIEFsbCByaWdodHMgcmVzZXJ2ZWQu, copyright';
+}
 
 .custom-scroll::-webkit-scrollbar {background-color:#fff;height:4px;width:8px;-webkit-appearance:none;}
 .custom-scroll::-webkit-scrollbar-track {background-color:#fff}

@@ -17,8 +17,25 @@ export default function Code() {
         </div> */}
         <div className="fixed text-lightgray-200 text-sm bottom-20 px-5">
           <div>
-            창원과학고등학교 전자 활동 승인서<br/>
-            개발: <a className="underline" target="_blank" href="https://github.com/DEV-PLUG">최지환</a>, 운영: 성인혁, 지민겸, 황예린
+            <div className="flex items-start space-x-1">
+              <div>
+                개발: 
+              </div>
+              <div>
+                <a className="underline" target="_blank" href="https://github.com/DEV-PLUG">14기 최지환</a>
+              </div>
+            </div>
+            <div className="flex items-start space-x-1">
+              <div>
+                운영: 
+              </div>
+              <div>
+                13기 - 김준희, 박찬경, 이재준<br/>
+                14기 - 성인혁, 지민겸<br/>
+                15기 - 권승찬
+              </div>
+            </div><br/><br/>
+            창원과학고등학교 전자 활동 승인서
           </div>
         </div>
       </OpacityAnimation>

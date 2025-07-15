@@ -427,7 +427,7 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
           </div> }
           { type === 1 && <div className="w-full h-[540px] rounded-r-2xl p-3">
             <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
+              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성 또는 학번으로 검색해보세요." />
               <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
                 { (member && member?.success === true && user && user?.success === true) && <div>
                   { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
