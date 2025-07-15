@@ -51,7 +51,7 @@ export default function SelectPlace({ fn, handleClose }:{ fn:({id,place}:{id:num
           }) }
         </div> }
         <div className="pb-2">
-          { (data && data.success === true) && <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base mb-3" autoFocus placeholder="초성으로 검색해보세요." /> }
+          { (data && data.success === true) && <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base mb-3" autoFocus placeholder="초성 또는 코드로 검색해보세요." /> }
           { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <OpacityAnimation>
               <div className="flex items-center justify-center flex-col space-y-2">
