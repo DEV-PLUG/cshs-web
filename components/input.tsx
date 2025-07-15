@@ -9,7 +9,7 @@ import { FieldChangeHandlerContext } from '@mui/x-date-pickers/internals';
 
 export default function Input({ type = 'text', value, disabled = false, fn, autoFocus = false, placeholder }:{ type?:'text' | 'number' | 'password', value?:string | number, disabled?:boolean, fn?(value:string | number):void, autoFocus?:boolean, placeholder?:string }) {
   return (
-    <input type={type} autoFocus={autoFocus} value={value} disabled={disabled} placeholder={placeholder} className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100" onChange={(e) => {
+    <input type={type} autoFocus={autoFocus} value={value} disabled={disabled} placeholder={placeholder} className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 dark:hover:border-gray-500 focus:border-blue-500 dark:focus:border-blue-400 transition-all px-4 outline-none border-2 border-lightgray-100 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white dark:placeholder-gray-400" onChange={(e) => {
       if(type === 'number' && !isNaN(+e.target.value)) {
         fn && fn(+e.target.value);
       } else fn && fn(e.target.value);
@@ -19,7 +19,7 @@ export default function Input({ type = 'text', value, disabled = false, fn, auto
 
 export function InputButton({ value, disabled = false, fn }:{ value?:string | number, disabled?:boolean, fn?():void }) {
   return (
-    <div onClick={() => fn && fn()} className="w-full max-w-[400px] h-[55px] cursor-pointer rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100 flex items-center">
+    <div onClick={() => fn && fn()} className="w-full max-w-[400px] h-[55px] cursor-pointer rounded-2xl hover:border-gray-300 dark:hover:border-gray-500 focus:border-blue-500 dark:focus:border-blue-400 transition-all px-4 outline-none border-2 border-lightgray-100 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white flex items-center">
       <div>{value}</div>
     </div>
   );
@@ -27,7 +27,7 @@ export function InputButton({ value, disabled = false, fn }:{ value?:string | nu
 
 export function Textarea({ type = 'text', value, disabled = false, fn, placeholder }:{ type?:'text' | 'number', value?:string | number, disabled?:boolean, fn?(value:string | number):void, placeholder?:string }) {
   return (
-    <textarea placeholder={placeholder} value={value} disabled={disabled} className="w-full resize-none max-w-[400px] h-[105px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all py-3 p-4 outline-none border-2 border-lightgray-100" onChange={(e) => {
+    <textarea placeholder={placeholder} value={value} disabled={disabled} className="w-full resize-none max-w-[400px] h-[105px] rounded-2xl hover:border-gray-300 dark:hover:border-gray-500 focus:border-blue-500 dark:focus:border-blue-400 transition-all py-3 p-4 outline-none border-2 border-lightgray-100 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white dark:placeholder-gray-400" onChange={(e) => {
       if(type === 'number' && !isNaN(+e.target.value)) {
         fn && fn(+e.target.value);
       } else fn && fn(e.target.value);

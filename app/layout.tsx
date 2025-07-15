@@ -7,6 +7,7 @@ import Providers from "./providers";
 import MobileLoading from "@components/menu/mobile-loading";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import localFont from 'next/font/local'
+import { ThemeProvider } from "@libs/client/theme-context"
 
 const pretendard = localFont({
   src: '../public/fonts/PretendardVariable.woff2',
@@ -22,15 +23,17 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <SpeedInsights/>
-      <Providers>
-        <SWRProvider>
-          <body className={`${pretendard.className} font-pretendard`}>
-            {children}
-            <MobileLoading/>
-            <Notification/>
-          </body>
-        </SWRProvider>
-      </Providers>
+      <ThemeProvider>
+        <Providers>
+          <SWRProvider>
+            <body className={`${pretendard.className} font-pretendard bg-white dark:bg-gray-900 transition-colors duration-300`}>
+              {children}
+              <MobileLoading/>
+              <Notification/>
+            </body>
+          </SWRProvider>
+        </Providers>
+      </ThemeProvider>
     </html>
   );
 }

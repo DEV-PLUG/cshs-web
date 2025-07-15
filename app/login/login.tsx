@@ -68,19 +68,19 @@ const Login: NextPage = () => {
       <Head>
         <title>로그인</title>
       </Head>
-      <div className="w-[100vw] h-[100vh] min-h-[800px] font-pretendard">
+      <div className="w-[100vw] h-[100vh] min-h-[800px] font-pretendard bg-white dark:bg-gray-900 transition-colors duration-300">
         <div style={{
           backgroundImage: 'linear-gradient(to top, #ffffff 0%, #bfdbfe 99%, #bfdbfe 100%)'
-        }} className="w-full h-[100vh] bg-cover opacity-70 bg-opacity-0 overflow-hidden min-h-[800px]"></div>
+        }} className="w-full h-[100vh] bg-cover opacity-70 bg-opacity-0 overflow-hidden min-h-[800px] dark:opacity-20 dark:bg-gradient-to-t dark:from-gray-900 dark:to-gray-700"></div>
         <div className='fixed right-0 left-0 bottom-7 hidden justify-center items-center md:flex'>
-          <div className='mx-auto p-3 rounded-xl bg-blue-100 text-sm md:block hiddenq'>
+          <div className='mx-auto p-3 rounded-xl bg-blue-100 dark:bg-blue-900 text-sm md:block hiddenq transition-colors duration-300'>
             {/* <div className='text-blue-500 text-center'>비밀번호 변경 등 문의: <span className='underline'>14c76@csh-h.gne.go.kr</span></div> */}
-            <div className='text-blue-500 text-center'>교사 아이디는 기존과 동일, 학생 아이디는 학번입니다.<br/>베타 테스트 기간 비밀번호(모든 아이디 공통): cshs<br/>테스트 학생 아이디 '1130'으로 활승 요청을 테스트할 수 있습니다.</div>
+            <div className='text-blue-500 dark:text-blue-300 text-center transition-colors duration-300'>교사 아이디는 기존과 동일, 학생 아이디는 학번입니다.<br/>베타 테스트 기간 비밀번호(모든 아이디 공통): cshs<br/>테스트 학생 아이디 '1130'으로 활승 요청을 테스트할 수 있습니다.</div>
           </div>
         </div>
         <div className='absolute z-20 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-full xl:w-[750px] mt-7'>
           <div className="md:space-y-2 flex flex-col justify-center items-center overflow-hidden">
-            <div className='font-bold text-center text-2xl md:text-3xl mb-5'>학교 계정으로 로그인</div>
+            <div className='font-bold text-center text-2xl md:text-3xl mb-5 text-gray-800 dark:text-white transition-colors duration-300'>학교 계정으로 로그인</div>
             <div className='w-[93vw] md:w-[380px] space-y-1 items-center flex flex-col mb-10'>
               <Input placeholder='아이디' fn={(value:string) => setId(value)} autoFocus />
               <Input placeholder='비밀번호' type='password' fn={(value:string) => setPw(value)} />

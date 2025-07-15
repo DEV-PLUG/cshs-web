@@ -9,10 +9,10 @@ export default function Button({ children, color, loading = false, disabled = fa
 
   return (
     <>
-      { color !== 'lightblue' ? <div className={`bg-white rounded-xl ${scalableHeight && 'h-full'}`}>
+      { color !== 'lightblue' ? <div className={`bg-white dark:bg-gray-800 rounded-xl ${scalableHeight && 'h-full'} transition-colors duration-300`}>
         <div onClick={() => {
           if(!loading && fn) fn();
-        }} className={ disabled ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-${color}-500 hover:bg-${color}-600 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
+        }} className={ disabled ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-${color}-500/50 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-${color}-500 hover:bg-${color}-600 dark:bg-${color}-600 dark:hover:bg-${color}-700 text-md transition-all text-white justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
           <div>{children}</div>
           { loading && <div className='absolute right-5 top-1/2 -translate-y-1/2 w-[20px] h-[20px]'>
             <CircularProgress color="inherit" size={20} />
@@ -26,7 +26,7 @@ export default function Button({ children, color, loading = false, disabled = fa
       </div> : <div className={`rounded-xl ${scalableHeight && 'h-full'}`}>
         <div onClick={() => {
           if(!loading && fn) fn();
-        }} className={ disabled ? `bg-blue-500/10 text-md transition-all text-blue-500/50 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-blue-500/10 text-md transition-all text-blue-500 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-blue-500/20 hover:bg-blue-600/20 text-md transition-all text-blue-500 justify-center w-full ${scalableHeight === true ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
+        }} className={ disabled ? `bg-blue-500/10 dark:bg-blue-400/10 text-md transition-all text-blue-500/50 dark:text-blue-400/50 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : loading ? `bg-blue-500/10 dark:bg-blue-400/10 text-md transition-all text-blue-500 dark:text-blue-400 justify-center w-full ${scalableHeight ? 'h-full' : 'py-4'} flex items-center rounded-xl relative` : `bg-blue-500/20 dark:bg-blue-400/20 hover:bg-blue-600/20 dark:hover:bg-blue-500/20 text-md transition-all text-blue-500 dark:text-blue-400 justify-center w-full ${scalableHeight === true ? 'h-full' : 'py-4'} flex items-center cursor-pointer rounded-xl relative` }>
           <div>{children}</div>
           { loading && <div className='absolute right-5 top-1/2 -translate-y-1/2 w-[20px] h-[20px]'>
             <CircularProgress color="inherit" size={20} />
