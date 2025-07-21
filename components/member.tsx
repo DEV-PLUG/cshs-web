@@ -229,9 +229,9 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
   }
 
   return (
-    <div className="w-[700px] h-[520px]">
+    <div className="md:w-[700px] w-full h-[520px]">
       { info === 0 && <OpacityAnimation>
-        <div className="-m-5 flex">
+        <div className="-m-5 flex w-full relative">
           <div className="py-3">
             { !disableFavorite && <div className="flex items-center">
               { type === 0 && <div className="w-1 h-6 bg-blue-500 rounded-r-lg absolute"></div> }
@@ -279,469 +279,475 @@ export default function SelectMember({ fn, disableTeacher = true, disableFavorit
             </div> }
           </div>
           <div className="h-[520px] w-[1px] bg-lightgray-100 my-3 ml-1"></div>
-          { type === 0 && <div className="w-full h-[540px] rounded-r-2xl p-3">
-            { addGroupStatus === false ? <OpacityAnimation>
-              <div className="flex items-center w-full space-x-2">
-                <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
-                { type === 0 && <div onClick={() => {
-                  setGroupName('');
-                  setGroupSelected([]);
-                  setAddGroupStatus(true);
-                  setTimeout(() => {
-                    setAddGroupInfoModal(true);
-                    setTimeout(() => {
-                      setAddGroupInfoModal(false);
-                    }, 2000);
-                  }, 300);
-                }} className="w-10 h-10">
-                  <div className="w-10 h-10 cursor-pointer flex items-center justify-center bg-blue-100 hover:bg-blue-200 transition-colors text-blue-500 rounded-xl">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-                    </svg>
+          <div className="w-full -mr-20 md:pr-0 pr-3">
+            <div className="flex md:flex-row flex-col">
+              { type === 0 && <div className="w-full md:h-[540px] h-[300px] rounded-r-2xl p-3">
+                { addGroupStatus === false ? <OpacityAnimation>
+                  <div className="flex items-center w-full space-x-2">
+                    <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
+                    { type === 0 && <div onClick={() => {
+                      setGroupName('');
+                      setGroupSelected([]);
+                      setAddGroupStatus(true);
+                      setTimeout(() => {
+                        setAddGroupInfoModal(true);
+                        setTimeout(() => {
+                          setAddGroupInfoModal(false);
+                        }, 2000);
+                      }, 300);
+                    }} className="w-10 h-10">
+                      <div className="w-10 h-10 cursor-pointer flex items-center justify-center bg-blue-100 hover:bg-blue-200 transition-colors text-blue-500 rounded-xl">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                      </div>
+                    </div> }
                   </div>
-                </div> }
-              </div>
-              <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
-                { (favorite && favorite?.success === true) && <div>
-                  { (favorite.groups.length > 0 && searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <OpacityAnimation>
-                      <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                        </svg>
-                        <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
-                      </div>
-                    </OpacityAnimation>
-                  </div> }
-                  { favorite.groups.length <= 0 && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <OpacityAnimation>
-                      <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                        </svg>
-                        <div className="w-full h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">나만의 그룹이 없어요<br/>그룹을 만들어보세요</div>
-                        <div onClick={() => {
-                          setGroupName('');
-                          setGroupSelected([]);
-                          setAddGroupStatus(true);
-                          setTimeout(() => {
-                            setAddGroupInfoModal(true);
-                            setTimeout(() => {
-                              setAddGroupInfoModal(false);
-                            }, 2000);
-                          }, 300);
-                        }} className="bg-blue-100 hover:bg-blue-200 cursor-pointer transition-colors p-1 rounded-lg text-sm text-blue-500 px-2">나만의 그룹 만들기</div>
-                      </div>
-                    </OpacityAnimation>
-                  </div> }
-                  { search === '' ? favorite.groups.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
-                              <svg className="w-7 h-7 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                              </svg>
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
-                            </div>
-                          </div>
-                          <div onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedGroup(value.id);
-                            setGroupName(value.name);
-                            setGroupSelected([...value.relation.map((value:any) => ({
-                              id: value.user.id,
-                              class: value.user.class,
-                              grade: value.user.grade,
-                              number: value.user.number,
-                              profile: value.user.profile,
-                              name: value.user.name
-                            }))]);
-                            setAddGroupStatus(true);
-                          }} className="w-7 h-7 hover:bg-gray-100 transition-colors text-gray-400 bg-gray-100 rounded-lg flex items-center justify-center">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  <div className="mt-2 overflow-auto h-[240px] md:h-[460px] custom-scroll pr-2 relative">
+                    { (favorite && favorite?.success === true) && <div>
+                      { (favorite.groups.length > 0 && searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <OpacityAnimation>
+                          <div className="flex items-center justify-center flex-col space-y-2">
+                            <svg className="w-10 h-10 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                             </svg>
+                            <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
                           </div>
-                        </div>
-                      </OpacityAnimation>
-                    )
-                  }) : searchedResult.items.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
-                              <svg className="w-7 h-7 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                              </svg>
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
-                            </div>
-                          </div>
-                        </div>
-                      </OpacityAnimation>
-                    )
-                  }) }
-                </div> }
-                { !favorite && [...Array(20)].map((value, index) => {
-                  return ( 
-                    <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
-                      <div className="space-y-1">
-                        <div className="w-20 h-6 bg-gray-100 rounded-md"></div>
-                        <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
-                      </div>
-                    </div>
-                  )
-                }) }
-              </div>
-            </OpacityAnimation> : <OpacityAnimation>
-              <div onClick={() => {
-                setAddGroupStatus(false);
-                setSelectedGroup(null);
-              }} className="mb-5 text-sm text-gray-500 flex items-center space-x-1 mt-1 cursor-pointer">
-                <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                </svg>
-                <div>구성원 선택으로 돌아가기</div>
-              </div>
-              {/* <div className="font-bold text-blue-500 text-lg mb-5">나만의 그룹 만들기</div> */}
-              <div>그룹 이름</div>
-              <Input fn={(value:string) => setGroupName(value)} value={groupName} autoFocus placeholder="그룹 이름(과제연구 팀원 등)" />
-              { selectedGroup !== null && <div>
-                <div className="mt-5 mb-1">그룹 삭제하기</div>
-                <div className="flex">
-                  <SubButton loading={deleteLoading} color="lightblue" fn={() => deleteGroup()}>
-                    { deleteLoading ? <CircularProgress color="inherit" size={20} /> : '그룹 삭제하기' }
-                  </SubButton>
-                </div>
-              </div> }
-            </OpacityAnimation> }
-          </div> }
-          { type === 1 && <div className="w-full h-[540px] rounded-r-2xl p-3">
-            <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성 또는 학번으로 검색해보세요." />
-              <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
-                { (member && member?.success === true && user && user?.success === true) && <div>
-                  { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <OpacityAnimation>
-                      <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                        <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
-                      </div>
-                    </OpacityAnimation>
-                  </div> }
-                  { search === '' ? member.members.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        { !(notMe === true && value.id === user.user.id) && <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              {value.profile && <Image
-                                src={value.profile}
-                                width={40}
-                                height={40}
-                                alt="프로필"
-                              />}
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
-                            </div>
-                          </div>
-                          {/* { value.id !== user.user.id && <div className="cursor-pointer" onClick={ favorite?.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? () => deleteFavorite(value.id) : () => postFavorite(value.id) }>
-                            <svg className={ favorite?.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? "w-5 h-5 fill-yellow-500 stroke-yellow-500" : "w-5 h-5 stroke-lightgray-200" } fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                        </OpacityAnimation>
+                      </div> }
+                      { favorite.groups.length <= 0 && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <OpacityAnimation>
+                          <div className="flex items-center justify-center flex-col space-y-2">
+                            <svg className="w-10 h-10 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                             </svg>
-                          </div> } */}
-                        </div> }
-                      </OpacityAnimation>
-                    )
-                  }) : searchedResult.items.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        { !(notMe === true && value.id === user.user.id) && <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              {value.profile && <Image
-                                src={value.profile}
-                                width={40}
-                                height={40}
-                                alt="프로필"
-                              />}
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
-                            </div>
+                            <div className="w-full h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">나만의 그룹이 없어요<br/>그룹을 만들어보세요</div>
+                            <div onClick={() => {
+                              setGroupName('');
+                              setGroupSelected([]);
+                              setAddGroupStatus(true);
+                              setTimeout(() => {
+                                setAddGroupInfoModal(true);
+                                setTimeout(() => {
+                                  setAddGroupInfoModal(false);
+                                }, 2000);
+                              }, 300);
+                            }} className="bg-blue-100 hover:bg-blue-200 cursor-pointer transition-colors p-1 rounded-lg text-sm text-blue-500 px-2">나만의 그룹 만들기</div>
                           </div>
-                          {/* { value.id !== user.user.id && <div className="cursor-pointer" onClick={() => postFavorite(value.id)}>
-                            <svg className={ favorite.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? "w-5 h-5 fill-yellow-500 stroke-yellow-500" : "w-5 h-5 stroke-lightgray-200" } fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                            </svg>
-                          </div> } */}
-                        </div> }
-                      </OpacityAnimation>
-                    )
-                  }) }
-                </div> }
-                { !member && [...Array(20)].map((value, index) => {
-                  return ( 
-                    <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
-                      <div className="space-y-1">
-                        <div className="w-16 h-6 bg-gray-100 rounded-lg"></div>
-                        <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
-                      </div>
-                    </div>
-                  )
-                }) }
-              </div>
-            </OpacityAnimation>
-          </div> }
-          { type === 2 && <div className="w-full h-[540px] rounded-r-2xl p-3">
-            <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
-              <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
-                { (group && group?.success === true) && <div>
-                  { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <OpacityAnimation>
-                      <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                        <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
-                      </div>
-                    </OpacityAnimation>
-                  </div> }
-                  { search === '' ? group.groups.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
-                              <svg className="w-8 h-8 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                              </svg>
+                        </OpacityAnimation>
+                      </div> }
+                      { search === '' ? favorite.groups.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+                                  <svg className="w-7 h-7 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                  </svg>
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
+                                </div>
+                              </div>
+                              <div onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedGroup(value.id);
+                                setGroupName(value.name);
+                                setGroupSelected([...value.relation.map((value:any) => ({
+                                  id: value.user.id,
+                                  class: value.user.class,
+                                  grade: value.user.grade,
+                                  number: value.user.number,
+                                  profile: value.user.profile,
+                                  name: value.user.name
+                                }))]);
+                                setAddGroupStatus(true);
+                              }} className="w-7 h-7 hover:bg-gray-100 transition-colors text-gray-400 bg-gray-100 rounded-lg flex items-center justify-center">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                              </div>
                             </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
+                          </OpacityAnimation>
+                        )
+                      }) : searchedResult.items.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
+                                  <svg className="w-7 h-7 stroke-lightgray-200" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                  </svg>
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </OpacityAnimation>
-                    )
-                  }) : searchedResult.items.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
-                              <svg className="w-8 h-8 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                              </svg>
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
-                            </div>
+                          </OpacityAnimation>
+                        )
+                      }) }
+                    </div> }
+                    { !favorite && [...Array(20)].map((value, index) => {
+                      return ( 
+                        <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
+                          <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
+                          <div className="space-y-1">
+                            <div className="w-20 h-6 bg-gray-100 rounded-md"></div>
+                            <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
                           </div>
                         </div>
-                      </OpacityAnimation>
-                    )
-                  }) }
-                </div> }
-                { !group && [...Array(20)].map((value, index) => {
-                  return ( 
-                    <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
-                      <div className="space-y-1">
-                        <div className="w-16 h-6 bg-gray-100 rounded-lg"></div>
-                        <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
-                      </div>
-                    </div>
-                  )
-                }) }
-              </div>
-            </OpacityAnimation>
-          </div> }
-          { type === 3 && <div className="w-full h-[540px] rounded-r-2xl p-3">
-            <OpacityAnimation>
-              <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
-              <div className="mt-2 overflow-auto h-[460px] custom-scroll pr-2 relative">
-                { (teacher && teacher?.success === true) && <div>
-                  { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <OpacityAnimation>
-                      <div className="flex items-center justify-center flex-col space-y-2">
-                        <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
-                        <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
-                      </div>
-                    </OpacityAnimation>
-                  </div> }
-                  { search === '' ? teacher.teachers.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              {value.profile && <Image
-                                src={value.profile}
-                                width={40}
-                                height={40}
-                                alt="프로필"
-                              />}
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">교사</div>
-                            </div>
-                          </div>
-                        </div>
-                      </OpacityAnimation>
-                    )
-                  }) : searchedResult.items.map((value:any, index:number) => {
-                    return (
-                      <OpacityAnimation key={value.id}>
-                        <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-xl overflow-hidden">
-                              {value.profile && <Image
-                                src={value.profile}
-                                width={40}
-                                height={40}
-                                alt="프로필"
-                              />}
-                            </div>
-                            <div className="-space-y-0">
-                              <div className="text-base font-bold">{value.name}</div>
-                              <div className="text-sm text-lightgray-200">교사</div>
-                            </div>
-                          </div>
-                        </div>
-                      </OpacityAnimation>
-                    )
-                  }) }
-                </div> }
-                { !teacher && [...Array(20)].map((value, index) => {
-                  return ( 
-                    <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
-                      <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
-                      <div className="space-y-1">
-                        <div className="w-16 h-6 bg-gray-100 rounded-lg"></div>
-                        <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
-                      </div>
-                    </div>
-                  )
-                }) }
-              </div>
-            </OpacityAnimation>
-          </div> }
-          <div className="w-full h-[540px] rounded-r-2xl bg-gray-50 flex items-center justify-between flex-col p-3">
-            { addGroupStatus === false ? <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
-              <div className="mb-2 flex items-center justify-between">
-                <div className="text-lightgray-200 text-sm">선택됨 - {selected.length}명</div>
-                <div onClick={() => setSelected([])} className="text-lightgray-200 text-sm cursor-pointer">전체삭제</div>
-              </div>
-              { selected.map((value:any, index:number) => {
-                return (
-                  <OpacityAnimation key={value.id}>
-                    <div onClick={() => unselectMember(value.id)} className="w-full group h-16 hover:bg-gray-100 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-10 h-10 rounded-xl overflow-hidden">
-                          {value.profile && <Image
-                            src={value.profile}
-                            width={40}
-                            height={40}
-                            alt="프로필"
-                          />}
-                        </div>
-                        <div className="-space-y-0">
-                          <div className="text-base font-bold">{value.name}</div>
-                          { value.number ? <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div> : <div className="text-sm text-lightgray-200">교사</div> }
-                        </div>
-                      </div>
-                      <div className="cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity">
-                        <svg className="w-5 h-5 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                      </div>
-                    </div>
-                  </OpacityAnimation>
-                )
-              }) }
-            </div> : <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
-              <div className="mb-2 flex items-center justify-between">
-                <div className="text-lightgray-200 text-sm">선택됨 - {groupSelected.length}명</div>
-                <div onClick={() => setGroupSelected([])} className="text-lightgray-200 text-sm cursor-pointer">전체삭제</div>
-              </div>
-              { groupSelected.map((value:any, index:number) => {
-                return (
-                  <OpacityAnimation key={value.id}>
-                    <div onClick={() => unselectMember(value.id)} className="w-full group h-16 hover:bg-gray-100 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-10 h-10 rounded-xl overflow-hidden">
-                          {value.profile && <Image
-                            src={value.profile}
-                            width={40}
-                            height={40}
-                            alt="프로필"
-                          />}
-                        </div>
-                        <div className="-space-y-0">
-                          <div className="text-base font-bold">{value.name}</div>
-                          { value.number ? <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div> : <div className="text-sm text-lightgray-200">교사</div> }
-                        </div>
-                      </div>
-                      <div className="cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity">
-                        <svg className="w-5 h-5 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                      </div>
-                    </div>
-                  </OpacityAnimation>
-                )
-              }) }
-            </div> }
-            <div className="w-full h-12">
-              <AnimatePresence initial={false} mode="wait">
-                {addGroupInfoModal && <UpModal handleClose={() => setAddGroupInfoModal(false)}>
-                  <div className="bg-blue-500/10 w-[270px] backdrop-blur-sm text-sm text-blue-500 space-x-2 p-1 px-2 rounded-lg absolute bottom-[10px] left-[20px] flex z-10">
+                      )
+                    }) }
+                  </div>
+                </OpacityAnimation> : <OpacityAnimation>
+                  <div onClick={() => {
+                    setAddGroupStatus(false);
+                    setSelectedGroup(null);
+                  }} className="mb-5 text-sm text-gray-500 flex items-center space-x-1 mt-1 cursor-pointer">
                     <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
-                    <div className="text-center w-full">
-                      아래 버튼을 눌러 그룹 생성을 완료하세요
+                    <div>구성원 선택으로 돌아가기</div>
+                  </div>
+                  {/* <div className="font-bold text-blue-500 text-lg mb-5">나만의 그룹 만들기</div> */}
+                  <div>그룹 이름</div>
+                  <Input fn={(value:string) => setGroupName(value)} value={groupName} autoFocus placeholder="그룹 이름(과제연구 팀원 등)" />
+                  { selectedGroup !== null && <div>
+                    <div className="mt-5 mb-1">그룹 삭제하기</div>
+                    <div className="flex">
+                      <SubButton loading={deleteLoading} color="lightblue" fn={() => deleteGroup()}>
+                        { deleteLoading ? <CircularProgress color="inherit" size={20} /> : '그룹 삭제하기' }
+                      </SubButton>
                     </div>
-                  </div>
-                </UpModal>}
-              </AnimatePresence>
-              { addGroupStatus === true && <Button loading={loading} fn={() => createGroup()} scalableHeight color="blue">
+                  </div> }
+                </OpacityAnimation> }
+              </div> }
+              { type === 1 && <div className="w-full md:h-[540px] h-[300px] rounded-r-2xl p-3">
                 <OpacityAnimation>
-                  <div className="flex items-center">
-                    { selectedGroup === null ? '그룹 생성하기' : '저장하기' }
+                  <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성 또는 학번으로 검색해보세요." />
+                  <div className="mt-2 overflow-auto h-[240px] md:h-[460px] custom-scroll pr-2 relative">
+                    { (member && member?.success === true && user && user?.success === true) && <div>
+                      { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <OpacityAnimation>
+                          <div className="flex items-center justify-center flex-col space-y-2">
+                            <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                            </svg>
+                            <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
+                          </div>
+                        </OpacityAnimation>
+                      </div> }
+                      { search === '' ? member.members.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            { !(notMe === true && value.id === user.user.id) && <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 rounded-xl overflow-hidden">
+                                  {value.profile && <Image
+                                    src={value.profile}
+                                    width={40}
+                                    height={40}
+                                    alt="프로필"
+                                  />}
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
+                                </div>
+                              </div>
+                              {/* { value.id !== user.user.id && <div className="cursor-pointer" onClick={ favorite?.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? () => deleteFavorite(value.id) : () => postFavorite(value.id) }>
+                                <svg className={ favorite?.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? "w-5 h-5 fill-yellow-500 stroke-yellow-500" : "w-5 h-5 stroke-lightgray-200" } fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                </svg>
+                              </div> } */}
+                            </div> }
+                          </OpacityAnimation>
+                        )
+                      }) : searchedResult.items.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            { !(notMe === true && value.id === user.user.id) && <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 rounded-xl overflow-hidden">
+                                  {value.profile && <Image
+                                    src={value.profile}
+                                    width={40}
+                                    height={40}
+                                    alt="프로필"
+                                  />}
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div>
+                                </div>
+                              </div>
+                              {/* { value.id !== user.user.id && <div className="cursor-pointer" onClick={() => postFavorite(value.id)}>
+                                <svg className={ favorite.favorites.some((e:{ to: { id:number } }) => e.to.id === value.id) ? "w-5 h-5 fill-yellow-500 stroke-yellow-500" : "w-5 h-5 stroke-lightgray-200" } fill="none" strokeWidth={1.7} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                </svg>
+                              </div> } */}
+                            </div> }
+                          </OpacityAnimation>
+                        )
+                      }) }
+                    </div> }
+                    { !member && [...Array(20)].map((value, index) => {
+                      return ( 
+                        <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
+                          <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
+                          <div className="space-y-1">
+                            <div className="w-16 h-6 bg-gray-100 rounded-lg"></div>
+                            <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
+                          </div>
+                        </div>
+                      )
+                    }) }
                   </div>
                 </OpacityAnimation>
-              </Button> }
-              { addGroupStatus === false && <Button fn={() => fn(selected)} scalableHeight color="lightblue">
+              </div> }
+              { type === 2 && <div className="w-full md:h-[540px] h-[300px] rounded-r-2xl p-3">
                 <OpacityAnimation>
-                  <div className="flex items-center">
-                    {selected.length}명 선택 완료하기
-                    <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200 ml-2">Enter</div>
+                  <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
+                  <div className="mt-2 overflow-auto h-[240px] md:h-[460px] custom-scroll pr-2 relative">
+                    { (group && group?.success === true) && <div>
+                      { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <OpacityAnimation>
+                          <div className="flex items-center justify-center flex-col space-y-2">
+                            <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                            </svg>
+                            <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
+                          </div>
+                        </OpacityAnimation>
+                      </div> }
+                      { search === '' ? group.groups.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+                                  <svg className="w-8 h-8 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                                  </svg>
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
+                                </div>
+                              </div>
+                            </div>
+                          </OpacityAnimation>
+                        )
+                      }) : searchedResult.items.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            <div onClick={() => selectMember([...value.relation.map((value:any) => value.user)])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
+                                  <svg className="w-8 h-8 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                                  </svg>
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">{value.relation?.length}명</div>
+                                </div>
+                              </div>
+                            </div>
+                          </OpacityAnimation>
+                        )
+                      }) }
+                    </div> }
+                    { !group && [...Array(20)].map((value, index) => {
+                      return ( 
+                        <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
+                          <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
+                          <div className="space-y-1">
+                            <div className="w-16 h-6 bg-gray-100 rounded-lg"></div>
+                            <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
+                          </div>
+                        </div>
+                      )
+                    }) }
                   </div>
                 </OpacityAnimation>
-              </Button> }
+              </div> }
+              { type === 3 && <div className="w-full md:h-[540px] h-[300px] rounded-r-2xl p-3">
+                <OpacityAnimation>
+                  <input value={preSearch} onChange={handleSearch} onKeyDown={onKeyPress} type="text" className="w-full h-10 bg-gray-50 hover:bg-gray-100 transition-colors rounded-xl px-5 outline-none text-base" autoFocus placeholder="초성으로 검색해보세요." />
+                  <div className="mt-2 overflow-auto h-[240px] md:h-[460px] custom-scroll pr-2 relative">
+                    { (teacher && teacher?.success === true) && <div>
+                      { (searchedResult.items.length <= 0 && search !== '') && <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <OpacityAnimation>
+                          <div className="flex items-center justify-center flex-col space-y-2">
+                            <svg className="w-10 h-10 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                            </svg>
+                            <div className="w-[180px] h-12 flex items-center justify-center text-lightgray-200 text-center text-sm">검색 결과가 없어요<br/>검색어를 다시 한번 확인해주세요</div>
+                          </div>
+                        </OpacityAnimation>
+                      </div> }
+                      { search === '' ? teacher.teachers.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 rounded-xl overflow-hidden">
+                                  {value.profile && <Image
+                                    src={value.profile}
+                                    width={40}
+                                    height={40}
+                                    alt="프로필"
+                                  />}
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">교사</div>
+                                </div>
+                              </div>
+                            </div>
+                          </OpacityAnimation>
+                        )
+                      }) : searchedResult.items.map((value:any, index:number) => {
+                        return (
+                          <OpacityAnimation key={value.id}>
+                            <div onClick={() => selectMember([value])} className="w-full h-16 hover:bg-gray-50 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-10 h-10 rounded-xl overflow-hidden">
+                                  {value.profile && <Image
+                                    src={value.profile}
+                                    width={40}
+                                    height={40}
+                                    alt="프로필"
+                                  />}
+                                </div>
+                                <div className="-space-y-0">
+                                  <div className="text-base font-bold">{value.name}</div>
+                                  <div className="text-sm text-lightgray-200">교사</div>
+                                </div>
+                              </div>
+                            </div>
+                          </OpacityAnimation>
+                        )
+                      }) }
+                    </div> }
+                    { !teacher && [...Array(20)].map((value, index) => {
+                      return ( 
+                        <div key={index} className="w-full h-16 rounded-xl px-5 flex items-center space-x-2 animate-pulse">
+                          <div className="w-10 h-10 bg-gray-100 rounded-lg"></div>
+                          <div className="space-y-1">
+                            <div className="w-16 h-6 bg-gray-100 rounded-lg"></div>
+                            <div className="w-24 h-3 bg-gray-100 rounded-md"></div>
+                          </div>
+                        </div>
+                      )
+                    }) }
+                  </div>
+                </OpacityAnimation>
+              </div> }
+              <div className="w-full h-[240px] md:h-[540px] md:rounded-r-2xl bg-gray-50 flex items-center justify-between flex-col p-3">
+                { addGroupStatus === false ? <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="text-lightgray-200 text-sm">선택됨 - {selected.length}명</div>
+                    <div onClick={() => setSelected([])} className="text-lightgray-200 text-sm cursor-pointer">전체삭제</div>
+                  </div>
+                  { selected.map((value:any, index:number) => {
+                    return (
+                      <OpacityAnimation key={value.id}>
+                        <div onClick={() => unselectMember(value.id)} className="w-full group h-16 hover:bg-gray-100 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-10 h-10 rounded-xl overflow-hidden">
+                              {value.profile && <Image
+                                src={value.profile}
+                                width={40}
+                                height={40}
+                                alt="프로필"
+                              />}
+                            </div>
+                            <div className="-space-y-0">
+                              <div className="text-base font-bold">{value.name}</div>
+                              { value.number ? <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div> : <div className="text-sm text-lightgray-200">교사</div> }
+                            </div>
+                          </div>
+                          <div className="cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity">
+                            <svg className="w-5 h-5 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            </svg>
+                          </div>
+                        </div>
+                      </OpacityAnimation>
+                    )
+                  }) }
+                </div> : <div className="w-full pr-2 custom-scroll scroll-bg-gray-50 overflow-auto h-[460px]">
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="text-lightgray-200 text-sm">선택됨 - {groupSelected.length}명</div>
+                    <div onClick={() => setGroupSelected([])} className="text-lightgray-200 text-sm cursor-pointer">전체삭제</div>
+                  </div>
+                  { groupSelected.map((value:any, index:number) => {
+                    return (
+                      <OpacityAnimation key={value.id}>
+                        <div onClick={() => unselectMember(value.id)} className="w-full group h-16 hover:bg-gray-100 transition-colors rounded-xl px-5 flex items-center justify-between space-x-2 cursor-pointer">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-10 h-10 rounded-xl overflow-hidden">
+                              {value.profile && <Image
+                                src={value.profile}
+                                width={40}
+                                height={40}
+                                alt="프로필"
+                              />}
+                            </div>
+                            <div className="-space-y-0">
+                              <div className="text-base font-bold">{value.name}</div>
+                              { value.number ? <div className="text-sm text-lightgray-200">{value.grade}학년 {value.class}반 {value.number}번</div> : <div className="text-sm text-lightgray-200">교사</div> }
+                            </div>
+                          </div>
+                          <div className="cursor-pointer group-hover:opacity-100 opacity-0 transition-opacity">
+                            <svg className="w-5 h-5 stroke-lightgray-200" fill="none" strokeWidth={1.5} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            </svg>
+                          </div>
+                        </div>
+                      </OpacityAnimation>
+                    )
+                  }) }
+                </div> }
+                <div className="w-full h-12">
+                  <div className="w-full h-12">
+                    <AnimatePresence initial={false} mode="wait">
+                      {addGroupInfoModal && <UpModal handleClose={() => setAddGroupInfoModal(false)}>
+                        <div className="bg-blue-500/10 w-[270px] backdrop-blur-sm text-sm text-blue-500 space-x-2 p-1 px-2 rounded-lg absolute bottom-[10px] left-[20px] flex z-10">
+                          <svg className="w-5 h-5" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                          </svg>
+                          <div className="text-center w-full">
+                            아래 버튼을 눌러 그룹 생성을 완료하세요
+                          </div>
+                        </div>
+                      </UpModal>}
+                    </AnimatePresence>
+                    { addGroupStatus === true && <Button loading={loading} fn={() => createGroup()} scalableHeight color="blue">
+                      <OpacityAnimation>
+                        <div className="flex items-center">
+                          { selectedGroup === null ? '그룹 생성하기' : '저장하기' }
+                        </div>
+                      </OpacityAnimation>
+                    </Button> }
+                    { addGroupStatus === false && <Button fn={() => fn(selected)} scalableHeight color="lightblue">
+                      <OpacityAnimation>
+                        <div className="flex items-center">
+                          {selected.length}명 선택 완료하기
+                          <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200 ml-2">Enter</div>
+                        </div>
+                      </OpacityAnimation>
+                    </Button> }
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

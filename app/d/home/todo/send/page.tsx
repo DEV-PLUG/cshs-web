@@ -28,6 +28,7 @@ export default function Home() {
               <div className="font-bold text-3xl text-zinc-800 cursor-pointer">할 일</div>
             </Link>
           </div>
+          <div className="font-bold block md:hidden text-2xl md:text-3xl text-zinc-800 cursor-pointer mb-6">할 일</div>
           <div className="flex space-x-2">
             <AddToMeButton/>
             <AddToPeopleButton/>

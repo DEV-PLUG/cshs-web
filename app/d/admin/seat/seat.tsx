@@ -141,7 +141,7 @@ export default function Seat() {
         </div>
       </div>
       <div className="w-full h-[1px] mb-5 bg-lightgray-100"></div>
-      <div className="flex justify-between">
+      <div className="md:flex space-y-2 md:space-y-0 justify-between">
         <div className="p-2 px-3 text-sm rounded-xl bg-blue-100 text-blue-500">
           수정 후 반드시 저장 버튼을 눌러 저장해주세요.<br/>저장 전 다른 학년을 선택하면 변경 사항이 폐기되니 조심하세요.
         </div>
