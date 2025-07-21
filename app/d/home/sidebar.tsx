@@ -26,6 +26,12 @@ export default function SideBar() {
 
   const { data:user, error:userError } = useSWR('/api/user');
   const { data:timetable } = useSWR(`/api/school/time-table?date=${date}`);
+  const [timetableData, setTimetableData] = useState<any | null>(null);
+  useEffect(() => {
+    if (timetable) {
+      setTimetableData(timetable);
+    }
+  }, [timetable]);
 
   const [passcardModal, setPasscardModal] = useState(false);
 
@@ -86,8 +92,6 @@ export default function SideBar() {
     }
   }
 
-  
-
   const [ meal, setMeal ] = useState<any>(null);
 
   useEffect(() => {
@@ -103,7 +107,7 @@ export default function SideBar() {
 
   return (
     <>
-      { (meal && timetable) && <div className="space-y-5">
+      { (meal && timetableData) && <div className="space-y-5">
         <OpacityAnimation>
           <div onClick={() => setPasscardModal(true)} className="bg-gray-50 md:flex hidden cursor-pointer hover:bg-gray-100/70 transition-colors rounded-2xl xl:w-[350px] w-full md:w-[320px] h-[120px] px-7 py-5 items-center space-x-5">
             <div className="text-4xl tossface">🪪</div>
@@ -114,16 +118,15 @@ export default function SideBar() {
           </div>
         </OpacityAnimation>
         <OpacityAnimation>
-          <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] py-1 flex items-center justify-center">
-            <CalendarButton calendarFn={setDate} date={date}/>
-          </div>
+          {/* <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] py-1 flex items-center justify-center"></div> */}
+          <CalendarButton align="center" style="long" calendarFn={setDate} date={date}/>
         </OpacityAnimation>
-        { (timetable && timetable.success === true) && <OpacityAnimation>
+        { (timetableData && timetableData.success === true) && <OpacityAnimation>
           <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5">
             <div className="font-bold text-zinc-800">시간표</div>
             <div className="w-full h-[1px] bg-lightgray-100 my-4"></div>
             <div className="space-y-1">
-              { timetable?.timetable.map((item:any, index:number) => {
+              { timetableData?.timetable.map((item:any, index:number) => {
                 return (
                   <div key={index} className="text-lightgray-200 flex items-center"><div className="text-sm px-1 bg-blue-500/10 w-[50px] text-center rounded-full text-blue-500">{item.perio}교시</div><div className="text-base text-lightgray-200 font-bold break-keep ml-3">{item.subject}</div></div>
                 )
@@ -132,7 +135,7 @@ export default function SideBar() {
             <div className="text-xs text-lightgray-200 mt-5">일부 수업 교체는 표시되지 않을 수 있습니다.</div>
           </div>
         </OpacityAnimation> }
-        { (timetable?.message === '시간표 정보를 찾을 수 없어요') && <OpacityAnimation>
+        { (timetableData?.message === '시간표 정보를 찾을 수 없어요') && <OpacityAnimation>
           <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5">
             <div className="font-bold text-zinc-800">시간표</div>
             <div className="w-full h-[1px] bg-lightgray-100 my-4"></div>
@@ -193,7 +196,7 @@ export default function SideBar() {
           </div>
         </OpacityAnimation> }
       </div> }
-      { (!timetable) && <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] my-5 md:hidden block">
+      { (!timetableData) && <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] my-5 md:hidden block">
         <div className="font-bold text-zinc-800">시간표</div>
         <div className="w-full h-[1px] bg-lightgray-100 my-4"></div>
         <div className="space-y-2">
@@ -213,7 +216,7 @@ export default function SideBar() {
           <div className="bg-gray-100 w-[45vw] h-5 rounded-lg text-base"></div>
         </div>
       </div> }
-      { (!timetable) && <div className="rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] my-5 md:block hidden"></div> }
+      { (!timetableData) && <div className="rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] my-5 md:block hidden"></div> }
       { (!meal) && <div className="rounded-2xl xl:w-[350px] w-full md:w-[320px] px-5 py-5 h-[250px] md:block hidden"></div> }
       <AnimatePresence initial={false} mode="wait">
         { passcardModal && <Modal handleClose={() => setPasscardModal(false)}>
