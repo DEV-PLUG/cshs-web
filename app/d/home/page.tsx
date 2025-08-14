@@ -95,7 +95,7 @@ export default function Home() {
                 개발: 
               </div>
               <div>
-                <a className="underline" target="_blank" href="https://github.com/DEV-PLUG">14기 최지환</a>
+                14기 최지환
               </div>
             </div>
             <div className="flex items-start space-x-1">

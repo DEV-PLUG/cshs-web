@@ -31,6 +31,7 @@ model School {
   meal Meal[] @relation("SchoolMeal")
   timetable Timetable[] @relation("SchoolTimetable")
   place Place[] @relation("SchoolPlace")
+  petitions Petition[] @relation("SchoolPetition")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -70,6 +71,8 @@ model User {
   asignedActivity Activity[] @relation("TeacherActivity")
   notification Notification[] @relation("NotificationUser")
   verificationCode VerificationCode? @relation("VerificationCode")
+  writtenPetitions Petition[] @relation("WrittenPetition")
+  petitionSupports PetitionSupport[] @relation("UserPetitionSupport")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -270,4 +273,34 @@ model Log {
   ip String? @db.VarChar(100)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Petition {
+  id Int @id @default(autoincrement())
+  title String
+  content String @db.Text
+  writer User @relation("WrittenPetition", fields: [writerId], references: [id])
+  writerId Int
+  school School @relation("SchoolPetition", fields: [schoolId], references: [id])
+  schoolId Int
+  status String @default("pending") // pending, open, closed, rejected
+  expiresAt DateTime
+  reason String @db.Text
+  responder String?
+  response String? @db.Text
+  supports PetitionSupport[] @relation("PetitionSupport")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PetitionSupport {
+  id Int @id @default(autoincrement())
+  petition Petition @relation("PetitionSupport", fields: [petitionId], references: [id], onDelete: Cascade)
+  petitionId Int
+  user User @relation("UserPetitionSupport", fields: [userId], references: [id])
+  userId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([petitionId, userId]) // 한 청원에 한 번만 동의 가능
 }

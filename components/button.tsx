@@ -2,7 +2,7 @@
 
 import { CircularProgress } from "@mui/material";
 
-export default function Button({ children, color, loading = false, disabled = false, fn, scalableHeight = false }:{ children:any, color:'blue' | 'lightblue', loading?:boolean, disabled?:boolean, fn?():void, scalableHeight?:boolean }) {
+export default function Button({ children, color, loading = false, disabled = false, fn, scalableHeight = false }:{ children:any, color:'blue' | 'lightblue' | 'teal', loading?:boolean, disabled?:boolean, fn?():void, scalableHeight?:boolean }) {
 
   // 별도 표시하지 않더라도 CTA 버튼을 의미합니다.
   // 되도록 sclableHeight를 사용하지 않는 것을 권장합니다.
@@ -21,6 +21,8 @@ export default function Button({ children, color, loading = false, disabled = fa
           <div className="bg-orange-500/50"></div>
           <div className="bg-red-500/50"></div>
           <div className="bg-green-500/50"></div>
+          <div className="bg-teal-500/50"></div>
+          <div className="hover:bg-teal-600"></div>
           {/* Tailwind Color 빌드 시 포함을 위해 안보이는 컴포넌트 포함. 삭제하지 말 것. */}
         </div>
       </div> : <div className={`rounded-xl ${scalableHeight && 'h-full'}`}>
@@ -37,7 +39,7 @@ export default function Button({ children, color, loading = false, disabled = fa
   );
 };
 
-export function SubButton({ children, color, loading = false, disabled = false, fn }:{ children:any, color:'blue' | 'red' | 'orange' | 'green' | 'white' | 'lightblue' | 'lightgreen', loading?:boolean, disabled?:boolean, fn?():void }) {
+export function SubButton({ children, color, loading = false, disabled = false, fn }:{ children:any, color:'blue' | 'red' | 'orange' | 'green' | 'white' | 'lightblue' | 'lightgreen' | 'teal', loading?:boolean, disabled?:boolean, fn?():void }) {
   // Sub CTA 보조 버튼 입니다.
 
   return (

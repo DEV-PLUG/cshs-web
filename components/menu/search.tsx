@@ -8,6 +8,7 @@ import { setNotification } from "@libs/client/redux/notification";
 import { Textarea } from "@components/input";
 import { Tooltip } from "@node_modules/@mui/material";
 import Button from "@components/button";
+import Link from "next/link";
 
 export default function SearchMenu() {
   const [searchModal, setSearchModal] = useState(false);
@@ -145,31 +146,35 @@ export default function SearchMenu() {
           </div>
         </Modal> }
       </AnimatePresence>
-      <div onClick={() => {
-        setFeedbackModal(true);
-        setFeedback('');
-      }} className="px-4 py-[10px] xl:flex hidden transition-all rounded-xl items-center justify-between cursor-pointer hover:bg-gray-100 active:bg-gray-200">
-        <div className="flex items-center space-x-3">
-          <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-          </svg>
-          <div className="text-[17.5px] font-bold text-lightgray-300">청원 보내기</div>
+      <Link href="/d/petitions">
+        <div onClick={() => {
+          // setFeedbackModal(true);
+          // setFeedback('');
+        }} className="px-4 py-[10px] xl:flex hidden transition-all rounded-xl items-center justify-between cursor-pointer hover:bg-gray-100 active:bg-gray-200">
+          <div className="flex items-center space-x-3">
+            <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+            </svg>
+            <div className="text-[17.5px] font-bold text-lightgray-300">청원 게시판</div>
+          </div>
+          {/* <div className="flex space-x-1">
+            <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200">Ctrl</div>
+            <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200">K</div>
+          </div> */}
         </div>
-        {/* <div className="flex space-x-1">
-          <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200">Ctrl</div>
-          <div className="border border-lightgray-100 bg-white px-[6px] drop-shadow-sm rounded-md text-sm text-lightgray-200">K</div>
-        </div> */}
-      </div>
-      <div onClick={() => {
-        setFeedbackModal(true);
-        setFeedback('');
-      }} className="px-3 justify-center py-[10px] xl:hidden transition-all rounded-xl flex items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 w-[50px]">
-        <div className="flex items-center space-x-3">
-          <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
-          </svg>
+      </Link>
+      <Link href="/d/petitions">
+        <div onClick={() => {
+          // setFeedbackModal(true);
+          // setFeedback('');
+        }} className="px-3 justify-center py-[10px] xl:hidden transition-all rounded-xl flex items-center cursor-pointer hover:bg-gray-100 active:bg-gray-200 w-[50px]">
+          <div className="flex items-center space-x-3">
+            <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
+            </svg>
+          </div>
         </div>
-      </div>
+      </Link>
     </>
   )
 }
