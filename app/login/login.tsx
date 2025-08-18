@@ -50,8 +50,8 @@ const Login: NextPage = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
-        // 임시 로그인용 - 실제 서비스 시 패스워드 공백도 확인!
         if(id === '') return;
+        if(pw === '') return;
         setLoading(true);
         signIn('credentials', { callbackUrl: `/login/success?callbackUrl=${callbackUrl}`, id: id, password: pw });
       }

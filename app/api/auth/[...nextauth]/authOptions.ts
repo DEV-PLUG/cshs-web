@@ -27,7 +27,7 @@ export const authOptions = {
         }
 
         // 임시 로그인용 - 실제 서비스 시 삭제할것!
-        if(req.body?.password === 'cshs') {
+        if(req.body?.password === user.userId && user.password === '') {
           return { id: user.userId, email: user.email };
         }
 

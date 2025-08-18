@@ -9,12 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-sdk/client-comprehend": "^3.614.0",
-    "@aws-sdk/client-s3": "^3.613.0",
-    "@aws-sdk/client-transcribe": "^3.613.0",
-    "@aws-sdk/s3-request-presigner": "^3.613.0",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.16.1",
     "@mui/x-date-pickers": "^7.12.1",
     "@prisma/client": "^6.14.0",
@@ -31,12 +25,9 @@
     "kadvice": "^2.0.2",
     "next": "^14.2.25",
     "next-auth": "^4.24.7",
-    "node-jose-tools": "^2.0.4",
-    "openai": "^4.80.1",
     "react": "^18.3.1",
     "react-dom": "^18",
     "react-redux": "^9.1.2",
-    "stream-to-string": "^1.2.1",
     "swr": "^2.2.5"
   },
   "devDependencies": {
