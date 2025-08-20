@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 // Change pw of user

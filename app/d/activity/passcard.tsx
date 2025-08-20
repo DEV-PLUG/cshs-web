@@ -133,7 +133,7 @@ export default function PasscardButton() {
                 </div>
 
                 {/* QR 코드 영역 (시각적 효과) */}
-                <div className="flex justify-center">
+                {/* <div className="flex justify-center">
                   <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
                     <div className="grid grid-cols-8 gap-px">
                       {[...Array(64)].map((_, i) => (
@@ -141,7 +141,7 @@ export default function PasscardButton() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* 안내 텍스트 */}

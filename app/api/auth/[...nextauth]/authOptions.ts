@@ -2,7 +2,7 @@ import client from "@libs/server/client";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 export const authOptions = {
   providers: [
