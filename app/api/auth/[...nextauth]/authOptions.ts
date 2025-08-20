@@ -31,7 +31,7 @@ export const authOptions = {
           return { id: user.userId, email: user.email };
         }
 
-        const isValidPassword = await bcrypt.compare(req.body?.password, user.password);
+        const isValidPassword = await bcrypt.compareSync(req.body?.password, user.password);
         if(isValidPassword) {
           return { id: user.userId, email: user.email };
         } else {
