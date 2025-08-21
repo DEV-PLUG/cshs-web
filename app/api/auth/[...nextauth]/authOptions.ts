@@ -26,8 +26,8 @@ export const authOptions = {
           throw new Error("Incorrect-ID-or-PW");
         }
 
-        // 임시 로그인용 - 실제 서비스 시 삭제할것!
-        if(req.body?.password === user.userId && user.password === '') {
+        // 초기 로그인
+        if(req.body?.password === user.userId && (user.password === '' || user.password === null)) {
           return { id: user.userId, email: user.email };
         }
 
