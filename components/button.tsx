@@ -2,7 +2,7 @@
 
 import { CircularProgress } from "@mui/material";
 
-export default function Button({ children, color, loading = false, disabled = false, fn, scalableHeight = false }:{ children:any, color:'blue' | 'lightblue' | 'teal', loading?:boolean, disabled?:boolean, fn?():void, scalableHeight?:boolean }) {
+export default function Button({ children, color, loading = false, disabled = false, fn, scalableHeight = false }:{ children:any, color:'blue' | 'lightblue' | 'teal' | 'red', loading?:boolean, disabled?:boolean, fn?():void, scalableHeight?:boolean }) {
 
   // 별도 표시하지 않더라도 CTA 버튼을 의미합니다.
   // 되도록 sclableHeight를 사용하지 않는 것을 권장합니다.

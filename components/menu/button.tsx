@@ -169,21 +169,21 @@ export default function MenuButtons() {
             </div>
           </div>
         </Link> */}
-        {/* <Link href='/member'>
+        { data?.user.admin === true && <Link href='/d/admin/member'>
           <div className="px-4 py-[10px] transition-all rounded-xl flex items-center justify-between cursor-pointer hover:bg-gray-100 active:bg-gray-200">
             <div className="flex items-center space-x-3">
-              { !pathname.includes('/member') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              { !pathname.includes('/d/admin/member') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
               </svg> }
-              { pathname.includes('/member') && <svg className="fill-zinc-800 w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              { pathname.includes('/d/admin/member') && <svg className="fill-zinc-800 w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
               </svg> }
-              <div className={ pathname.includes('/member') ? "text-[17.5px] font-bold text-zinc-800" : "text-[17.5px] font-bold text-lightgray-300" }>구성원</div>
+              <div className={ pathname.includes('/d/admin/member') ? "text-[17.5px] font-bold text-zinc-800" : "text-[17.5px] font-bold text-lightgray-300" }>사용자 관리</div>
             </div>
             <div className="flex space-x-1">
             </div>
           </div>
-        </Link> */}
+        </Link> }
         {/* <div className="px-4 py-[10px] transition-all rounded-xl flex items-center justify-between cursor-pointer hover:bg-gray-100 active:bg-gray-200">
           <div className="flex items-center space-x-3">
             <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -250,7 +250,7 @@ export default function MenuButtons() {
             </div>
           </div>
         </Link>
-        <Link href='/d/admin/seat'>
+        { data?.user.admin === true && <Link href='/d/admin/seat'>
           <div className="px-3 w-[50px] py-[10px] transition-all rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 active:bg-gray-200">
             <div className="flex items-center space-x-3">
               { !pathname.includes('/d/admin/seat') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -263,7 +263,19 @@ export default function MenuButtons() {
               </svg> }
             </div>
           </div>
-        </Link>
+        </Link> }
+        { data?.user.admin === true && <Link href='/d/admin/member'>
+          <div className="px-3 w-[50px] py-[10px] transition-all rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 active:bg-gray-200">
+            <div className="flex items-center space-x-3">
+              { !pathname.includes('/d/admin/member') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+              </svg> }
+              { pathname.includes('/d/admin/member') && <svg className="fill-zinc-800 w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+              </svg> }
+            </div>
+          </div>
+        </Link> }
       </div>
     </div>
   );
