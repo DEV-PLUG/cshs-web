@@ -40,9 +40,9 @@ const Error: NextPage = () => {
           </div>
           <div className={ success === true ? "flex flex-col justify-center items-center overflow-hidden h-[210px] left-0 w-[80vw] md:w-[360px] relative transition-all ease-[cubic-bezier(0.22, 1, 0.36, 1)] duration-500 mx-auto" : "flex flex-col justify-center items-center overflow-hidden h-[210px] left-[400px] absolute w-[80vw] md:w-[360px] transition-all ease-[cubic-bezier(0.22, 1, 0.36, 1)] duration-500 mx-auto" }>
             <svg className="w-14 h-14 fill-blue-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-            <div className='font-bold text-center text-lg md:text-xl mt-1'>학교 구성원이 아닙니다</div>
-            <div className='text-center text-sm md:text-base text-gray-500 mt-1'>학교 구글 계정으로 로그인했는지 확인해주세요.<br/><Link href='/login'>
-            <span className='cursor-pointer underline'>이곳을 눌러 다른 계정으로 로그인</span></Link></div>
+            <div className='font-bold text-center text-lg md:text-xl mt-1'>오류가 발생했습니다</div>
+            <div className='text-center text-sm md:text-base text-gray-500 mt-1'>로그인 중 오류가 발생했습니다.<br/><Link href='/login'>
+            <span className='cursor-pointer underline'>이곳을 눌러 다시 시도</span></Link></div>
           </div>
         </div>
       </div>

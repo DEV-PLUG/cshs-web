@@ -93,7 +93,7 @@ export default function PetitionDetail({ params }: { params: { id: string } }) {
                 </div>
               </div>
               <div className="text-sm text-zinc-500">
-                <div>작성자: {petition.writer.name} ({petition.writer.grade}{petition.writer.class}{String(petition.writer.number).padStart(2, '0')})</div>
+                {/* <div>작성자: {petition.writer.name} ({petition.writer.grade}{petition.writer.class}{String(petition.writer.number).padStart(2, '0')})</div> */}
                 <div>작성일: {displayDate(petition.createdAt, 'date')}</div>
                 <div>마감일: {displayDate(petition.expiresAt, 'date')}</div>
               </div>

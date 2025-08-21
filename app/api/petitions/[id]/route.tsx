@@ -25,15 +25,6 @@ async function GetHandler(request: Request, { params }: { params: { id: string }
       schoolId: user.affiliationSchoolId
     },
     include: {
-      writer: {
-        select: {
-          id: true,
-          name: true,
-          grade: true,
-          class: true,
-          number: true,
-        }
-      },
       supports: {
         select: { id: true }
       }

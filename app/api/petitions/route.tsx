@@ -38,15 +38,6 @@ async function GetHandler(request: Request) {
         }
       },
       include: {
-        writer: {
-          select: {
-            id: true,
-            name: true,
-            grade: true,
-            class: true,
-            number: true,
-          }
-        },
         supports: {
           select: { id: true }
         }
@@ -87,11 +78,14 @@ async function PostHandler(request: Request) {
 
   const user = await client.user.findFirst({
     where: { email: session.user.email },
-    select: { id: true, affiliationSchoolId: true }
+    select: { id: true, affiliationSchoolId: true, type: true }
   });
 
   if (!user?.affiliationSchoolId) {
     return NextResponse.json({ success: false, message: "사용자 정보를 찾을 수 없습니다." }, { status: 404 });
+  }
+  if(user.type !== 0) {
+    return NextResponse.json({ success: false, message: "청원은 학생만 작성 가능합니다." }, { status: 403 });
   }
 
   // 30일 후 만료

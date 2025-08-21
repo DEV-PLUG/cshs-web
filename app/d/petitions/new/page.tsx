@@ -73,7 +73,7 @@ export default function NewPetition() {
           <p>• 반드시 <a href="/d/petitions/rules" className="text-teal-500 hover:underline">청원 작성 규칙</a> 숙지 후 작성해주시기 바랍니다.</p>
           <p>• 청원 작성 후 심사를 통과하면 청원 내용이 공개됩니다.(약 1~3일 소요)</p>
           <p>• 청원 동의는 청원 공개 후 30일간 진행됩니다.</p>
-          <p>• 청원 작성자의 실명이 공개됩니다.</p>
+          <p>• 청원 게시판은 익명으로 운영됩니다.</p>
           <p>• 부적절한 내용의 청원은 관리자에 의해 삭제될 수 있습니다.</p>
           <p>• 청원 게시판은 <a href="/d/petitions/rules" className="text-teal-500 hover:underline">학생 청원 게시판 운영 계획</a>에 따라 운영됩니다.</p>
         </div>
@@ -84,6 +84,8 @@ export default function NewPetition() {
           alt="청원 일러스트"
           width={728}
           height={100}
+          quality={100}
+          priority
         />
       </div>
       <div className="mb-10 md:hidden block">
@@ -92,6 +94,8 @@ export default function NewPetition() {
           alt="청원 일러스트"
           width={728}
           height={200}
+          quality={100}
+          priority
         />
       </div>
 
