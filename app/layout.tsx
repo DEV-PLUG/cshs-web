@@ -5,7 +5,6 @@ import { SWRProvider } from "@libs/client/swr-provider";
 import Notification from "@components/notification";
 import Providers from "./providers";
 import MobileLoading from "@components/menu/mobile-loading";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import localFont from 'next/font/local'
 
 const pretendard = localFont({
@@ -21,7 +20,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <SpeedInsights/>
       <Providers>
         <SWRProvider>
           <body className={`${pretendard.className} font-pretendard`}>
