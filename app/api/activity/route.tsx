@@ -18,6 +18,10 @@ async function PostHandler(request:Request) {
     success: false,
     message: "추가 구성원이 올바르지 않아요"
   }, { status: 400 });
+  if(req.to.length > 50) return NextResponse.json({
+    success: false,
+    message: "추가 구성원은 50명 이하로만 선택할 수 있어요"
+  }, { status: 400 });
   if(!req.teacher || !Array.isArray(req.teacher) || !req.teacher.every((item:number) => typeof item === 'number')) return NextResponse.json({
     success: false,
     message: "담당 교사가 올바르지 않아요"

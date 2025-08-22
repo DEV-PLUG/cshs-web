@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import client from '@/libs/server/client';
 import getServerSessionCM from '@/libs/server/session';
 
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
+
 async function isAdmin(session: any) {
   if (!session?.user?.email) return false;
   const user = await client.user.findUnique({ where: { email: session.user.email } });
@@ -47,4 +50,33 @@ export async function DELETE(req: Request) {
     where: { id: { in: ids } }
   });
   return NextResponse.json({ ok: true });
+}
+
+export async function POST(req: Request) {
+  const session = await getServerSessionCM();
+  if (!(await isAdmin(session))) {
+    return NextResponse.json({ error: '권한 없음' }, { status: 403 });
+  }
+  const { name, userId, type, admin, password } = await req.json();
+  let typeNum = 0;
+  if (type === 'student') typeNum = 0;
+  else if (type === 'teacher') typeNum = 1;
+  else if (type === 'general') typeNum = 2;
+
+  await bcrypt.genSalt(saltRounds, async function(err:any, salt:any) {
+    await bcrypt.hash(password, salt, async function(err:any, hash:any) {
+      const user = await client.user.create({
+        data: {
+          name,
+          userId,
+          type: typeNum,
+          admin,
+          password: hash,
+          provider: 'google',
+          email: userId,
+        }
+      });
+      return NextResponse.json({ user });
+    });
+  });
 }

@@ -93,6 +93,17 @@ async function PostHandler(request:Request) {
     data: todoData
   });
 
+  // 받는 사람들에게 notification 추가
+  await Promise.all(req.to.map((receiverId:number) =>
+    client.notification.create({
+      data: {
+        title: "할 일이 도착했습니다",
+        content: `'${req.title}' 할 일이 도착했습니다.`,
+        userId: receiverId
+      }
+    })
+  ));
+
   return NextResponse.json({
     success: true
   }, { status: 200 });

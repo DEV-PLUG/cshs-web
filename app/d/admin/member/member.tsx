@@ -12,6 +12,13 @@ import Input from "@components/input";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
+function getAdminLabel(admin: number) {
+  const labels = [];
+  if ((admin & 1) === 1) labels.push(<div key="seat" className="bg-violet-100 px-2 py-1 text-violet-700 rounded-full">자리배치</div>);
+  if ((admin & 2) === 2) labels.push(<div key="user" className="bg-blue-100 px-2 py-1 text-blue-700 rounded-full">사용자관리</div>);
+  return labels;
+}
+
 function UserRow({ user, checked, onCheck, onEdit, onReset }: any) {
   return (
     <tr className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
@@ -24,13 +31,11 @@ function UserRow({ user, checked, onCheck, onEdit, onReset }: any) {
         <div className="flex items-center space-x-1">
           { user.type === 0 && <div className="bg-green-100 px-2 py-1 text-green-700 rounded-full">학생</div> }
           { user.type === 1 && <div className="bg-orange-100 px-2 py-1 text-orange-700 rounded-full">교사</div> }
-          { (Number(user.admin) & 2) === 2 && <div className="bg-violet-100 px-2 py-1 text-violet-700 rounded-full">관리자</div> }
+          { getAdminLabel(Number(user.admin)) }
         </div>
       </td>
       <td className="px-4 py-2 flex space-x-2">
-        <Button color="teal" scalableHeight fn={() => {
-          onEdit(user);
-        }}><div className="py-2 px-3">수정</div></Button>
+        <Button color="teal" scalableHeight fn={() => onEdit(user)}><div className="py-2 px-3">수정</div></Button>
         <Button color="lightblue" scalableHeight fn={() => onReset(user.id)}><div className="py-2 px-3">비밀번호 초기화</div></Button>
       </td>
     </tr>
@@ -52,24 +57,26 @@ export default function AdminUserPanel() {
   const [editName, setEditName] = useState('');
   const [editUserId, setEditUserId] = useState('');
   const [editType, setEditType] = useState<'student' | 'teacher'>('student');
-  const [editAdmin, setEditAdmin] = useState(false);
+  const [editAdminSeat, setEditAdminSeat] = useState(false);
+  const [editAdminUser, setEditAdminUser] = useState(false);
 
   const [addName, setAddName] = useState('');
   const [addUserId, setAddUserId] = useState('');
-  const [addType, setAddType] = useState<'student' | 'teacher'>('student');
-  const [addAdmin, setAddAdmin] = useState(false);
+  const [addType, setAddType] = useState<'student' | 'teacher' | 'general'>('student');
+  const [addAdminSeat, setAddAdminSeat] = useState(false);
+  const [addAdminUser, setAddAdminUser] = useState(false);
   const [addPassword, setAddPassword] = useState('');
 
-  if (isLoading) return <div>
+  if (isLoading) return (
     <div className="flex justify-center mt-40">
       <div className="text-blue-500">
         <Loading size={40} />
       </div>
     </div>
-  </div>;
+  );
 
   const users = data?.users?.filter((u: any) =>
-    selectedTab === 'teacher' ? u.type === 1 : u.type !== 1
+    selectedTab === 'student' ? u.type === 0 : u.type !== 0
   ) || [];
 
   const handleCheck = (id: string, checked: boolean) => {
@@ -95,16 +102,20 @@ export default function AdminUserPanel() {
     setEditName(user.name || '');
     setEditUserId(user.userId || '');
     setEditType(user.type === 0 ? 'student' : 'teacher');
-    setEditAdmin(!!user.admin);
+    setEditAdminSeat((Number(user.admin) & 1) === 1);
+    setEditAdminUser((Number(user.admin) & 2) === 2);
     setEditModal(true);
   };
 
   const handleEditSubmit = async () => {
+    let admin = 0;
+    if (editAdminSeat) admin |= 1;
+    if (editAdminUser) admin |= 2;
     const data = {
       name: editName,
       userId: editUserId,
       type: editType,
-      admin: editAdmin
+      admin
     };
     await fetch('/api/user/admin', {
       method: 'PATCH',
@@ -117,11 +128,14 @@ export default function AdminUserPanel() {
   };
 
   const handleAddSubmit = async () => {
+    let admin = 0;
+    if (addAdminSeat) admin |= 1;
+    if (addAdminUser) admin |= 2;
     const data = {
       name: addName,
       userId: addUserId,
       type: addType,
-      admin: addAdmin,
+      admin,
       password: addPassword
     };
     await fetch('/api/user/admin', {
@@ -135,7 +149,8 @@ export default function AdminUserPanel() {
     setAddName('');
     setAddUserId('');
     setAddType('student');
-    setAddAdmin(false);
+    setAddAdminSeat(false);
+    setAddAdminUser(false);
     setAddPassword('');
   };
 
@@ -216,11 +231,16 @@ export default function AdminUserPanel() {
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
                 </select>
-                {/* { selectedTab === 'student' && <Input value={editClass} fn={(d:string) => setEditClass(d)} placeholder="학번" />} */}
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" checked={editAdmin} onChange={e => setEditAdmin(e.target.checked)} />
-                  <span>관리자 권한</span>
-                </label>
+                <div className="flex flex-col space-y-2">
+                  <label className="flex items-center space-x-2">
+                    <input type="checkbox" checked={editAdminSeat} onChange={e => setEditAdminSeat(e.target.checked)} />
+                    <span>자리배치 권한</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input type="checkbox" checked={editAdminUser} onChange={e => setEditAdminUser(e.target.checked)} />
+                    <span>사용자관리 권한</span>
+                  </label>
+                </div>
               </div>
               <div className="mt-5 flex justify-end space-x-2">
                 <Button color="blue" fn={handleEditSubmit}><div className="px-6">저장</div></Button>
@@ -237,16 +257,24 @@ export default function AdminUserPanel() {
                 <Input value={addUserId} fn={(d:string) => setAddUserId(d)} placeholder="아이디" />
                 <select
                   value={addType}
-                  onChange={e => setAddType(e.target.value as 'student' | 'teacher')}
+                  onChange={e => setAddType(e.target.value as 'student' | 'teacher' | 'general')}
                   className="w-full border rounded px-3 py-2"
                 >
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
+                  <option value="general">일반(표시되지 않음)</option>
                 </select>
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" checked={addAdmin} onChange={e => setAddAdmin(e.target.checked)} />
-                  <span>관리자 권한</span>
-                </label>
+                <div className="flex flex-col space-y-2">
+                  <label className="flex items-center space-x-2">
+                    <input type="checkbox" checked={addAdminSeat} onChange={e => setAddAdminSeat(e.target.checked)} />
+                    <span>자리배치 권한</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input type="checkbox" checked={addAdminUser} onChange={e => setAddAdminUser(e.target.checked)} />
+                    <span>사용자관리 권한</span>
+                  </label>
+                </div>
+                <Input type="password" value={addPassword} fn={(d:string) => setAddPassword(d)} placeholder="비밀번호" />
               </div>
               <div className="mt-5 flex justify-end space-x-2">
                 <Button color="blue" fn={handleAddSubmit}><div className="px-6">추가</div></Button>

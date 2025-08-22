@@ -12,7 +12,7 @@ import Link from "next/link";
 import { setNotification } from "@libs/client/redux/notification";
 import errorMessage from "@libs/client/error-message";
 import { useAppDispatch, useAppSelector } from "@libs/client/redux/hooks";
-import { SubButton } from "@components/button";
+import Button, { SubButton } from "@components/button";
 import Loading from "@components/loading";
 import displayPerio, { isWeekend } from "@libs/client/perio-display";
 import PasscardModal from "@components/info/passcard";
@@ -217,6 +217,7 @@ export default function ActivityList() {
                           ...activity,
                           mutateActivity: mutateActivity
                         });
+                        setApproveId(activity.id);
                         setDetailModal(true);
                       }} key={activity.id} className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                         <td className="px-6 py-2">

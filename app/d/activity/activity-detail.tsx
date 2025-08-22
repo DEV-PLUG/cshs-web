@@ -15,7 +15,6 @@ import displayPerio, { isWeekend } from "@libs/client/perio-display";
 export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
 
   const dispatch = useAppDispatch();
-
   const { data:user } = useSWR('/api/user');
 
   const [loading, setLoading] = useState(false);
@@ -49,6 +48,29 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
   const [fullMemberModal, setFullMemberModal] = useState(false);
 
   const userInfo = useAppSelector(state => state.userInfo);
+
+  // 승인하기 버튼 로직 추가
+  const [approveLoading, setApproveLoading] = useState(false);
+  async function approveActivity() {
+    if (approveLoading) return;
+    setApproveLoading(true);
+    await fetch(`/api/activity/approve`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: data.id })
+    })
+    .then(res => res.json())
+    .then(res => {
+      setApproveLoading(false);
+      if (res.success) {
+        dispatch(setNotification({ type: 'success', text: '해당 활동을 승인했습니다' }));
+        if(data?.mutateActivity) data?.mutateActivity();
+        fn();
+      } else {
+        dispatch(setNotification({ type: 'error', text: res.message || '승인에 실패했습니다.' }));
+      }
+    });
+  }
 
   return (
     <div>
@@ -140,6 +162,18 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
               <div className="text-zinc-800 mb-1 mt-5">담당 교사</div>
               <InputButton value={ data.teacher.name }/>
             </div>
+            {/* 승인하기 버튼 추가 */}
+            {user?.success === true && data.status === 0 && user.user.name === data.teacher.name && <div className="w-full h-20"></div> }
+            {user?.success === true && data.status === 0 && user.user.name === data.teacher.name && (
+              <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
+                <div className="w-full relative z-10">
+                  <Button color="blue" loading={approveLoading} fn={approveActivity}>
+                    <div className="w-full">승인하기</div>
+                  </Button>
+                </div>
+                <div className="h-7 w-full bg-white relative bottom-2"></div>
+              </div>
+            )}
           </div>
         </div>
       </div>
