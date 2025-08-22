@@ -27,8 +27,9 @@ export const authOptions = {
         }
 
         // 초기 로그인
-        if(req.body?.password === user.userId && (user.password === '' || user.password === null)) {
-          return { id: user.userId, email: user.email };
+        if(user.password === '' || user.password === null) {
+          if(req.body?.password === user.userId) return { id: user.userId, email: user.email };
+          else throw new Error("Incorrect-ID-or-PW");
         }
 
         const isValidPassword = await bcrypt.compareSync(req.body?.password, user.password);

@@ -86,7 +86,7 @@ async function PostHandler(request:Request) {
       admin: true
     }
   });
-  if (!user[0]?.affiliationSchoolId || !user[0]?.admin) return NextResponse.json({
+  if (!user[0]?.affiliationSchoolId || (Number(user[0]?.admin) & 1) !== 1) return NextResponse.json({
     success: false,
     message: 'User not found'
   }, { status: 404 });

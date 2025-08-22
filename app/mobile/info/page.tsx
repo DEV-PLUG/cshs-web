@@ -33,7 +33,7 @@ export default function Code() {
                 개발: 
               </div>
               <div>
-                14기 최지환
+                14기 - 최지환
               </div>
             </div>
             <div className="flex items-start space-x-1">

@@ -24,7 +24,7 @@ function UserRow({ user, checked, onCheck, onEdit, onReset }: any) {
         <div className="flex items-center space-x-1">
           { user.type === 0 && <div className="bg-green-100 px-2 py-1 text-green-700 rounded-full">학생</div> }
           { user.type === 1 && <div className="bg-orange-100 px-2 py-1 text-orange-700 rounded-full">교사</div> }
-          { user.admin === true && <div className="bg-violet-100 px-2 py-1 text-violet-700 rounded-full">관리자</div> }
+          { (Number(user.admin) & 2) === 2 && <div className="bg-violet-100 px-2 py-1 text-violet-700 rounded-full">관리자</div> }
         </div>
       </td>
       <td className="px-4 py-2 flex space-x-2">

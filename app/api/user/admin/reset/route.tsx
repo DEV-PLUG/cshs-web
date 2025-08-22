@@ -5,7 +5,7 @@ import getServerSessionCM from '@/libs/server/session';
 async function isAdmin(session: any) {
   if (!session?.user?.email) return false;
   const user = await client.user.findUnique({ where: { email: session.user.email } });
-  return !!user?.admin;
+  return (Number(user?.admin) & 2) === 2;
 }
 
 export async function POST(req: Request) {

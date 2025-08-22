@@ -42,7 +42,7 @@ export default function MenuButtons() {
             </div>
           </div>
         </Link>
-        { data?.user.admin === true && <Link href='/d/admin/seat'>
+        { (Number(data?.user.admin) & 1) === 1 && <Link href='/d/admin/seat'>
           <div className="px-4 py-[10px] transition-all rounded-xl flex items-center justify-between cursor-pointer hover:bg-gray-100 active:bg-gray-200">
             <div className="flex items-center space-x-3">
               { !pathname.includes('/d/admin/seat') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -169,7 +169,7 @@ export default function MenuButtons() {
             </div>
           </div>
         </Link> */}
-        { data?.user.admin === true && <Link href='/d/admin/member'>
+        { (Number(data?.user.admin) & 2) === 2 && <Link href='/d/admin/member'>
           <div className="px-4 py-[10px] transition-all rounded-xl flex items-center justify-between cursor-pointer hover:bg-gray-100 active:bg-gray-200">
             <div className="flex items-center space-x-3">
               { !pathname.includes('/d/admin/member') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -250,7 +250,7 @@ export default function MenuButtons() {
             </div>
           </div>
         </Link>
-        { data?.user.admin === true && <Link href='/d/admin/seat'>
+        { (Number(data?.user.admin) & 1) === 1 && <Link href='/d/admin/seat'>
           <div className="px-3 w-[50px] py-[10px] transition-all rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 active:bg-gray-200">
             <div className="flex items-center space-x-3">
               { !pathname.includes('/d/admin/seat') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -264,7 +264,7 @@ export default function MenuButtons() {
             </div>
           </div>
         </Link> }
-        { data?.user.admin === true && <Link href='/d/admin/member'>
+        { (Number(data?.user.admin) & 2) === 2 && <Link href='/d/admin/member'>
           <div className="px-3 w-[50px] py-[10px] transition-all rounded-xl flex items-center justify-center cursor-pointer hover:bg-gray-100 active:bg-gray-200">
             <div className="flex items-center space-x-3">
               { !pathname.includes('/d/admin/member') && <svg className="stroke-lightgray-300 w-6 h-6" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

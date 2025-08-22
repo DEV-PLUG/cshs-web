@@ -54,7 +54,7 @@ model User {
   allowNotification Boolean @default(true)
   allowNightNotification Boolean @default(false)
   allowAI Boolean @default(true)
-  admin Boolean @default(false)
+  admin Int @default(0)
 
   affiliationSchool School? @relation("SchoolMember", fields: [affiliationSchoolId], references: [id])
   affiliationSchoolId Int?

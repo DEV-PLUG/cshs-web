@@ -61,7 +61,8 @@ async function PostHandler(request:Request) {
     },
     select: {
       id: true,
-      name: true
+      name: true,
+      affiliationSchoolId: true
     }
   });
   if(!sender) return NextResponse.json({
@@ -79,7 +80,7 @@ async function PostHandler(request:Request) {
       },
       school: {
         connect: {
-          id: 1
+          id: sender.affiliationSchoolId
         }
       }
     }

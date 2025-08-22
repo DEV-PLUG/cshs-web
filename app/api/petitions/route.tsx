@@ -116,7 +116,7 @@ async function PutHandler(request: Request) {
     select: { admin: true }
   });
 
-  if (!user?.admin) {
+  if ((Number(user?.admin) & 4) !== 4) {
     return NextResponse.json({ success: false, message: "권한이 없습니다." }, { status: 403 });
   }
 
