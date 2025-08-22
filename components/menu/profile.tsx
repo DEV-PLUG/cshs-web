@@ -79,6 +79,9 @@ export default function ProfileMenu() {
       if(response.success === true) {
         dispatch(setNotification({ type: 'success', text: '비밀번호를 변경했습니다' }));
         setPWModal(false);
+        setTimeout(() => {
+          location.reload();
+        }, 500);
       }
     });
   }

@@ -81,7 +81,7 @@ const Login: NextPage = () => {
         </div>
         <div className='absolute z-20 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-full xl:w-[750px] mt-7'>
           <div className="md:space-y-2 flex flex-col justify-center items-center overflow-hidden">
-            <div className='font-bold text-center text-2xl md:text-3xl mb-5'>학교 계정으로 로그인</div>
+            <div className='font-bold text-center text-2xl md:text-3xl mb-5'>로그인</div>
             <div className='w-[93vw] md:w-[380px] space-y-1 items-center flex flex-col mb-10'>
               <Input placeholder='아이디' fn={(value:string) => setId(value)} autoFocus />
               <Input placeholder='비밀번호' type='password' fn={(value:string) => setPw(value)} />
