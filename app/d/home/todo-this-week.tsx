@@ -16,6 +16,7 @@ export default function Todo() {
   const [modal, setModal] = useState(false);
   const controls = useAnimationControls();
   const { data } = useSWR('/api/user/todo/this-week');
+  const { data: userData } = useSWR('/api/user');
   useEffect(() => {
     controls.start('visible');
   }, [data]);
@@ -138,6 +139,15 @@ export default function Todo() {
           </div>
         )
       }) }
+      { userData?.user?.password === false && (
+        <OpacityAnimation>
+          <div className="mt-20 py-8 px-8 rounded-xl bg-gradient-to-r from-white to-red-100">
+            <div className="font-bold text-red-500 text-xl text-center">안전한 전자 활승 이용을 위해<br/>비밀번호를 변경해주세요.</div>
+            <div className="text-red-500 text-center text-sm mt-2 md:block hidden">다른 사람이 내 계정으로 로그인 할 수 없도록 초기 비밀번호를 변경해주세요.<br/>비밀번호는 단방향 암호화되어, 관리자를 포함한 누구도 알 수 없도록 안전하게 저장됩니다.</div>
+            <div className="text-red-500 text-center text-sm mt-2 md:hidden block">다른 사람이 내 계정으로 로그인 할 수 없도록 초기 비밀번호를 변경해주세요. 비밀번호는 단방향 암호화되어, 관리자를 포함한 누구도 알 수 없도록 안전하게 저장됩니다.</div>
+          </div>
+        </OpacityAnimation>
+      )}
     </div>
   )
 }

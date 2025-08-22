@@ -72,6 +72,29 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
     });
   }
 
+  // 승인 취소 버튼 로직 추가
+  const [cancelApproveLoading, setCancelApproveLoading] = useState(false);
+  async function cancelApproveActivity() {
+    if (cancelApproveLoading) return;
+    setCancelApproveLoading(true);
+    await fetch(`/api/activity/cancel-approve`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: data.id })
+    })
+    .then(res => res.json())
+    .then(res => {
+      setCancelApproveLoading(false);
+      if (res.success) {
+        dispatch(setNotification({ type: 'success', text: '승인이 취소되었습니다' }));
+        if(data?.mutateActivity) data?.mutateActivity();
+        fn();
+      } else {
+        dispatch(setNotification({ type: 'error', text: res.message || '승인 취소에 실패했습니다' }));
+      }
+    });
+  }
+
   return (
     <div>
       <AnimatePresence initial={false} mode="wait">
@@ -169,6 +192,17 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                 <div className="w-full relative z-10">
                   <Button color="blue" loading={approveLoading} fn={approveActivity}>
                     <div className="w-full">승인하기</div>
+                  </Button>
+                </div>
+                <div className="h-7 w-full bg-white relative bottom-2"></div>
+              </div>
+            )}
+            {user?.success === true && data.status === 1 && user.user.name === data.teacher.name && <div className="w-full h-20"></div> }
+            {user?.success === true && data.status === 1 && user.user.name === data.teacher.name && (
+              <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
+                <div className="w-full relative z-10">
+                  <Button color="red" loading={cancelApproveLoading} fn={cancelApproveActivity}>
+                    <div className="w-full">승인 취소하기</div>
                   </Button>
                 </div>
                 <div className="h-7 w-full bg-white relative bottom-2"></div>

@@ -31,7 +31,8 @@ async function GetHandler() {
           ATPT_OFCDC_SC_CODE: true,
           SD_SCHUL_CODE: true
         }
-      }
+      },
+      password: true
     }
   });
   if(user.length <= 0) {
@@ -43,7 +44,10 @@ async function GetHandler() {
 
   return NextResponse.json({
     success: true,
-    user: user[0]
+    user: {
+      ...user[0],
+      password: user[0].password ? true : false
+    }
   }, { status: 200 });
 }
 
