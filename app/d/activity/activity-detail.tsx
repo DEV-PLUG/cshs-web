@@ -109,20 +109,38 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
         { fullMemberModal && <Modal modalType="left" backdropType="transparent" handleClose={() => setFullMemberModal(false)}>
           <div className="w-full md:w-[320px] h-[340px] -m-4">
             <div className="flex flex-col h-full p-5 pr-3">
-              <div className="font-bold text-sm text-gray-400 mb-3">추가 구성원 모두 보기</div>
+              <div className="font-bold text-sm text-gray-400 mb-3">구성원 모두 보기</div>
               <div className="custom-scroll overflow-auto">
                 {
-                  data.relation.map((relation:{ user: { id: number; profile: string; name: string, grade: number, class: number, number: number } }) => (
-                    <div key={relation.user.id} className="flex items-center space-x-2 mb-3">
-                      <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden">
-                        { relation.user.profile && <img src={relation.user.profile} alt="" className="w-full h-full object-cover" /> }
-                      </div>
-                      <div>
-                        <div className="text-zinc-800 font-bold">{ relation.user.name }</div>
-                        <div className="text-gray-400 text-sm">{relation.user.grade}학년 {relation.user.class}반 {relation.user.number}번</div>
-                      </div>
+                  // 작성자 먼저 표시
+                  <div key={data.writer.id} className="flex items-center space-x-2 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden">
+                      {data.writer.profile && <img src={data.writer.profile} alt="" className="w-full h-full object-cover" />}
                     </div>
-                  ))
+                    <div>
+                      <div className="text-zinc-800 font-bold flex items-center">
+                        {data.writer.name}
+                        <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-500 rounded-full text-xs">작성자</span>
+                      </div>
+                      <div className="text-gray-400 text-sm">{data.writer.grade}학년 {data.writer.class}반 {data.writer.number}번</div>
+                    </div>
+                  </div>
+                }
+                {
+                  // 나머지 구성원 표시 (작성자 제외)
+                  data.relation
+                    .filter((relation: { user: { id: number } }) => relation.user.id !== data.writer.id)
+                    .map((relation: { user: { id: number; profile: string; name: string, grade: number, class: number, number: number } }) => (
+                      <div key={relation.user.id} className="flex items-center space-x-2 mb-3">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden">
+                          {relation.user.profile && <img src={relation.user.profile} alt="" className="w-full h-full object-cover" />}
+                        </div>
+                        <div>
+                          <div className="text-zinc-800 font-bold">{relation.user.name}</div>
+                          <div className="text-gray-400 text-sm">{relation.user.grade}학년 {relation.user.class}반 {relation.user.number}번</div>
+                        </div>
+                      </div>
+                    ))
                 }
               </div>
             </div>
@@ -185,10 +203,22 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                 { !isWeekend() &&  <div className={ data.perio.split(',').indexOf('5') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('4') === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div> }
               </div>
             </div>
-            { data.status !== 2 && <div className="mb-3">
-              <div className="text-zinc-800 mb-1 mt-5">추가 구성원</div>
-              <InputButton fn={() => data.relation.length > 0 && setFullMemberModal(true)} value={ data.relation.length <= 0 ? '없음' : data.relation.length === 1 ? data.relation[0].user.name : data.relation.length === 2 ? `${data.relation[0].user.name}, ${data.relation[1].user.name}` : `${data.relation[0].user.name}, ${data.relation[1].user.name} 외 ${data.relation.length - 2}명` }/>
-            </div> }
+            <div className="mb-3">
+              <div className="text-zinc-800 mb-1 mt-5">구성원</div>
+              <InputButton
+                fn={() => data.relation.length > 0 && setFullMemberModal(true)}
+                value={
+                  (() => {
+                    const writerName = data.writer?.name || '';
+                    const memberNames = data.relation.map((r: any) => r.user.name);
+                    if (memberNames.length === 0) return writerName;
+                    if (memberNames.length === 1) return `${writerName}, ${memberNames[0]}`;
+                    if (memberNames.length === 2) return `${writerName}, ${memberNames[0]}, ${memberNames[1]}`;
+                    return `${writerName}, ${memberNames[0]}, ${memberNames[1]} 외 ${memberNames.length - 2}명`;
+                  })()
+                }
+              />
+            </div>
             <div className="mb-3">
               <div className="text-zinc-800 mb-1 mt-5">담당 교사</div>
               <InputButton value={ data.teacher.name }/>

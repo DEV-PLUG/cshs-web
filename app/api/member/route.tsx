@@ -30,6 +30,7 @@ async function GetHandler() {
       type: true
     },
     orderBy: {
+      userId: 'asc',
       name: 'asc'
     }
   });

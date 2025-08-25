@@ -159,7 +159,7 @@ export default function ActivityList() {
               </div>
             </div>
             <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[800px]">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[900px]">
                 <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                   <tr>
                     <th scope="col" className="px-6 py-3 !font-medium">
@@ -344,7 +344,7 @@ export default function ActivityList() {
               </OpacityAnimation> }
             </div>
             <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[800px]">
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500 min-w-[900px]">
                 <thead className="text-sm text-lightgray-200 bg-gray-50/50 border-t border-b border-lightgray-100">
                   <tr>
                     <th scope="col" className="px-6 py-3 !font-medium">

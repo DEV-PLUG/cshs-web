@@ -30,10 +30,22 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
     ],
+    screenshots: [
+      {
+        src: "/app-icon/ios/512.png",
+        sizes: "1280x720",
+        type: "image/png"
+      },
+      {
+        src: "/app-icon/ios/512.png",
+        sizes: "1280x720",
+        type: "image/png"
+      }
+    ],
     orientation: "any",
     display: "standalone",
     dir: "auto",
     lang: "ko-KR",
-    start_url: "/cshs",
+    start_url: "/",
   };
 }
