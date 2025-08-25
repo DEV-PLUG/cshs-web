@@ -29,10 +29,10 @@ async function GetHandler() {
       number: true,
       type: true
     },
-    orderBy: {
-      userId: 'asc',
-      name: 'asc'
-    }
+    orderBy: [
+      { userId: 'asc' },
+      { name: 'asc' }
+    ]
   });
 
   return NextResponse.json({
