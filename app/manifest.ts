@@ -32,12 +32,12 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     screenshots: [
       {
-        src: "/app-icon/ios/512.png",
+        src: "/images/manifest.png",
         sizes: "1280x720",
         type: "image/png"
       },
       {
-        src: "/app-icon/ios/512.png",
+        src: "/images/manifest.png",
         sizes: "1280x720",
         type: "image/png"
       }
