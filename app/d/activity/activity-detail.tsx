@@ -95,6 +95,14 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
     });
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      if(user?.user.type === 1 && data?.relation.length > 0) {
+        setFullMemberModal(true);
+      }
+    }, 200);
+  }, [user]);
+
   return (
     <div>
       <AnimatePresence initial={false} mode="wait">
