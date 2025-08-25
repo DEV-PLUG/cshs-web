@@ -12,6 +12,29 @@ import { useAppSelector } from "@libs/client/redux/hooks";
 import { AddTeacherActivityContent } from "../add-teacher-activity";
 import SelectMember from "@components/member";
 
+function getTimeByNow(date: Date) {
+  // 평일/주말 구분
+  const isWeekendDay = isWeekend();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  if (!isWeekendDay) {
+    // 평일
+    if ((hour > 15 || (hour === 15 && minute >= 20)) && (hour < 16 || (hour === 16 && minute < 20))) return '1';
+    if ((hour > 16 || (hour === 16 && minute >= 20)) && (hour < 17 || (hour === 17 && minute < 40))) return '2';
+    if ((hour > 18 || (hour === 18 && minute >= 0)) && (hour < 19 || (hour === 19 && minute < 50))) return '3';
+    if ((hour > 19 || (hour === 19 && minute >= 50)) && (hour < 21 || (hour === 21 && minute < 10))) return '4';
+    if ((hour > 21 || (hour === 21 && minute >= 10)) && (hour < 24)) return '5';
+    return '1';
+  } else {
+    // 주말
+    if ((hour > 8 || (hour === 8 && minute >= 30)) && (hour < 9 || (hour === 9 && minute < 30))) return '1';
+    if ((hour > 9 || (hour === 9 && minute >= 30)) && (hour < 10 || (hour === 10 && minute < 30))) return '2';
+    if ((hour > 10 || (hour === 10 && minute >= 30)) && (hour < 11 || (hour === 11 && minute < 30))) return '3';
+    if ((hour > 11 || (hour === 11 && minute >= 30)) && (hour < 12 || (hour === 12 && minute < 30))) return '4';
+    return '1';
+  }
+}
+
 export default function Seat() {
 
   // const [grade, setGrade] = useState(1);
@@ -29,12 +52,27 @@ export default function Seat() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    // 날짜 쿼리 또는 현재 날짜 기준으로 time 자동 설정
     const params = new URLSearchParams(window.location.search);
     const urlGrade = params.get('grade');
     const urlTime = params.get('time');
+    const urlDate = params.get('date');
     if(urlGrade && !isNaN(Number(urlGrade))) setGrade(Number(urlGrade));
-    if(urlTime) setTime(urlTime);
+    let baseDate = new Date();
+    if(urlDate) {
+      baseDate = new Date(urlDate);
+    }
+    const autoTime = getTimeByNow(baseDate);
+    setTime(urlTime || autoTime);
     setReady(true);
+  }, []);
+
+  // 날짜 변경 시 time 자동 설정
+  useEffect(() => {
+    setTimeout(() => {
+      const baseDate = new Date();
+      setTime(getTimeByNow(baseDate));
+    }, 100);
   }, []);
 
   // grade, time이 바뀔 때마다 URL 쿼리스트링에 반영
