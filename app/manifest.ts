@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default function manifest():any {
   return {
     name: "전자 활동 승인서",
     short_name: "전자활승",
@@ -39,7 +39,8 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         src: "/images/manifest.png",
         sizes: "1280x720",
-        type: "image/png"
+        type: "image/png",
+        form_factor: "wide",
       }
     ],
     orientation: "any",

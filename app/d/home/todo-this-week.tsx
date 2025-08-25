@@ -148,13 +148,13 @@ export default function Todo() {
           </div>
         </OpacityAnimation>
       )}
-      <OpacityAnimation>
+      {/* <OpacityAnimation>
         <div className="mb-5 mt-5 py-8 px-8 rounded-xl bg-gradient-to-r from-white to-cyan-100">
           <div className="font-bold text-cyan-500 text-xl text-center">전자 활승을 태블릿, 모바일 기기에<br/>앱으로 설치해 사용할 수 있습니다.</div>
           <div className="text-cyan-500 text-center text-sm mt-2 md:block hidden">IOS/iPadOS, Andorid, Windows 기기에서 앱으로 전자활승을 설치하면<br/>더 편하게 전자활승을 이용하실 수 있습니다. 자세한 내용은 <Link href="http://10.15.150.20:8888/68267cfd-7e11-448c-af27-c1c1bca759ad/-ade397e1-20f0-4d63-877f-06b5cb5aba2d"><span className="underline">앱 설치 가이드</span></Link>를 참고해주세요.</div>
           <div className="text-cyan-500 text-center text-sm mt-2 md:hidden block">IOS/iPadOS, Andorid, Windows 기기에서 앱으로 전자활승을 설치하면 더 편하게 전자활승을 이용하실 수 있습니다. 자세한 내용은 <Link href="http://10.15.150.20:8888/68267cfd-7e11-448c-af27-c1c1bca759ad/-ade397e1-20f0-4d63-877f-06b5cb5aba2d"><span className="underline">앱 설치 가이드</span></Link>를 참고해주세요.</div>
         </div>
-      </OpacityAnimation>
+      </OpacityAnimation> */}
     </div>
   )
 }
