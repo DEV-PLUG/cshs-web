@@ -1,11 +1,11 @@
-export function isWeekend() {
-  const today = new Date();
-  const day = today.getDay();
+export function isWeekend(date?: Date | string) {
+  const targetDate = date ? new Date(date) : new Date();
+  const day = targetDate.getDay();
   return day === 0 || day === 6; // 0: 일요일, 6: 토요일
 };
 
-export default function displayPerio(perio:number, type?:number):string {
-  if (isWeekend()) {
+export default function displayPerio(perio:number, type?:number, date?:Date | string):string {
+  if (isWeekend(date)) {
     // 주말: perio 1~4
     const weekendLabels = ['1교시', '2교시', '3교시', '4교시'];
     return weekendLabels[perio - 1] || '';

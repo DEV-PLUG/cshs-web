@@ -35,34 +35,39 @@ export function Textarea({ type = 'text', value, disabled = false, fn, placehold
   );
 };
 
-export function DateInput({ value, disabled = false, fn }:{ value?:Date, disabled?:boolean, fn?(value:Date):void }) {
+export function DateInput({ value, disabled = false, disablePast = false, fn }:{ value?:Date, disabled?:boolean, disablePast?:boolean, fn?(value:Date):void }) {
+  // disablePast가 true일 때만 오늘 날짜를 최소 날짜로 설정
+  const today = dayjs().startOf('day');
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <StaticDatePicker  slots={{
-        actionBar: undefined,
-        toolbar: undefined
-      }} slotProps={{
-        actionBar: {
-          actions: [],
-        },
-        day: {
-          sx: {
-            "&.MuiPickersDay-root.Mui-selected": {
-              backgroundColor: "#3b82f6",
+      <StaticDatePicker 
+        minDate={disablePast ? today : undefined}
+        slots={{
+          actionBar: undefined,
+          toolbar: undefined
+        }} slotProps={{
+          actionBar: {
+            actions: [],
+          },
+          day: {
+            sx: {
+              "&.MuiPickersDay-root.Mui-selected": {
+                backgroundColor: "#3b82f6",
+              }
+            }
+          },
+          yearButton: {
+            sx: {
+              "&.MuiPickersYear-root.Mui-selected": {
+                backgroundColor: "#3b82f6",
+              },
+              "&.MuiPickersYear-yearButton.Mui-selected": {
+                backgroundColor: "#3b82f6",
+              }
             }
           }
-        },
-        yearButton: {
-          sx: {
-            "&.MuiPickersYear-root.Mui-selected": {
-              backgroundColor: "#3b82f6",
-            },
-            "&.MuiPickersYear-yearButton.Mui-selected": {
-              backgroundColor: "#3b82f6",
-            }
-          }
-        }
-      }} onChange={(value:any) => fn && fn(new Date(value))} defaultValue={dayjs(value)}  />
+        }} onChange={(value:any) => fn && fn(new Date(value))} defaultValue={dayjs(value)}  />
     </LocalizationProvider>
   );
 }
