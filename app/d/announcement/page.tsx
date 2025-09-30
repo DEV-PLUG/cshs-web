@@ -36,25 +36,9 @@ export default function Announcement() {
         </div>
         <div className="w-full h-[1px] my-5 bg-lightgray-100 xl:block hidden"></div>
         <MobileBottomMenu/>
-        <div className="w-full h-max-[calc(100vh-180px)] px-2 bg-white grid space-y-5 divide-y overflow-y-auto">
+        <div className="w-full max-h-[calc(100vh-180px)] px-2 bg-white grid space-y-5 divide-y overflow-y-auto">
           <div></div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
-          <div>오애ㅏㄴ됨</div>
+          <Shit/>
           <div></div>
         </div>
       </div>
