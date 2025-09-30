@@ -35,13 +35,25 @@ export default function Announcement() {
         </div>
         <div className="w-full h-[1px] my-5 bg-lightgray-100 xl:block hidden"></div>
         <MobileBottomMenu/>
-        <div className="w-full md:mt-8 mt-16 bg-white grid space-y-5 px-2 divide-y">
-          <div></div>
-          <div>씨 발 련</div>
-          <div>씨 발 련</div>
-          <div>씨 발 련</div>
-          <div>씨 발 련</div>
-          <div></div>
+        <div className="h-[calc(100vh-180px)] mt-4 px-2">
+          <div className="w-full h-full bg-white grid space-y-5 border-y divide-y overflow-auto">
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+            <div>test text</div>
+          </div>
         </div>
       </div>
     </main>
