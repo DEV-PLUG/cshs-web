@@ -36,8 +36,13 @@ export default function Announcement() {
         </div>
         <div className="w-full h-[1px] my-5 bg-lightgray-100 xl:block hidden"></div>
         <MobileBottomMenu/>
-        <div className="w-full max-h-[calc(100vh-180px)] px-2 bg-white grid space-y-5 divide-y overflow-y-auto">
+        <div className="w-full max-h-[calc(100vh-180px)] px-2 bg-white grid space-y-5 divide-y overflow-y-auto custm-scroll">
           <div></div>
+          <Shit/>
+          <Shit/>
+          <Shit/>
+          <Shit/>
+          <Shit/>
           <Shit/>
           <div></div>
         </div>
