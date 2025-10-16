@@ -101,10 +101,10 @@ export default function ActivityList() {
 
                     <div className="text-sm text-zinc-500 mb-10">
                       <div>작성일: {displayDate(new Date(p.createdAt), 'date')}</div>
-                      {/* <div>
+                      <div>
                         {p.writer?.name ? `작성자: ${p.writer.name}` : '작성자: 익명'}
                         {p.writer?.grade ? ` (${p.writer.grade}${p.writer.class}${p.writer.number?.toString().padStart(2, '0')})` : ''}
-                      </div> */}
+                      </div>
                       {p.expiresAt && <div>마감: {dday(p.expiresAt)}</div>}
                     </div>
 

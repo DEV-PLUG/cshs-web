@@ -40,6 +40,15 @@ async function GetHandler(request: Request) {
       include: {
         supports: {
           select: { id: true }
+        },
+        writer: {
+          select: {
+            id: true,
+            name: true,
+            grade: true,
+            class: true,
+            number: true
+          }
         }
       },
       orderBy: { createdAt: 'desc' },
