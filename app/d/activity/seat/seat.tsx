@@ -403,17 +403,15 @@ export default function Seat() {
               </div>
             </div>
 
-            <div className="space-y-12">
+            <div className="space-y-24">
               <div className="space-y-2">
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -422,12 +420,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -436,12 +432,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -450,12 +444,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -464,12 +456,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -478,12 +468,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -492,12 +480,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
-                </div>
-                <div className="flex space-x-2">
-                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
                 <div className="flex space-x-2">
+                  <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                   <div className="rounded-lg w-[90px] h-[50px] bg-gray-100 animate-pulse"></div>
                 </div>
@@ -593,17 +579,15 @@ export default function Seat() {
               </div>
             </div>
 
-            <div className="space-y-12">
+            <div className="space-y-24">
               <div className="space-y-2">
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={343} />
                   <CustomSeat horizontal long seatNumber={344} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={345} />
-                  <CustomSeat horizontal long seatNumber={346} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={346} />
                   <CustomSeat horizontal long seatNumber={347} />
                   <CustomSeat horizontal long seatNumber={348} />
                 </div>
@@ -612,12 +596,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={349} />
                   <CustomSeat horizontal long seatNumber={350} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={351} />
-                  <CustomSeat horizontal long seatNumber={352} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={352} />
                   <CustomSeat horizontal long seatNumber={353} />
                   <CustomSeat horizontal long seatNumber={354} />
                 </div>
@@ -626,12 +608,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={355} />
                   <CustomSeat horizontal long seatNumber={356} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={357} />
-                  <CustomSeat horizontal long seatNumber={358} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={358} />
                   <CustomSeat horizontal long seatNumber={359} />
                   <CustomSeat horizontal long seatNumber={360} />
                 </div>
@@ -640,12 +620,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={361} />
                   <CustomSeat horizontal long seatNumber={362} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={363} />
-                  <CustomSeat horizontal long seatNumber={364} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={364} />
                   <CustomSeat horizontal long seatNumber={365} />
                   <CustomSeat horizontal long seatNumber={366} />
                 </div>
@@ -654,12 +632,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={367} />
                   <CustomSeat horizontal long seatNumber={368} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={369} />
-                  <CustomSeat horizontal long seatNumber={370} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={370} />
                   <CustomSeat horizontal long seatNumber={371} />
                   <CustomSeat horizontal long seatNumber={372} />
                 </div>
@@ -668,12 +644,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={373} />
                   <CustomSeat horizontal long seatNumber={374} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={375} />
-                  <CustomSeat horizontal long seatNumber={376} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={376} />
                   <CustomSeat horizontal long seatNumber={377} />
                   <CustomSeat horizontal long seatNumber={378} />
                 </div>
@@ -682,12 +656,10 @@ export default function Seat() {
                 <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={379} />
                   <CustomSeat horizontal long seatNumber={380} />
-                </div>
-                <div className="flex space-x-2">
                   <CustomSeat horizontal long seatNumber={381} />
-                  <CustomSeat horizontal long seatNumber={382} />
                 </div>
                 <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={382} />
                   <CustomSeat horizontal long seatNumber={383} />
                   <CustomSeat horizontal long seatNumber={384} />
                 </div>
