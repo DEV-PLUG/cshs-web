@@ -1,9 +1,3 @@
-import nextPwa from 'next-pwa';
-
-const withPWA = nextPwa({
-  dest: 'public',
-});
-
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -30,4 +24,4 @@ const nextConfig = {
   swcMinify: true,
 };
 
-export default withPWA(nextConfig);
+export default nextConfig;
