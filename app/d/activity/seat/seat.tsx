@@ -315,7 +315,7 @@ export default function Seat() {
       </div>
       { grade === 2 ? <div className="mt-8 mb-10 flex overflow-x-auto space-x-10">
         {!(data?.success === true && user?.success === true) ? (
-          <div className="space-x-28 flex">
+          <div className="space-x-10 md:space-x-28 flex">
             {/* 왼쪽 세로 6개 */}
             <div className="space-y-24">
               <div className="space-y-2">
@@ -505,7 +505,7 @@ export default function Seat() {
             </div>
           </div>
         ) : <OpacityAnimation>
-          <div className="space-x-28 flex">
+          <div className="space-x-10 md:space-x-28 flex mb-10">
             {/* 왼쪽 세로 6개 */}
             <div className="space-y-24">
               <div className="space-y-2">
