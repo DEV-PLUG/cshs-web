@@ -10,8 +10,8 @@ import { setNotification } from "@libs/client/redux/notification";
 import { useAppDispatch } from "@libs/client/redux/hooks";
 import Input from "@components/input";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
 
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 function getAdminLabel(admin: number) {
   const labels = [];
   if ((admin & 1) === 1) labels.push(<div key="seat" className="bg-violet-100 px-2 py-1 text-violet-700 rounded-full">자리배치</div>);

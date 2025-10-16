@@ -1,6 +1,7 @@
 'use client';
 
-export default function Shit() {
+export default function Announcement(get_announcementData) {
+  const announcementData = JSON.parse(get_announcementData.announcementData);
   return (
     <div className="px-2 pt-5">
       <div className="flex space-x-1 items-center">
@@ -9,19 +10,15 @@ export default function Shit() {
           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"></path>
           </svg>
         </div>
-        <div className="text-sm font-bold">유현호</div>
+        <div className="text-sm font-bold">{announcementData.user.name}</div>
         <div className="text-sm text-lightgray-300">·</div>
-        <div className="text-sm text-lightgray-300">?시간 전</div>
+        <div className="text-sm text-lightgray-300">{announcementData.createdAt}</div>
       </div>
       <div className="flex pl-3">
         <div className="w-[1px] mt-2 bg-lightgray-100"></div>
         <div className="ml-3">
-          <div className="font-bold text-lg my-1">
-            제목제목제목
-          </div>
-          <div>
-            내용내용내용내용<br/>내용용용용
-          </div>
+          <div className="font-bold text-lg my-1">{announcementData.title}</div>
+          <div>{announcementData.content}</div>
         </div>
       </div>
     </div>

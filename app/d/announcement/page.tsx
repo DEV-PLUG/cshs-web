@@ -1,7 +1,8 @@
 import Menu from "@components/menu";
 import Image from "next/image";
 import Link from "next/link";
-import Shit from "./shit";
+import Announcements from "./announcements";
+import AddAnnouncementButton from "./add-announcement";
 import type { Metadata } from 'next';
 import MobileBottomMenu from "@components/menu/mobile";
 import NotificationMenu from "@components/menu/notification";
@@ -29,23 +30,19 @@ export default function Announcement() {
       <Menu/>
       <div className="w-full absolute left-[320px] drop-shadow-2xl z-10 h-[100vh] bg-white md:block hidden"></div>
       <div className="h-[100vh] bg-white z-10 w-full md:border-l-[1px] border-lightgray-100 p-5 md:p-10 overflow-auto">
-        <div className="justify-between w-full mb-8 md:flex hidden">
-          <div className="flex space-x-7 h-[46px] items-center">
+        <div className="w-full mb-8 md:flex hidden justify-between">
+          <div className="md:flex space-x-3 md:space-x-7 h-[46px] items-center">
             <div className="font-bold text-3xl text-zinc-800 cursor-pointer">공지사항</div>
           </div>
+          <div className="flex">
+            <div className="md:block flex md:h-[44px]">
+              <AddAnnouncementButton/>
+            </div>
+          </div>
+          <MobileBottomMenu/>
         </div>
         <div className="w-full h-[1px] my-5 bg-lightgray-100 xl:block hidden"></div>
-        <MobileBottomMenu/>
-        <div className="w-full max-h-[calc(100vh-180px)] px-2 bg-white grid space-y-5 divide-y overflow-y-auto custm-scroll">
-          <div></div>
-          <Shit/>
-          <Shit/>
-          <Shit/>
-          <Shit/>
-          <Shit/>
-          <Shit/>
-          <div></div>
-        </div>
+        <Announcements/>
       </div>
     </main>
   )

@@ -315,4 +315,5 @@ model Announcement {
   updatedAt DateTime @updatedAt
   title String
   content String @db.Text
+  grade Int
 }
