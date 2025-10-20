@@ -109,6 +109,7 @@ async function GetHandler(request:Request) {
           }
         }
       },
+      date: true,
       place: {
         select: {
           id: true,

@@ -25,9 +25,9 @@ export function InputButton({ value, disabled = false, fn }:{ value?:string | nu
   );
 };
 
-export function Textarea({ type = 'text', value, disabled = false, fn, placeholder }:{ type?:'text' | 'number', value?:string | number, disabled?:boolean, fn?(value:string | number):void, placeholder?:string }) {
+export function Textarea({ type = 'text', value, disabled = false, fn, placeholder, full = false, color = 'blue' }:{ type?:'text' | 'number', value?:string | number, disabled?:boolean, fn?(value:string | number):void, placeholder?:string, full?:boolean, color?:'blue' | 'teal' }) {
   return (
-    <textarea placeholder={placeholder} value={value} disabled={disabled} className="w-full resize-none max-w-[400px] h-[105px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all py-3 p-4 outline-none border-2 border-lightgray-100" onChange={(e) => {
+    <textarea placeholder={placeholder} value={value} disabled={disabled} className={`w-full resize-none h-[105px] rounded-2xl hover:border-gray-300 focus:border-${color}-500 transition-all py-3 p-4 outline-none border-2 border-lightgray-100 ${full ? '' : 'max-w-[400px]'}'}`} onChange={(e) => {
       if(type === 'number' && !isNaN(+e.target.value)) {
         fn && fn(+e.target.value);
       } else fn && fn(e.target.value);
@@ -35,34 +35,39 @@ export function Textarea({ type = 'text', value, disabled = false, fn, placehold
   );
 };
 
-export function DateInput({ value, disabled = false, fn }:{ value?:Date, disabled?:boolean, fn?(value:Date):void }) {
+export function DateInput({ value, disabled = false, disablePast = false, fn }:{ value?:Date, disabled?:boolean, disablePast?:boolean, fn?(value:Date):void }) {
+  // disablePast가 true일 때만 오늘 날짜를 최소 날짜로 설정
+  const today = dayjs().startOf('day');
+  
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <StaticDatePicker  slots={{
-        actionBar: undefined,
-        toolbar: undefined
-      }} slotProps={{
-        actionBar: {
-          actions: [],
-        },
-        day: {
-          sx: {
-            "&.MuiPickersDay-root.Mui-selected": {
-              backgroundColor: "#3b82f6",
+      <StaticDatePicker 
+        minDate={disablePast ? today : undefined}
+        slots={{
+          actionBar: undefined,
+          toolbar: undefined
+        }} slotProps={{
+          actionBar: {
+            actions: [],
+          },
+          day: {
+            sx: {
+              "&.MuiPickersDay-root.Mui-selected": {
+                backgroundColor: "#3b82f6",
+              }
+            }
+          },
+          yearButton: {
+            sx: {
+              "&.MuiPickersYear-root.Mui-selected": {
+                backgroundColor: "#3b82f6",
+              },
+              "&.MuiPickersYear-yearButton.Mui-selected": {
+                backgroundColor: "#3b82f6",
+              }
             }
           }
-        },
-        yearButton: {
-          sx: {
-            "&.MuiPickersYear-root.Mui-selected": {
-              backgroundColor: "#3b82f6",
-            },
-            "&.MuiPickersYear-yearButton.Mui-selected": {
-              backgroundColor: "#3b82f6",
-            }
-          }
-        }
-      }} onChange={(value:any) => fn && fn(new Date(value))} defaultValue={dayjs(value)}  />
+        }} onChange={(value:any) => fn && fn(new Date(value))} defaultValue={dayjs(value)}  />
     </LocalizationProvider>
   );
 }

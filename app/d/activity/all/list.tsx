@@ -145,10 +145,15 @@ export default function ActivityList() {
                           { activity.place.place }
                         </td>
                         <td className="px-6 py-2">
-                          {displayDate(activity.createdAt, 'date')}<br/>
-                          {displayPerio(+activity.perio.split(',').sort()[0])}
+                          {activity.date
+                          ? activity.date.replace(
+                            /^(\d{4})(\d{2})(\d{2})$/,
+                            "$1년 $2월 $3일"
+                            )
+                          : ""}<br/>
+                          {displayPerio(+activity.perio.split(',').sort()[0], undefined, activity.date)}
                           {' ~ '}
-                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0])}
+                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0], undefined, activity.date)}
                         </td>
                       </tr>
                     )
@@ -271,10 +276,16 @@ export default function ActivityList() {
                           { activity.place.place }
                         </td>
                         <td className="px-6 py-2">
-                          {displayDate(activity.createdAt, 'date')}<br/>
-                          {displayPerio(+activity.perio.split(',').sort()[0])}
+                          {activity.date
+                          ? activity.date.replace(
+                            /^(\d{4})(\d{2})(\d{2})$/,
+                            "$1년 $2월 $3일"
+                            )
+                          : ""}
+                          <br/>
+                          {displayPerio(+activity.perio.split(',').sort()[0], undefined, activity.date)}
                           {' ~ '}
-                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0])}
+                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0], undefined, activity.date)}
                         </td>
                       </tr>
                     )

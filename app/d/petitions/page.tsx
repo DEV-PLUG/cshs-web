@@ -34,10 +34,17 @@ export default async function Home() {
             <div className="font-bold text-2xl md:text-3xl text-zinc-800">학생 청원 게시판</div>
             <div className="text-gray-500 mb-5 md:mb-10">학생들이 올린 청원을 살펴보고 동의할 수 있습니다.</div>
           </div>
-          <div className="flex">
+          <div className="flex gap-2">
+            <div className="md:block flex md:h-[44px] mb-5 md:mb-0">
+              <Link href="/d/petitions/my">
+                <div className="px-6 py-3 flex items-center justify-center bg-teal-100 text-teal-500 rounded-xl font-medium hover:bg-teal-100/80 transition-colors cursor-pointer">
+                  내 청원 보기
+                </div>
+              </Link>
+            </div>
             <div className="md:block flex md:h-[44px] mb-5 md:mb-0">
               <Link href="/d/petitions/new">
-                <div className="px-4 py-3 w-[150px] flex items-center justify-center bg-teal-500 text-white rounded-xl font-semibold hover:bg-teal-600 transition-colors cursor-pointer">
+                <div className="px-6 py-3 flex items-center justify-center bg-teal-500 text-white rounded-xl font-semibold hover:bg-teal-600 transition-colors cursor-pointer">
                   청원 작성하기
                 </div>
               </Link>

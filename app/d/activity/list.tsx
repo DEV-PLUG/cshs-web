@@ -243,10 +243,16 @@ export default function ActivityList() {
                           { activity.place.place }
                         </td>
                         <td className="px-6 py-2">
-                          {displayDate(activity.createdAt, 'date')}<br/>
-                          {displayPerio(+activity.perio.split(',').sort()[0])}
+                          {activity.date
+                          ? activity.date.replace(
+                            /^(\d{4})(\d{2})(\d{2})$/,
+                            "$1년 $2월 $3일"
+                            )
+                          : ""}
+                          <br/>
+                          {displayPerio(+activity.perio.split(',').sort()[0], undefined, activity.date)}
                           {' ~ '}
-                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0])}
+                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0], undefined, activity.date)}
                         </td>
                         { userInfo.type === 1 && <td className="px-6 py-2 w-[40px]">
                           <div className="bg-blue-500/20 hover:bg-blue-600/20 text-sm transition-all font-bold justify-center px-3 py-3 flex items-center cursor-pointer rounded-[10px] text-blue-500" onClick={(e) => {
@@ -316,7 +322,7 @@ export default function ActivityList() {
                         return a.id - b.id;
                       })[0];
                     }
-                    const label = displayPerio(+perio, 2);
+                    const label = displayPerio(+perio, 2, firstActivity?.date);
                     if(isWeekend() && perio === '5') return;
                     return (
                       <div
@@ -399,6 +405,7 @@ export default function ActivityList() {
                           ...activity,
                           mutateActivity: mutateActivity
                         });
+                        setApproveId(activity.id);
                         setDetailModal(true);
                       }} key={activity.id} className="bg-white hover:bg-gray-50 transition-all cursor-pointer border-b text-zinc-800">
                         <td className="px-6 py-2">
@@ -424,10 +431,16 @@ export default function ActivityList() {
                           { activity.place.place }
                         </td>
                         <td className="px-6 py-2">
-                          {displayDate(activity.createdAt, 'date')}<br/>
-                          {displayPerio(+activity.perio.split(',').sort()[0])}
+                          {activity.date
+                          ? activity.date.replace(
+                            /^(\d{4})(\d{2})(\d{2})$/,
+                            "$1년 $2월 $3일"
+                            )
+                          : ""}
+                          <br/>
+                          {displayPerio(+activity.perio.split(',').sort()[0], undefined, activity.date)}
                           {' ~ '}
-                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0])}
+                          {displayPerio(+activity.perio.split(',').sort(function (a:number, b:number) {return b - a;})[0], undefined, activity.date)}
                         </td>
                       </tr>
                     )

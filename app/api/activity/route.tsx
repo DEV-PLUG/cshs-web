@@ -62,7 +62,9 @@ async function PostHandler(request:Request) {
   // 'userIds와 times는 숫자 배열이므로 SQL 인젝션 위험이 없습니다.' - Copilot
   // -----------------------------------------------------
   
-  const today = formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
+  // 사용자가 날짜를 지정한 경우 해당 날짜 사용, 그렇지 않으면 오늘 날짜 사용
+  const checkDate = req.date ? formatedDate(req.date) : formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
+  
   const likeConditions = times.map((t: string) => `a.perio LIKE '%${t}%'`).join(' OR ');
   const overlappingRows: any[] = await client.$queryRawUnsafe(`
     SELECT 
@@ -74,7 +76,7 @@ async function PostHandler(request:Request) {
     LEFT JOIN "ActivityRelation" ar ON a.id = ar."activityId"
     WHERE ar."userId" IN (${userIds.join(',')})
       AND (${likeConditions})
-      AND a.date = '${today}'
+      AND a.date = '${checkDate}'
   `);
 
   // 유저 정보 미리 조회
@@ -133,7 +135,7 @@ async function PostHandler(request:Request) {
         }
       },
       perio: req.time.join(','),
-      date: formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })),
+      date: checkDate,
       teacher: {
         connect: {
           id: req.teacher[0]

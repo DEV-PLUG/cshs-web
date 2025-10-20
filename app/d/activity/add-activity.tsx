@@ -20,8 +20,10 @@ import displayPerio, { isWeekend } from "@libs/client/perio-display";
 
 export default function AddActivityButton() {
   const [modal, setModal] = useState(false);
+  const [dateModal, setDateModal] = useState(false);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const dispatch = useDispatch();
 
@@ -54,6 +56,11 @@ export default function AddActivityButton() {
 
 
     setLoading(true);
+    
+    // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
+    const selectedDateFormatted = selectedDate.toISOString().split('T')[0];
+    console.log('선택된 날짜:', selectedDate, '변환된 날짜:', selectedDateFormatted);
+    
     await fetch(`/api/activity`, {
       method: "POST",
       headers: {
@@ -64,7 +71,8 @@ export default function AddActivityButton() {
         to: selected.map((member) => member.id),
         time,
         place: place.id,
-        teacher: [selectedTeacher[0].id]
+        teacher: [selectedTeacher[0].id],
+        date: selectedDateFormatted
       })
     })
     .then((response) => response.json())
@@ -155,9 +163,9 @@ export default function AddActivityButton() {
                                     .map((period:string) => {
                                     switch (period) {
                                       case '0':
-                                      return displayPerio(1);
+                                      return displayPerio(1, 1);
                                       case '1':
-                                      return displayPerio(2);
+                                      return displayPerio(2, 1);
                                       case '2':
                                       return displayPerio(3, 3);
                                       case '3':
@@ -242,6 +250,17 @@ export default function AddActivityButton() {
       <AnimatePresence initial={false} mode="wait">
         { modal && <Modal scroll handleClose={() => setModal(false)}>
           <div className="w-full md:w-[380px] h-[580px]">
+            <AnimatePresence initial={false} mode="wait">
+              { dateModal && <Modal modalType="left" backdropType="transparent" handleClose={() => setDateModal(false)}>
+                <div className="w-full md:w-[320px] h-[340px] -m-4">
+                  <div className="flex flex-col justify-center md:justify-between h-full">
+                    <div>
+                      <DateInput value={selectedDate} disablePast={true} fn={(date: Date) => setSelectedDate(date)} />
+                    </div>
+                  </div>
+                </div>
+              </Modal> }
+            </AnimatePresence>
             <div className="flex justify-end">
               <div onClick={() => setModal(false)} className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer">
                 <svg className="w-6 h-6 p-1 rounded-full stroke-gray-400" fill="none" strokeWidth={2} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -281,6 +300,10 @@ export default function AddActivityButton() {
                   <Input value={content} placeholder="R&E" autoFocus fn={(value:string) => setContent(value)} />
                 </div>
                 <div>
+                  <div className="text-zinc-800 mb-1 mt-5">활동 날짜</div>
+                  <InputButton value={displayDate(selectedDate, 'date')} fn={() => setDateModal(true)}/>
+                </div>
+                <div>
                   <div className="text-zinc-800 mb-1 mt-5">활동 시간</div>
                   <div className="flex rounded-full px-1 py-1 bg-gray-100">
                     <div onClick={() => {
@@ -289,29 +312,29 @@ export default function AddActivityButton() {
                       } else {
                         setTime(time.filter((item) => item !== 1));
                       }
-                    }} className={ time.indexOf(1) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>{displayPerio(1)}</div>
+                    }} className={ time.indexOf(1) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>{displayPerio(1, undefined, selectedDate)}</div>
                     <div onClick={() => {
                       if(time.indexOf(2) === -1) {
                         setTime([...time, 2]);
                       } else {
                         setTime(time.filter((item) => item !== 2));
                       }
-                    }} className={ time.indexOf(2) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(1) === -1 && 'rounded-l-full'} ${time.indexOf(3) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(2)}</div>
+                    }} className={ time.indexOf(2) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(1) === -1 && 'rounded-l-full'} ${time.indexOf(3) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(2, undefined, selectedDate)}</div>
                     <div onClick={() => {
                       if(time.indexOf(3) === -1) {
                         setTime([...time, 3]);
                       } else {
                         setTime(time.filter((item) => item !== 3));
                       }
-                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(3, 2)}</div>
+                    }} className={ time.indexOf(3) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(2) === -1 && 'rounded-l-full'} ${time.indexOf(4) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(3, 2, selectedDate)}</div>
                     <div onClick={() => {
                       if(time.indexOf(4) === -1) {
                         setTime([...time, 4]);
                       } else {
                         setTime(time.filter((item) => item !== 4));
                       }
-                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(4, 2)}</div>
-                    { !isWeekend() && <div onClick={() => {
+                    }} className={ time.indexOf(4) === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${time.indexOf(3) === -1 && 'rounded-l-full'} ${time.indexOf(5) === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(4, 2, selectedDate)}</div>
+                    { !isWeekend(selectedDate) && <div onClick={() => {
                       if(time.indexOf(5) === -1) {
                         setTime([...time, 5]);
                       } else {
@@ -335,43 +358,43 @@ export default function AddActivityButton() {
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(1)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(1, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(1)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(1, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(2)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(2, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(2)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(2, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(3)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(3, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(3)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(3, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(4)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(4, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(4)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(4, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(5)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(5, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(5)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(5, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length}팀)</div>
                       </div> }
                     </div>
                 </div>
@@ -413,6 +436,8 @@ export default function AddActivityButton() {
               setContent('');
               setSelected([]);
               setSelectedTeacher([]);
+              setSelectedDate(new Date());
+              setDateModal(false);
               setModal(true);
               setPlace(undefined);
               setTime([]);
@@ -432,6 +457,8 @@ export default function AddActivityButton() {
             setContent('');
             setSelected([]);
             setSelectedTeacher([]);
+            setSelectedDate(new Date());
+            setDateModal(false);
             setModal(true);
             setPlace(undefined);
             setTime([]);

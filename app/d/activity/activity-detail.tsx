@@ -194,13 +194,22 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
               <InputButton value={data.place.place}/>
             </div> }
             <div>
+              <div className="text-zinc-800 mb-1 mt-5">활동 날짜</div>
+              <InputButton value={data.date
+                          ? data.date.replace(
+                            /^(\d{4})(\d{2})(\d{2})$/,
+                            "$1년 $2월 $3일"
+                            )
+                          : ""}/>
+            </div>
+            <div>
               <div className="text-zinc-800 mb-1 mt-5">활동 시간</div>
               <div className="flex rounded-full px-1 py-1 bg-gray-100">
-                <div className={ data.perio.split(',').indexOf('1') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('2') === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>{displayPerio(1)}</div>
-                <div className={ data.perio.split(',').indexOf('2') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('1') === -1 && 'rounded-l-full'} ${data.perio.split(',').indexOf('3') === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(2)}</div>
-                <div className={ data.perio.split(',').indexOf('3') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('2') === -1 && 'rounded-l-full'} ${data.perio.split(',').indexOf('4') === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(3, 2)}</div>
-                <div className={ data.perio.split(',').indexOf('4') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('3') === -1 && 'rounded-l-full'} ${data.perio.split(',').indexOf('5') === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(4, 2)}</div>
-                { !isWeekend() &&  <div className={ data.perio.split(',').indexOf('5') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('4') === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div> }
+                <div className={ data.perio.split(',').indexOf('1') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('2') === -1 ? 'rounded-full' : 'rounded-l-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>{displayPerio(1, undefined, data.date)}</div>
+                <div className={ data.perio.split(',').indexOf('2') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('1') === -1 && 'rounded-l-full'} ${data.perio.split(',').indexOf('3') === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(2, undefined, data.date)}</div>
+                <div className={ data.perio.split(',').indexOf('3') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('2') === -1 && 'rounded-l-full'} ${data.perio.split(',').indexOf('4') === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(3, 2, data.date)}</div>
+                <div className={ data.perio.split(',').indexOf('4') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('3') === -1 && 'rounded-l-full'} ${data.perio.split(',').indexOf('5') === -1 && 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer text-sm` }>{displayPerio(4, 2, data.date)}</div>
+                { !isWeekend(data.date) &&  <div className={ data.perio.split(',').indexOf('5') === -1 ? "rounded-full w-[100px] py-2 text-lightgray-200 text-center cursor-pointer hover:bg-gray-200 transition-all text-sm" : `${data.perio.split(',').indexOf('4') === -1 ? 'rounded-full' : 'rounded-r-full'} w-[100px] py-2 bg-white font-bold text-zinc-800 text-center cursor-pointer transition-all text-sm` }>야자 3</div> }
               </div>
             </div>
             <div className="mb-3">
