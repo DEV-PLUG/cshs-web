@@ -25,6 +25,7 @@ async function GetHandler() {
       updatedAt: true,
       title: true,
       content: true,
+      grade: true,
     }
   });
 

@@ -11,14 +11,15 @@ import Button from "@components/button";
 import Input from "@components/input";
 import {Textarea} from "@components/input";
 
-export default function AddAnnouncementButton() {
+export default function AddAnnouncementButton(data) {
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [grade, setGrade] = useState(1);
 
   const dispatch = useDispatch();
+  
+  const grade = data.grade;
   
   async function postAnnounce() {
     if(loading) return;
