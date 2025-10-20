@@ -74,6 +74,7 @@ model User {
   verificationCode VerificationCode? @relation("VerificationCode")
   writtenPetitions Petition[] @relation("WrittenPetition")
   petitionSupports PetitionSupport[] @relation("UserPetitionSupport")
+  writtenAnnouncement Announcement[] @relation("WrittenAnnouncement")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -304,4 +305,15 @@ model PetitionSupport {
   updatedAt DateTime @updatedAt
 
   @@unique([petitionId, userId]) // 한 청원에 한 번만 동의 가능
+}
+
+model Announcement {
+  id Int @id @default(autoincrement())
+  user User @relation("WrittenAnnouncement", fields: [writerId], references: [id])
+  writerId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title String
+  content String @db.Text
+  grade Int
 }
