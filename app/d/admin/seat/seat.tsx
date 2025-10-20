@@ -17,14 +17,14 @@ export default function Seat() {
 
   const { data } = useSWR(`/api/admin/seat?grade=${grade}`);
 
-  function CustomSeat({ seatNumber, horizontal = false }: { seatNumber:number, horizontal?: boolean }) {
+  function CustomSeat({ seatNumber, horizontal = false, long = false }: { seatNumber:number, horizontal?: boolean, long?: boolean }) {
     // 학년에 따라 백의 자리 결정
     const seatUser = localSeat?.find((u:any) => u.seat === seatNumber);
     const seatBgClass = "bg-gray-100 hover:bg-gray-200";
 
     return (
       <div
-        className={horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
+        className={long === true ? `${seatBgClass} rounded-lg w-[90px] h-[50px] cursor-pointer flex flex-col items-center justify-center` : horizontal === true ? `${seatBgClass} rounded-lg w-[85px] h-[60px] cursor-pointer flex flex-col items-center justify-center` : `${seatBgClass} rounded-lg w-[65px] h-[100px] cursor-pointer flex flex-col items-center justify-center`}
         onClick={() => {
           setMemberModal(true);
           setSelectedSeat(seatNumber);
@@ -156,7 +156,187 @@ export default function Seat() {
           </div> }
         </Button>
       </div>
-      { grade !== 3 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
+      { grade === 2 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
+        { !(ready) ? (
+          <div></div>
+        ) : <OpacityAnimation>
+          <div className="space-x-10 md:space-x-28 flex mb-10">
+            {/* 왼쪽 세로 6개 */}
+            <div className="space-y-24">
+              <div className="space-y-2">
+                <CustomSeat horizontal seatNumber={301} />
+                <CustomSeat horizontal seatNumber={302} />
+                <CustomSeat horizontal seatNumber={303} />
+                <CustomSeat horizontal seatNumber={304} />
+                <CustomSeat horizontal seatNumber={305} />
+                <CustomSeat horizontal seatNumber={306} />
+              </div>
+              <div className="space-y-2">
+                <CustomSeat horizontal seatNumber={307} />
+                <CustomSeat horizontal seatNumber={308} />
+                <CustomSeat horizontal seatNumber={309} />
+                <CustomSeat horizontal seatNumber={310} />
+                <CustomSeat horizontal seatNumber={311} />
+                <CustomSeat horizontal seatNumber={312} />
+              </div>
+              <div className="space-y-2">
+                <CustomSeat horizontal seatNumber={313} />
+                <CustomSeat horizontal seatNumber={314} />
+                <CustomSeat horizontal seatNumber={315} />
+                <CustomSeat horizontal seatNumber={316} />
+                <CustomSeat horizontal seatNumber={317} />
+                <CustomSeat horizontal seatNumber={318} />
+              </div>
+            </div>
+
+            <div className="space-y-28">
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={319} />
+                  <CustomSeat horizontal seatNumber={320} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={321} />
+                  <CustomSeat horizontal seatNumber={322} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={323} />
+                  <CustomSeat horizontal seatNumber={324} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={325} />
+                  <CustomSeat horizontal seatNumber={326} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={327} />
+                  <CustomSeat horizontal seatNumber={328} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={329} />
+                  <CustomSeat horizontal seatNumber={330} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={331} />
+                  <CustomSeat horizontal seatNumber={332} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={333} />
+                  <CustomSeat horizontal seatNumber={334} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={335} />
+                  <CustomSeat horizontal seatNumber={336} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={337} />
+                  <CustomSeat horizontal seatNumber={338} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={339} />
+                  <CustomSeat horizontal seatNumber={340} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal seatNumber={341} />
+                  <CustomSeat horizontal seatNumber={342} />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-24">
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={343} />
+                  <CustomSeat horizontal long seatNumber={344} />
+                  <CustomSeat horizontal long seatNumber={345} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={346} />
+                  <CustomSeat horizontal long seatNumber={347} />
+                  <CustomSeat horizontal long seatNumber={348} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={349} />
+                  <CustomSeat horizontal long seatNumber={350} />
+                  <CustomSeat horizontal long seatNumber={351} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={352} />
+                  <CustomSeat horizontal long seatNumber={353} />
+                  <CustomSeat horizontal long seatNumber={354} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={355} />
+                  <CustomSeat horizontal long seatNumber={356} />
+                  <CustomSeat horizontal long seatNumber={357} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={358} />
+                  <CustomSeat horizontal long seatNumber={359} />
+                  <CustomSeat horizontal long seatNumber={360} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={361} />
+                  <CustomSeat horizontal long seatNumber={362} />
+                  <CustomSeat horizontal long seatNumber={363} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={364} />
+                  <CustomSeat horizontal long seatNumber={365} />
+                  <CustomSeat horizontal long seatNumber={366} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={367} />
+                  <CustomSeat horizontal long seatNumber={368} />
+                  <CustomSeat horizontal long seatNumber={369} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={370} />
+                  <CustomSeat horizontal long seatNumber={371} />
+                  <CustomSeat horizontal long seatNumber={372} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={373} />
+                  <CustomSeat horizontal long seatNumber={374} />
+                  <CustomSeat horizontal long seatNumber={375} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={376} />
+                  <CustomSeat horizontal long seatNumber={377} />
+                  <CustomSeat horizontal long seatNumber={378} />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={379} />
+                  <CustomSeat horizontal long seatNumber={380} />
+                  <CustomSeat horizontal long seatNumber={381} />
+                </div>
+                <div className="flex space-x-2">
+                  <CustomSeat horizontal long seatNumber={382} />
+                  <CustomSeat horizontal long seatNumber={383} />
+                  <CustomSeat horizontal long seatNumber={384} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </OpacityAnimation> }
+      </div> : grade !== 3 ? <div className="mt-8 mb-10 flex flex-col overflow-x-auto">
         {!(ready) ? (
           <div className="w-full">
             <div className="flex flex-col">

@@ -109,13 +109,16 @@ export default function SideBar() {
     <>
       { (meal && timetableData) && <div className="space-y-5">
         <OpacityAnimation>
-          <div className="bg-gray-50 md:flex hidden cursor-pointer hover:bg-gray-100/70 transition-colors rounded-2xl xl:w-[350px] w-full md:w-[320px] h-[120px] px-7 py-5 items-center space-x-5">
-            <div className="text-4xl tossface">📅</div>
-            <div>
-              <div className="font-bold text-lightgray-300">금요일 귀가하는 경우<br/>토요일 활승을 미리 작성할 수 있어요</div>
-              <div className="text-sm text-lightgray-200 mt-1">이제 원하는 날짜를 선택해<br/>활동 승인을 요청할 수 있습니다</div>
+          <Link href='/d/petitions'>
+            <div className="bg-gray-50 md:flex hidden cursor-pointer hover:bg-gray-100/70 transition-colors rounded-2xl xl:w-[350px] w-full md:w-[320px] h-[120px] px-7 py-5 items-center space-x-5">
+              <div className="text-4xl tossface">🗳️</div>
+              <div>
+                <div className="font-bold text-lightgray-300">학생 의견 창구<br/>청원 게시판을 이용해보세요</div>
+                <div className="text-sm text-lightgray-200 mt-1 xl:block hidden">청원부가 투명하고 공정하게 운영합니다.<br/>학교를 변화시킬 좋은 의견을 기다립니다.</div>
+                <div className="text-sm text-lightgray-200 mt-1 xl:hidden block">청원부가 투명하고 공정하게 운영합니다. 학교를 변화시킬 좋은 의견을 기다립니다.</div>
+              </div>
             </div>
-          </div>
+          </Link>
         </OpacityAnimation>
         <OpacityAnimation>
           {/* <div className="border border-lightgray-100 rounded-2xl xl:w-[350px] w-full md:w-[320px] py-1 flex items-center justify-center"></div> */}

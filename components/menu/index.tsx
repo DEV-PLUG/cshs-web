@@ -24,7 +24,7 @@ export default async function Menu() {
             <div className="w-[50px] xl:w-full h-[1px] my-3 xl:my-5 bg-lightgray-100"></div>
           </div>
           <div className="relative">
-            <div className="overflow-auto h-[calc(100vh-410px)] py-2">
+            <div className="overflow-auto h-[calc(100vh-450px)] py-2">
               <div className="h-2 w-full bg-gradient-to-b absolute top-0 left-0 right-0 from-background-gray"></div>
               <div className="h-2 w-full bg-gradient-to-t absolute bottom-0 left-0 right-0 from-background-gray"></div>
               <MenuButtons/>
