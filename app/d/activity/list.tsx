@@ -322,7 +322,7 @@ export default function ActivityList() {
                         return a.id - b.id;
                       })[0];
                     }
-                    const label = displayPerio(+perio, 2);
+                    const label = displayPerio(+perio, 2, firstActivity?.date);
                     if(isWeekend() && perio === '5') return;
                     return (
                       <div

@@ -163,9 +163,9 @@ export default function AddActivityButton() {
                                     .map((period:string) => {
                                     switch (period) {
                                       case '0':
-                                      return displayPerio(1);
+                                      return displayPerio(1, 1);
                                       case '1':
-                                      return displayPerio(2);
+                                      return displayPerio(2, 1);
                                       case '2':
                                       return displayPerio(3, 3);
                                       case '3':
@@ -358,43 +358,43 @@ export default function AddActivityButton() {
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(1)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(1, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(1)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(1, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('1')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(2)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(2, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(2)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(2, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('2')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(3)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(3, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(3)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(3, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('3')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(4)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(4, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(4)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(4, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('4')).length}팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length === 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-orange-500"></div>
-                      <div className="text-sm">{displayPerio(5)} 다소 혼잡(1팀)</div>
+                      <div className="text-sm">{displayPerio(5, 1, selectedDate)} 다소 혼잡(1팀)</div>
                       </div> }
                       { place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length > 1 && <div className="flex items-center space-x-1">
                       <div className="w-4 h-2 rounded-full bg-red-500"></div>
-                      <div className="text-sm">{displayPerio(5)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length}팀)</div>
+                      <div className="text-sm">{displayPerio(5, 1, selectedDate)} 매우 혼잡({place_traffic?.activity?.filter((activity: any) => activity.perio.split(',').includes('5')).length}팀)</div>
                       </div> }
                     </div>
                 </div>
