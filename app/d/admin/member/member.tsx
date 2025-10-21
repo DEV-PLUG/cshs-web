@@ -16,6 +16,7 @@ function getAdminLabel(admin: number) {
   const labels = [];
   if ((admin & 1) === 1) labels.push(<div key="seat" className="bg-violet-100 px-2 py-1 text-violet-700 rounded-full">자리배치</div>);
   if ((admin & 2) === 2) labels.push(<div key="user" className="bg-blue-100 px-2 py-1 text-blue-700 rounded-full">사용자관리</div>);
+  if ((admin & 4) === 4) labels.push(<div key="petition" className="bg-pink-100 px-2 py-1 text-pink-700 rounded-full">청원관리</div>);
   return labels;
 }
 
@@ -59,12 +60,14 @@ export default function AdminUserPanel() {
   const [editType, setEditType] = useState<'student' | 'teacher'>('student');
   const [editAdminSeat, setEditAdminSeat] = useState(false);
   const [editAdminUser, setEditAdminUser] = useState(false);
+  const [editAdminPetition, setEditAdminPetition] = useState(false);
 
   const [addName, setAddName] = useState('');
   const [addUserId, setAddUserId] = useState('');
   const [addType, setAddType] = useState<'student' | 'teacher' | 'general'>('student');
   const [addAdminSeat, setAddAdminSeat] = useState(false);
   const [addAdminUser, setAddAdminUser] = useState(false);
+  const [addAdminPetition, setAddAdminPetition] = useState(false);
   const [addPassword, setAddPassword] = useState('');
 
   if (isLoading) return (
@@ -104,6 +107,7 @@ export default function AdminUserPanel() {
     setEditType(user.type === 0 ? 'student' : 'teacher');
     setEditAdminSeat((Number(user.admin) & 1) === 1);
     setEditAdminUser((Number(user.admin) & 2) === 2);
+    setEditAdminPetition((Number(user.admin) & 4) === 4);
     setEditModal(true);
   };
 
@@ -111,6 +115,7 @@ export default function AdminUserPanel() {
     let admin = 0;
     if (editAdminSeat) admin |= 1;
     if (editAdminUser) admin |= 2;
+    if (editAdminPetition) admin |= 4;
     const data = {
       name: editName,
       userId: editUserId,
@@ -131,6 +136,7 @@ export default function AdminUserPanel() {
     let admin = 0;
     if (addAdminSeat) admin |= 1;
     if (addAdminUser) admin |= 2;
+    if (addAdminPetition) admin |= 4;
     const data = {
       name: addName,
       userId: addUserId,
@@ -151,6 +157,7 @@ export default function AdminUserPanel() {
     setAddType('student');
     setAddAdminSeat(false);
     setAddAdminUser(false);
+    setAddAdminPetition(false);
     setAddPassword('');
   };
 
@@ -240,6 +247,10 @@ export default function AdminUserPanel() {
                     <input type="checkbox" checked={editAdminUser} onChange={e => setEditAdminUser(e.target.checked)} />
                     <span>사용자관리 권한</span>
                   </label>
+                  <label className="flex items-center space-x-2">
+                    <input type="checkbox" checked={editAdminPetition} onChange={e => setEditAdminPetition(e.target.checked)} />
+                    <span>청원관리 권한</span>
+                  </label>
                 </div>
               </div>
               <div className="mt-5 flex justify-end space-x-2">
@@ -272,6 +283,10 @@ export default function AdminUserPanel() {
                   <label className="flex items-center space-x-2">
                     <input type="checkbox" checked={addAdminUser} onChange={e => setAddAdminUser(e.target.checked)} />
                     <span>사용자관리 권한</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input type="checkbox" checked={addAdminPetition} onChange={e => setAddAdminPetition(e.target.checked)} />
+                    <span>청원관리 권한</span>
                   </label>
                 </div>
                 <Input type="password" value={addPassword} fn={(d:string) => setAddPassword(d)} placeholder="비밀번호" />
