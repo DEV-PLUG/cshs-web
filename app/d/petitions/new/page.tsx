@@ -24,12 +24,12 @@ export default function NewPetition() {
       dispatch(setNotification({ text: "제목은 10자 이상 입력해주세요.", type: "error" }));
       return;
     }
-    if (reason.length < 50) {
-      dispatch(setNotification({ text: "청원 취지는 50자 이상 입력해주세요.", type: "error" }));
+    if (reason.length < 100) {
+      dispatch(setNotification({ text: "청원 취지는 100자 이상 입력해주세요.", type: "error" }));
       return;
     }
-    if (content.length < 100) {
-      dispatch(setNotification({ text: "내용은 100자 이상 입력해주세요.", type: "error" }));
+    if (content.length < 500) {
+      dispatch(setNotification({ text: "내용은 500자 이상 입력해주세요.", type: "error" }));
       return;
     }
 
@@ -119,7 +119,7 @@ export default function NewPetition() {
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            placeholder="청원 취지를 간략하게 작성해주세요. (50자 이상)"
+            placeholder="청원 취지를 간략하게 작성해주세요. (100자 이상)"
             className="w-full h-[100px] py-3 rounded-2xl hover:border-gray-300 focus:border-teal-500 transition-all px-4 outline-none border-2 border-lightgray-100"
           />
           <div className="text-xs text-right text-zinc-400 mt-1">
@@ -131,7 +131,7 @@ export default function NewPetition() {
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="청원 내용을 상세히 작성해주세요. (100자 이상)"
+            placeholder="청원 내용을 상세히 작성해주세요. (500자 이상)"
             className="w-full h-[350px] py-3 rounded-2xl hover:border-gray-300 focus:border-teal-500 transition-all px-4 outline-none border-2 border-lightgray-100"
           />
           <div className="text-xs text-right text-zinc-400 mt-1">

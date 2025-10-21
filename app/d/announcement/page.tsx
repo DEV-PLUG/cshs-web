@@ -3,6 +3,7 @@ import AnnouncementPage from './announce-page';
 import Image from '@node_modules/next/image';
 import Menu from "@components/menu";
 import NotificationMenu from "@components/menu/notification";
+import MobileBottomMenu from '@components/menu/mobile';
 
 export const metadata:Metadata = {
   title: '공지사항',
@@ -25,6 +26,7 @@ export default function Announcement() {
         </div>
       </div>
       <Menu/>
+      <MobileBottomMenu/>
       <div className="w-full absolute left-[320px] drop-shadow-2xl z-10 h-[100vh] bg-white md:block hidden"></div>
       <AnnouncementPage/>
     </main>

@@ -6,7 +6,7 @@ import Announcements from "./announcements";
 import AddAnnouncementButton from "./add-announcement";
 import MobileBottomMenu from "@components/menu/mobile";
 import { useState } from "react";
-import useSWR from "@node_modules/swr/dist/index/index.mjs";
+import useSWR from "swr";
 
 export default function AnnouncementPage() {
   const [grade, setGrade] = useState(1);
@@ -38,7 +38,7 @@ export default function AnnouncementPage() {
           </div>
         </div>
       </div>
-      <div className="w-full h-[1px] my-5 bg-lightgray-100 xl:block hidden"></div>
+      <div className="w-full h-[1px] relative -top-5 my-5 bg-lightgray-100"></div>
       <Announcements grade={grade}/>
     </div>
   )
