@@ -286,6 +286,7 @@ model Petition {
   school School @relation("SchoolPetition", fields: [schoolId], references: [id])
   schoolId Int
   status String @default("pending") // pending, open, closed, rejected
+  isPublic Boolean @default(false)
   expiresAt DateTime
   reason String @db.Text
   responder String?

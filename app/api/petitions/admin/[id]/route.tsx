@@ -109,13 +109,7 @@ async function PutHandler(request: Request, { params }: { params: { id: string }
   }
 
   if (isPublic !== undefined) {
-    // isPublic은 따로 필드가 없으므로 status 변경으로 대체
-    // 공개(open)와 비공개(closed)를 status로 관리
-    if (isPublic) {
-      updateData.status = 'open';
-    } else {
-      updateData.status = 'closed';
-    }
+    updateData.isPublic = isPublic;
   }
 
   const updated = await client.petition.update({

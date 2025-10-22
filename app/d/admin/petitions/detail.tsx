@@ -23,7 +23,7 @@ export default function AdminPetitionDetail({ id }: { id: string }) {
       const res = await fetch(`/api/petitions/admin/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'open' })
+        body: JSON.stringify({ status: 'open', isPublic: true })
       });
 
       if (res.ok) {
@@ -45,7 +45,7 @@ export default function AdminPetitionDetail({ id }: { id: string }) {
       const res = await fetch(`/api/petitions/admin/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'rejected' })
+        body: JSON.stringify({ status: 'rejected', isPublic: false })
       });
 
       if (res.ok) {
@@ -65,7 +65,7 @@ export default function AdminPetitionDetail({ id }: { id: string }) {
       const res = await fetch(`/api/petitions/admin/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: isPublic ? 'open' : 'closed' })
+        body: JSON.stringify({ isPublic })
       });
 
       if (res.ok) {
@@ -92,8 +92,7 @@ export default function AdminPetitionDetail({ id }: { id: string }) {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          response: response.trim(),
-          status: 'open'
+          response: response.trim()
         })
       });
 

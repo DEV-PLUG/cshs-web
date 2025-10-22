@@ -89,7 +89,7 @@ export default function MyPetitionDetail({ id }: { id: string }) {
       )}
 
       {petition.status === 'rejected' && (
-        <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8">
+        <div className="bg-red-50 rounded-lg p-6 mb-8">
           <p className="text-red-900 font-semibold">
             <span className="tossface">❌</span> 이 청원은 반려되었습니다.
           </p>
