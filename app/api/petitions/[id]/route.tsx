@@ -27,15 +27,6 @@ async function GetHandler(request: Request, { params }: { params: { id: string }
     include: {
       supports: {
         select: { id: true }
-      },
-      writer: {
-        select: {
-          id: true,
-          name: true,
-          grade: true,
-          class: true,
-          number: true
-        }
       }
     }
   });
