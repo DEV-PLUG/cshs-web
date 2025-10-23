@@ -89,37 +89,41 @@ export default function ActivityList() {
 
               return (
                 <Link href={`/d/petitions/${p.id}`} key={p.id}>
-                  <div key={p.id} className="rounded-2xl border border-white hover:border-teal-500 cursor-pointer bg-white p-5 transition">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="text-xl font-bold line-clamp-2">{p.title}</div>
-                      <div className="min-w-20 flex justify-end">
-                        <div className={`ml-2 px-2 py-1 rounded-full text-xs ${chipColor}`}>
-                          {closed ? '종료됨' : '진행중'}
+                  <div key={p.id} className="rounded-2xl border border-white hover:border-teal-500 cursor-pointer bg-white p-5 transition h-full flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="text-xl font-bold line-clamp-2">{p.title}</div>
+                        <div className="min-w-20 flex justify-end">
+                          <div className={`ml-2 px-2 py-1 rounded-full text-xs ${chipColor}`}>
+                            {closed ? '종료됨' : '진행중'}
+                          </div>
                         </div>
+                      </div>
+
+                      <div className="text-sm text-zinc-500 mb-10">
+                        <div>작성일: {displayDate(new Date(p.createdAt), 'date')}</div>
+                        {/* <div>
+                          {p.writer?.name ? `작성자: ${p.writer.name}` : '작성자: 익명'}
+                          {p.writer?.grade ? ` (${p.writer.grade}${p.writer.class}${p.writer.number?.toString().padStart(2, '0')})` : ''}
+                        </div> */}
+                        {p.expiresAt && <div>마감: {dday(p.expiresAt)}</div>}
                       </div>
                     </div>
 
-                    <div className="text-sm text-zinc-500 mb-10">
-                      <div>작성일: {displayDate(new Date(p.createdAt), 'date')}</div>
-                      {/* <div>
-                        {p.writer?.name ? `작성자: ${p.writer.name}` : '작성자: 익명'}
-                        {p.writer?.grade ? ` (${p.writer.grade}${p.writer.class}${p.writer.number?.toString().padStart(2, '0')})` : ''}
-                      </div> */}
-                      {p.expiresAt && <div>마감: {dday(p.expiresAt)}</div>}
-                    </div>
-
-                    <div className="mb-2 flex items-center justify-between">
-                      <div className="text-sm font-medium">동의 현황</div>
-                      <div className="text-sm font-bold">{per}%</div>
-                    </div>
-                    <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden mb-2">
-                      <div
-                        className={`h-full ${barColor} transition-all`}
-                        style={{ width: `${per}%` }}
-                      />
-                    </div>
-                    <div className="text-xs text-zinc-500">
-                      {p.supportCount.toLocaleString()} / {targetCount.toLocaleString()}명 동의
+                    <div>
+                      <div className="mb-2 flex items-center justify-between">
+                        <div className="text-sm font-medium">동의 현황</div>
+                        <div className="text-sm font-bold">{per}%</div>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden mb-2">
+                        <div
+                          className={`h-full ${barColor} transition-all`}
+                          style={{ width: `${per}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-zinc-500">
+                        {p.supportCount.toLocaleString()} / {targetCount.toLocaleString()}명 동의
+                      </div>
                     </div>
                   </div>
                 </Link>

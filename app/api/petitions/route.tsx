@@ -34,9 +34,7 @@ async function GetHandler(request: Request) {
           lt: new Date()
         },
         status: {
-          not: {
-            notIn: ['rejected', 'pending']
-          }
+          notIn: ['rejected', 'pending']
         },
         isPublic: true
       },

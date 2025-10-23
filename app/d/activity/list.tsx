@@ -80,13 +80,13 @@ export default function ActivityList() {
   }, [approveModal]);
 
   const [passcardModal, setPasscardModal] = useState(false);
-  useEffect(() => {
-    if(document?.cookie.indexOf('passcard-info-modal=') === -1) {
-      setTimeout(() => {
-        setPasscardModal(true);
-      }, 500);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if(document?.cookie.indexOf('passcard-info-modal=') === -1) {
+  //     setTimeout(() => {
+  //       setPasscardModal(true);
+  //     }, 500);
+  //   }
+  // }, []);
 
   return (
     <>
