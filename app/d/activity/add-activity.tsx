@@ -58,8 +58,9 @@ export default function AddActivityButton() {
     setLoading(true);
     
     // 선택된 날짜를 YYYY-MM-DD 형식으로 변환
-    const selectedDateFormatted = selectedDate.toISOString().split('T')[0];
-    console.log('선택된 날짜:', selectedDate, '변환된 날짜:', selectedDateFormatted);
+    // const selectedDateFormatted = selectedDate.toISOString().split('T')[0];
+    // console.log('선택된 날짜:', selectedDate, '변환된 날짜:', selectedDateFormatted);
+    console.log('선택된 날짜:', selectedDate);
     
     await fetch(`/api/activity`, {
       method: "POST",
@@ -72,7 +73,7 @@ export default function AddActivityButton() {
         time,
         place: place.id,
         teacher: [selectedTeacher[0].id],
-        date: selectedDateFormatted
+        date: selectedDate.toISOString()
       })
     })
     .then((response) => response.json())

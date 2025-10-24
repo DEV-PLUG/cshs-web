@@ -63,8 +63,7 @@ async function PostHandler(request:Request) {
   // -----------------------------------------------------
   
   // 사용자가 날짜를 지정한 경우 해당 날짜 사용, 그렇지 않으면 오늘 날짜 사용
-  const checkDate = req.date ? formatedDate(req.date) : formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
-  
+  const checkDate = req.date ? formatedDate(new Date(req.date).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" })) : formatedDate(new Date().toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul" }));
   const likeConditions = times.map((t: string) => `a.perio LIKE '%${t}%'`).join(' OR ');
   const overlappingRows: any[] = await client.$queryRawUnsafe(`
     SELECT 
