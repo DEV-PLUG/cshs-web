@@ -204,6 +204,7 @@ model Timetable {
   grade Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@unique([date, perio, class, grade])
 }
 
 model Notification {
