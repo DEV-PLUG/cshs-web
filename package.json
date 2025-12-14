@@ -23,7 +23,7 @@
     "framer-motion": "^11.1.7",
     "hangul-search": "^1.4.2",
     "kadvice": "^2.0.2",
-    "next": "^14.2.25",
+    "next": "^14.2.35",
     "next-auth": "^4.24.7",
     "react": "^18.3.1",
     "react-dom": "^18",
