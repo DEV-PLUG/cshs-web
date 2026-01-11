@@ -21,9 +21,6 @@ export default function Announcement() {
             alt=""
           />
         </div>
-        <div>
-          <NotificationMenu/>
-        </div>
       </div>
       <Menu/>
       <MobileBottomMenu/>
