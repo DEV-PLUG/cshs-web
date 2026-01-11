@@ -79,7 +79,7 @@ export default function AdminUserPanel() {
   );
 
   const users = data?.users?.filter((u: any) =>
-    selectedTab === 'student' ? u.type === 0 : u.type !== 0
+    selectedTab === 'student' ? u.type === 0 : u.type === 1
   ) || [];
 
   const handleCheck = (id: string, checked: boolean) => {
