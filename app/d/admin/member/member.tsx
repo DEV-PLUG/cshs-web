@@ -9,6 +9,8 @@ import Loading from "@components/loading";
 import { setNotification } from "@libs/client/redux/notification";
 import { useAppDispatch } from "@libs/client/redux/hooks";
 import Input from "@components/input";
+import { red } from "@node_modules/@mui/material/colors";
+import { CSVLink } from "react-csv";
 
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
@@ -50,7 +52,9 @@ export default function AdminUserPanel() {
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
   const [editModal, setEditModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
+  const [bulkAddModal, setBulkAddModal] = useState(false);
   const [editUser, setEditUser] = useState<any>(null);
+  const [bulkEditModal, setBulkEditModal] = useState(false);
   const [resetModal, setResetModal] = useState(false);
   const [resetUserId, setResetUserId] = useState<string | null>(null);
 
@@ -58,6 +62,7 @@ export default function AdminUserPanel() {
   const [editName, setEditName] = useState('');
   const [editUserId, setEditUserId] = useState('');
   const [editType, setEditType] = useState<'student' | 'teacher'>('student');
+  const [bulkEditType, setBulkEditType] = useState<'student' | 'teacher'>('student');
   const [editAdminSeat, setEditAdminSeat] = useState(false);
   const [editAdminUser, setEditAdminUser] = useState(false);
   const [editAdminPetition, setEditAdminPetition] = useState(false);
@@ -65,10 +70,13 @@ export default function AdminUserPanel() {
   const [addName, setAddName] = useState('');
   const [addUserId, setAddUserId] = useState('');
   const [addType, setAddType] = useState<'student' | 'teacher' | 'general'>('student');
+  const [bulkAddType, setBulkAddType] = useState<'student' | 'teacher'>('student');
   const [addAdminSeat, setAddAdminSeat] = useState(false);
   const [addAdminUser, setAddAdminUser] = useState(false);
   const [addAdminPetition, setAddAdminPetition] = useState(false);
   const [addPassword, setAddPassword] = useState('');
+  const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [bulkFileName, setBulkFileName] = useState('');
 
   if (isLoading) return (
     <div className="flex justify-center mt-40">
@@ -80,6 +88,10 @@ export default function AdminUserPanel() {
 
   const users = data?.users?.filter((u: any) =>
     selectedTab === 'student' ? u.type === 0 : u.type === 1
+  ) || [];
+
+  const csvData = data?.users?.filter((u: any) =>
+    bulkEditType === 'student' ? u.type === 0 : u.type === 1
   ) || [];
 
   const handleCheck = (id: string, checked: boolean) => {
@@ -161,6 +173,47 @@ export default function AdminUserPanel() {
     setAddPassword('');
   };
 
+  const handelBulkUpload = async ({ target }) => {
+    const file = target.files[0];
+    if (!file) return;
+    setBulkFile(file);
+    setBulkFileName(file.name);
+  }
+
+  const handelBulkAddSubmit = async () => {
+    if (!bulkFile) return;
+    const formData = new FormData();
+    formData.append('file', bulkFile);
+    formData.append('type', bulkAddType);
+    await fetch('/api/user/admin/bulk', {
+      method: 'POST',
+      body: formData,
+      headers: {}
+    });
+    setBulkAddModal(false);
+    mutate();
+    dispatch(setNotification({ type: 'success', text: '일괄 추가 완료' }));
+    setBulkFile(null);
+    setBulkFileName('');
+  }
+
+  const handelBulkEditSubmit = async () => {
+    if (!bulkFile) return;
+    const formData = new FormData();
+    formData.append('file', bulkFile);
+    formData.append('type', bulkEditType);
+    await fetch('/api/user/admin/bulk', {
+      method: 'PUT',
+      body: formData,
+      headers: {}
+    });
+    setBulkEditModal(false);
+    mutate();
+    dispatch(setNotification({ type: 'success', text: '일괄 수정 완료' }));
+    setBulkFile(null);
+    setBulkFileName('');
+  }
+
   const handleResetPassword = async (id: string) => {
     setResetUserId(id);
     setResetModal(true);
@@ -186,6 +239,7 @@ export default function AdminUserPanel() {
           <div onClick={() => setSelectedTab('teacher')} className={ selectedTab === 'teacher' ? "bg-white px-8 py-2 rounded-full flex items-center justify-center font-bold cursor-pointer" : "px-8 py-2 rounded-full flex items-center justify-center cursor-pointer" }>교사</div>
         </div>
         <div className="flex space-x-2">
+          <Button color="teal" fn={() => setBulkEditModal(true)}><div>사용자 일괄 수정</div></Button>
           <Button color="lightblue" fn={() => setAddModal(true)}><div className="px-5">사용자 추가</div></Button>
           <Button color="red" fn={handleDelete} disabled={!checkedIds.length}><div className="px-4">선택 삭제</div></Button>
         </div>
@@ -259,6 +313,34 @@ export default function AdminUserPanel() {
             </div>
           </Modal>
         )}
+        {bulkEditModal && (
+          <Modal handleClose={() => setBulkEditModal(false)}>
+            <div className="w-full md:w-[380px] p-0">
+              <div className="font-bold text-xl mb-4">사용자 일괄 수정</div>
+              <div className="space-y-3">
+                <select
+                  value={bulkEditType}
+                  onChange={e => setBulkEditType(e.target.value as 'student' | 'teacher')}
+                  className="w-full border rounded px-3 py-2"
+                >
+                  <option value="student">학생</option>
+                  <option value="teacher">교사</option>
+                </select>
+                <CSVLink data={bulkEditType === 'student' ? csvData.map((user: any) => (
+                  [user.id, user.userId, user.name, user.grade, user.class, user.number]
+                )) : csvData.map((user: any) => (
+                  [user.id, user.userId, user.name]
+                ))}>CSV 파일 다운받기</CSVLink> {/* TODO: 배열 맨 첫 줄에 헤더 */}
+                <div className="space-y-10"></div>
+                <label htmlFor="bulkEditInput" className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">{bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}</label>
+                <input type="file" onChange={handelBulkUpload} accept=".csv" id="bulkEditInput" className="hidden" />
+              </div>
+              <div className="mt-5 flex justify-end space-x-2">
+                <Button color="blue" fn={handelBulkEditSubmit}><div className="px-6">일괄 수정</div></Button>
+              </div>
+            </div>
+          </Modal>
+        )}
         {addModal && (
           <Modal handleClose={() => setAddModal(false)}>
             <div className="w-full md:w-[380px] p-0">
@@ -291,8 +373,34 @@ export default function AdminUserPanel() {
                 </div>
                 <Input type="password" value={addPassword} fn={(d:string) => setAddPassword(d)} placeholder="비밀번호" />
               </div>
-              <div className="mt-5 flex justify-end space-x-2">
+              <div className="mt-5 flex justify-between space-x-2">
+                <Button color="lightblue" fn={() => {
+                  setAddModal(false);
+                  setBulkAddModal(true);
+                }}><div className="px-6">일괄 추가</div></Button>
                 <Button color="blue" fn={handleAddSubmit}><div className="px-6">추가</div></Button>
+              </div>
+            </div>
+          </Modal>
+        )}
+        {bulkAddModal && (
+          <Modal handleClose={() => setBulkAddModal(false)}>
+            <div className="w-full md:w-[380px] p-0">
+              <div className="font-bold text-xl mb-4">사용자 일괄 추가</div>
+              <div className="space-y-3">
+                <select
+                  value={bulkAddType}
+                  onChange={e => setBulkAddType(e.target.value as 'student' | 'teacher')}
+                  className="w-full border rounded px-3 py-2"
+                >
+                  <option value="student">학생</option>
+                  <option value="teacher">교사</option>
+                </select>
+                <label htmlFor="bulkInput" className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">{bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}</label>
+                <input type="file" onChange={handelBulkUpload} accept=".csv" id="bulkInput" className="hidden" />
+              </div>
+              <div className="mt-5 flex justify-end space-x-2">
+                <Button color="blue" fn={handelBulkAddSubmit}><div className="px-6">일괄 추가</div></Button>
               </div>
             </div>
           </Modal>
