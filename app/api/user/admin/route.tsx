@@ -47,9 +47,9 @@ export async function DELETE(req: Request) {
   }
   const { ids } = await req.json();
   await client.user.updateMany({
-    where: { id: { in: ids } }
-  },
-  { data: { type: 10 } });
+    where: { id: { in: ids } },
+    data: { type: 10 }
+  });
   return NextResponse.json({ ok: true });
 }
 
