@@ -326,10 +326,32 @@ export default function AdminUserPanel() {
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
                 </select>
-                <CSVLink data={bulkEditType === 'student' ? csvData.map((user: any) => (
-                  [user.id, user.userId, user.name, user.grade, user.class, user.number]
+                <CSVLink header={bulkEditType === 'student' ? [
+                  { label: 'id', key: 'id' },
+                  { label: 'userId', key: 'userId' },
+                  { label: '이름', key: 'name' },
+                  { label: '학년', key: 'grade' },
+                  { label: '반', key: 'class' },
+                  { label: '번호', key: 'number' }
+                ] : [
+                  { label: 'id', key: 'id' },
+                  { label: 'userId', key: 'userId' },
+                  { label: '이름', key: 'name' }
+                ]} data={bulkEditType === 'student' ? csvData.map((user: any) => (
+                  {
+                    id: user.id,
+                    userId: user.userId,
+                    name: user.name,
+                    grade: user.grade,
+                    class: user.class,
+                    number: user.number
+                  }
                 )) : csvData.map((user: any) => (
-                  [user.id, user.userId, user.name]
+                  {
+                    id: user.id,
+                    userId: user.userId,
+                    name: user.name
+                  }
                 ))}>CSV 파일 다운받기</CSVLink> {/* TODO: 배열 맨 첫 줄에 헤더 */}
                 <div className="space-y-10"></div>
                 <label htmlFor="bulkEditInput" className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">{bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}</label>
