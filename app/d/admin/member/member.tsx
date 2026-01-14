@@ -239,7 +239,7 @@ export default function AdminUserPanel() {
           <div onClick={() => setSelectedTab('teacher')} className={ selectedTab === 'teacher' ? "bg-white px-8 py-2 rounded-full flex items-center justify-center font-bold cursor-pointer" : "px-8 py-2 rounded-full flex items-center justify-center cursor-pointer" }>교사</div>
         </div>
         <div className="flex space-x-2">
-          <Button color="teal" fn={() => setBulkEditModal(true)}><div>사용자 일괄 수정</div></Button>
+          <Button color="teal" fn={() => setBulkEditModal(true)}><div className="px-5">사용자 일괄 수정</div></Button>
           <Button color="lightblue" fn={() => setAddModal(true)}><div className="px-5">사용자 추가</div></Button>
           <Button color="red" fn={handleDelete} disabled={!checkedIds.length}><div className="px-4">선택 삭제</div></Button>
         </div>
@@ -352,9 +352,18 @@ export default function AdminUserPanel() {
                     userId: user.userId,
                     name: user.name
                   }
-                ))}>CSV 파일 다운받기</CSVLink> {/* TODO: 배열 맨 첫 줄에 헤더 */}
+                ))}
+                  filename={bulkEditType === 'student' ? '학생 데이터.csv' : '교사 데이터.csv'}
+                  className="mt-8 w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100"
+                >
+                  <div className="w-full text-2xl text-center">CSV 파일 다운받기</div>
+                </CSVLink>
                 <div className="space-y-10"></div>
-                <label htmlFor="bulkEditInput" className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">{bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}</label>
+                <label htmlFor="bulkEditInput" className="my-8 w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">
+                  <div className="w-full text-2xl text-center">
+                    {bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}
+                  </div>
+                </label>
                 <input type="file" onChange={handelBulkUpload} accept=".csv" id="bulkEditInput" className="hidden" />
               </div>
               <div className="mt-5 flex justify-end space-x-2">
@@ -418,7 +427,11 @@ export default function AdminUserPanel() {
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
                 </select>
-                <label htmlFor="bulkInput" className="w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">{bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}</label>
+                <label htmlFor="bulkInput" className="w-full my-8 h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">
+                  <div className="w-full text-2xl text-center">
+                    {bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}
+                  </div>
+                </label>
                 <input type="file" onChange={handelBulkUpload} accept=".csv" id="bulkInput" className="hidden" />
               </div>
               <div className="mt-5 flex justify-end space-x-2">
