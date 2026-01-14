@@ -94,7 +94,54 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
       }
     });
   }
+  
+  const [adminModal, setAdminModal] = useState(false);
+  
+  const [adminApproveLoading, setAdminApproveLoading] = useState(false);
+  async function adminApproveActivity() {
+    if (adminApproveLoading) return;
+    setAdminApproveLoading(true);
+    await fetch(`/api/activity/admin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: data.id })
+    })
+    .then(res => res.json())
+    .then(res => {
+      setAdminApproveLoading(false);
+      if (res.success) {
+        dispatch(setNotification({ type: 'success', text: '해당 활동을 승인했습니다' }));
+        if(data?.mutateActivity) data?.mutateActivity();
+        fn();
+      } else {
+        dispatch(setNotification({ type: 'error', text: res.message || '승인에 실패했습니다.' }));
+      }
+    });
+  }
 
+  // 승인 취소 버튼 로직 추가
+  const [adminCancelApproveLoading, setAdminCancelApproveLoading] = useState(false);
+  async function adminCancelApproveActivity() {
+    if (adminCancelApproveLoading) return;
+    setAdminCancelApproveLoading(true);
+    await fetch(`/api/activity/admin/cancel`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: data.id })
+    })
+    .then(res => res.json())
+    .then(res => {
+      setAdminCancelApproveLoading(false);
+      if (res.success) {
+        dispatch(setNotification({ type: 'success', text: '승인이 취소되었습니다' }));
+        if(data?.mutateActivity) data?.mutateActivity();
+        fn();
+      } else {
+        dispatch(setNotification({ type: 'error', text: res.message || '승인 취소에 실패했습니다' }));
+      }
+    });
+  }
+  
   useEffect(() => {
     setTimeout(() => {
       if(user?.user.type === 1 && data?.relation.length > 0) {
@@ -142,6 +189,31 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                       </div>
                     ))
                 }
+              </div>
+            </div>
+          </div>
+        </Modal> }
+        { adminModal && <Modal modalType="left" backdropType="transparent" handleClose={() => setAdminModal(false)}>
+          <div className="w-full md:w-[320px] h-[340px] -m-4">
+            <div className="flex flex-col h-full p-5 pr-3">
+              <div className="font-bold text-sm text-gray-400 mb-3">어드민 패널</div>
+              <div className="custom-scroll overflow-auto">
+                { data.status === 1 ? <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
+                  <div className="w-full relative z-10">
+                    <Button color="red" loading={adminCancelApproveLoading} fn={adminCancelApproveActivity}>
+                      <div className="w-full">승인 취소하기</div>
+                    </Button>
+                  </div>
+                  <div className="h-7 w-full bg-white relative bottom-2"></div>
+                </div> : <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
+                  <div className="w-full relative z-10">
+                    <Button color="blue" loading={approveLoading} fn={adminApproveActivity}>
+                      <div className="w-full">승인하기</div>
+                    </Button>
+                  </div>
+                  <div className="h-7 w-full bg-white relative bottom-2"></div>
+                </div> }
+                
               </div>
             </div>
           </div>
@@ -253,6 +325,16 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                   </Button>
                 </div>
                 <div className="h-7 w-full bg-white relative bottom-2"></div>
+              </div>
+            )}
+            { (Number(data?.user.admin) & 2) === 2 && <div className="w-full h-20"></div> }
+            { (Number(data?.user.admin) & 2) === 2 && (
+              <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
+                <div className="w-full relative z-10">
+                  <Button color="lightblue" fn={() => setAdminModal(true)}>
+                    <div className="w-full">어드민 패널 ^찡긋^</div>
+                  </Button>
+                </div>
               </div>
             )}
           </div>
