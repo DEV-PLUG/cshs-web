@@ -119,7 +119,6 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
     });
   }
 
-  // 승인 취소 버튼 로직 추가
   const [adminCancelApproveLoading, setAdminCancelApproveLoading] = useState(false);
   async function adminCancelApproveActivity() {
     if (adminCancelApproveLoading) return;
@@ -213,7 +212,7 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                   </div>
                   <div className="h-7 w-full bg-white relative bottom-2"></div>
                 </div> }
-                
+                {/* 구성원 변경 기능 추가 예정 */}
               </div>
             </div>
           </div>
@@ -332,7 +331,7 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
               <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
                 <div className="w-full relative z-10">
                   <Button color="lightblue" fn={() => setAdminModal(true)}>
-                    <div className="w-full">어드민 패널 ^찡긋^</div>
+                    <div className="w-full">어드민 패널</div>
                   </Button>
                 </div>
               </div>
