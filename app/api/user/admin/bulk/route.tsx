@@ -43,9 +43,10 @@ export async function POST(req: Request) {
               grade: data.grade,
               class: data.class,
               number: data.number,
+              provider: 'local',
+              email: '' + data.userId + '@school.local'
             }
           });
-          
         });
       })
     });
@@ -59,7 +60,9 @@ export async function POST(req: Request) {
               name: data.name,
               userId: data.userId,
               type: 1,
-              password: hash
+              password: hash,
+              provider: 'local',
+              email: '' + data.userId + '@school.local'
             }
           });
           
@@ -67,6 +70,7 @@ export async function POST(req: Request) {
       })
     });
   }
+  return NextResponse.json({ success: true } );
 }
 
 export async function PUT(req: Request) {
@@ -110,4 +114,5 @@ export async function PUT(req: Request) {
       });
     })
   }
+  return NextResponse.json({ success: true } );
 }

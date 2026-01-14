@@ -3,7 +3,6 @@ import client from "@libs/server/client";
 import { getServerSession } from "next-auth";
 import getServerSessionCM from "@libs/server/session";
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 
 // Add a new todo to the other user
 async function PostHandler(request:Request) {
@@ -152,8 +151,8 @@ async function GetHandler(request:Request) {
       t."senderId" = (SELECT id FROM "User" WHERE email = ${session.user.email}) AND
       t."receiverId" IS NULL AND
       t.status = 0 AND
-      (${search ? Prisma.sql`(t.title LIKE ${'%' + search + '%'} OR t.description LIKE ${'%' + search + '%'})` : Prisma.sql`1=1`})
-    ${sort && order ? Prisma.sql`ORDER BY t.${Prisma.raw(sort)} ${Prisma.raw(order)}` : Prisma.sql``}
+      (${search ? `(t.title LIKE ${'%' + search + '%'} OR t.description LIKE ${'%' + search + '%'})` : `1=1`})
+    ${sort && order ? `ORDER BY t.${sort} ${order}` : ``}
     LIMIT 100;
   `;
 
@@ -179,8 +178,8 @@ async function GetHandler(request:Request) {
       t."senderId" = (SELECT id FROM "User" WHERE email = ${session.user.email}) AND
       t."receiverId" IS NULL AND
       t.status = 1 AND
-      (${search ? Prisma.sql`(t.title LIKE ${'%' + search + '%'} OR t.description LIKE ${'%' + search + '%'})` : Prisma.sql`1=1`})
-    ${sort && order ? Prisma.sql`ORDER BY t.${Prisma.raw(sort)} ${Prisma.raw(order)}` : Prisma.sql``}
+      (${search ? `(t.title LIKE ${'%' + search + '%'} OR t.description LIKE ${'%' + search + '%'})` : `1=1`})
+    ${sort && order ? `ORDER BY t.${sort} ${order}` : ``}
     LIMIT 100;
   `;
 
