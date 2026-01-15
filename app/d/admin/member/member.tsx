@@ -427,6 +427,22 @@ export default function AdminUserPanel() {
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
                 </select>
+                <CSVLink header={bulkAddType === 'student' ? [
+                  { label: 'userId', key: 'userId' },
+                  { label: '이름', key: 'name' },
+                  { label: '학년', key: 'grade' },
+                  { label: '반', key: 'class' },
+                  { label: '번호', key: 'number' }
+                ] : [
+                  { label: 'userId', key: 'userId' },
+                  { label: '이름', key: 'name' }
+                ]} data={[]}
+                  filename={bulkAddType === 'student' ? '학생 데이터.csv' : '교사 데이터.csv'}
+                  className="mt-8 w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100"
+                >
+                  <div className="w-full text-2xl text-center">CSV 파일 양식 다운받기</div>
+                </CSVLink>
+                <div className="space-y-10"></div>
                 <label htmlFor="bulkInput" className="w-full my-8 h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100">
                   <div className="w-full text-2xl text-center">
                     {bulkFileName === '' ? "CSV 파일 업로드" : bulkFileName}
