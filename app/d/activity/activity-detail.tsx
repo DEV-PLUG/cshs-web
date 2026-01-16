@@ -326,8 +326,8 @@ export default function ActivityDetail({ data, fn }:{ data:any, fn():void }) {
                 <div className="h-7 w-full bg-white relative bottom-2"></div>
               </div>
             )}
-            { (Number(data?.user.admin) & 2) === 2 && <div className="w-full h-20"></div> }
-            { (Number(data?.user.admin) & 2) === 2 && (
+            { (Number(user.user.admin) & 2) === 2 && <div className="w-full h-20"></div> }
+            { (Number(user.user.admin) & 2) === 2 && (
               <div className="mt-4 absolute bottom-0 flex items-center flex-col right-7 left-5">
                 <div className="w-full relative z-10">
                   <Button color="lightblue" fn={() => setAdminModal(true)}>
