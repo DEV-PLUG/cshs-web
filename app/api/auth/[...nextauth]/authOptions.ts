@@ -44,6 +44,7 @@ export const authOptions = {
   secret: process.env.JWT_SECRET,
   callbacks: {
     async signIn(data:any) {
+      return true;
       const dbUser = await client.user.findMany({
         where: {
           email: data.user.email

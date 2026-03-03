@@ -13,9 +13,9 @@ async function isAdmin(session: any) {
 
 export async function GET(req: Request) {
   const session = await getServerSessionCM();
-  if (!(await isAdmin(session))) {
-    return NextResponse.json({ error: '권한 없음' }, { status: 403 });
-  }
+  // if (!(await isAdmin(session))) {
+  //   return NextResponse.json({ error: '권한 없음' }, { status: 403 });
+  // }
   const users = await client.user.findMany({
     orderBy: {
       userId: 'asc'

@@ -337,22 +337,22 @@ export default function AdminUserPanel() {
                   { label: 'id', key: 'id' },
                   { label: 'userId', key: 'userId' },
                   { label: '이름', key: 'name' }
-                ]} data={bulkEditType === 'student' ? csvData.map((user: any) => (
-                  {
-                    id: user.id,
-                    userId: user.userId,
-                    name: user.name,
-                    grade: user.grade,
-                    class: user.class,
-                    number: user.number
-                  }
-                )) : csvData.map((user: any) => (
-                  {
-                    id: user.id,
-                    userId: user.userId,
-                    name: user.name
-                  }
-                ))}
+                ]} data={bulkEditType === 'student' ? [["id", "userId", "name", "grade", "class", "number"]].concat(csvData.map((user: any) => (
+                  [
+                    user.id,
+                    user.userId,
+                    user.name,
+                    user.grade,
+                    user.class,
+                    user.number
+                  ]
+                ))) : [["id", "userId", "name"]].concat(csvData.map((user: any) => (
+                  [
+                    user.id,
+                    user.userId,
+                    user.name
+                  ]
+                )))}
                   filename={bulkEditType === 'student' ? '학생 데이터.csv' : '교사 데이터.csv'}
                   className="mt-8 w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100"
                 >
@@ -427,16 +427,7 @@ export default function AdminUserPanel() {
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
                 </select>
-                <CSVLink header={bulkAddType === 'student' ? [
-                  { label: 'userId', key: 'userId' },
-                  { label: '이름', key: 'name' },
-                  { label: '학년', key: 'grade' },
-                  { label: '반', key: 'class' },
-                  { label: '번호', key: 'number' }
-                ] : [
-                  { label: 'userId', key: 'userId' },
-                  { label: '이름', key: 'name' }
-                ]} data={[]}
+                <CSVLink data={bulkAddType === 'student' ? [["userId", "name", "grade", "class", "number"]] : [["userId", "name"]]}
                   filename={bulkAddType === 'student' ? '학생 데이터.csv' : '교사 데이터.csv'}
                   className="mt-8 w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100"
                 >

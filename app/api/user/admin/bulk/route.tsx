@@ -16,9 +16,9 @@ async function isAdmin(session: any) {
 
 export async function POST(req: Request) {
   const session = await getServerSessionCM();
-  if (!(await isAdmin(session))) {
-    return NextResponse.json({ error: '권한 없음' }, { status: 403 });
-  }
+ if (!(await isAdmin(session))) {
+   return NextResponse.json({ error: '권한 없음' }, { status: 403 });
+ }
   const formdata = await req.formData();
   const type = formdata.get('type') as string;
   const file = formdata.get('file') as File;
@@ -32,23 +32,19 @@ export async function POST(req: Request) {
   });
   if (type === 'student') {
     result.data.forEach(async function (data: any) {
-      await bcrypt.genSalt(saltRounds, async function(err: any, salt: any) {
-        await bcrypt.hash(data.userId, salt, async function(err: any, hash: any) {
-          const user = await client.user.create({
-            data: {
-              name: data.name,
-              userId: data.userId,
-              type: 0,
-              password: hash,
-              grade: data.grade,
-              class: data.class,
-              number: data.number,
-              provider: 'local',
-              email: '' + data.userId + '@school.local'
-            }
-          });
-        });
-      })
+      const user = await client.user.create({
+        data: {
+          name: data.name + '',
+          userId: data.userId + '',
+          type: 0,
+          password: null,
+          grade: data.grade,
+          class: data.class,
+          number: data.number,
+          provider: 'local',
+          email: '' + data.userId + '@school.local'
+        }
+      });
     });
   }
   if (type === 'teacher') {
@@ -57,10 +53,10 @@ export async function POST(req: Request) {
         await bcrypt.hash(data.userId, salt, async function(err: any, hash: any) {
           const user = await client.user.create({
             data: {
-              name: data.name,
-              userId: data.userId,
+              name: data.name + '',
+              userId: data.userId + '',
               type: 1,
-              password: hash,
+              password: null,
               provider: 'local',
               email: '' + data.userId + '@school.local'
             }
@@ -90,29 +86,33 @@ export async function PUT(req: Request) {
     dynamicTyping: true
   });
   if (type === 'student') {
-    result.data.forEach((data: any) => {
-      client.user.update({
-        where: { id: data.id },
-        data: {
-          userId: data.userId,
-          name: data.name,
-          grade: data.grade,
-          class: data.class,
-          number: data.number
-        }
-      });
-    });
+    await client.$transaction(
+      result.data.map((data: any) => 
+        client.user.update({
+          where: { id: data.id },
+          data: {
+            userId: data.userId + '',
+            name: data.name + '',
+            grade: data.grade,
+            class: data.class,
+            number: data.number
+          }
+        })
+      )
+    );
   }
   else if (type === 'teacher') {
-    result.data.forEach((data: any) => {
-      client.user.update({
-        where: { id: data.id },
-        data: {
-          userId: data.userId,
-          name: data.name
-        }
-      });
-    })
+    await client.$transaction(
+      result.data.map((data: any) => 
+        client.user.update({
+          where: { id: data.id },
+          data: {
+            userId: data.userId + '',
+            name: data.name + '',
+          }
+        })
+      )
+    );
   }
   return NextResponse.json({ success: true } );
 }
