@@ -1,4 +1,13 @@
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/register",
+        destination: "https://forms.gle/2AJUs99FP8xxT2UJA",
+        permanent: false,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
