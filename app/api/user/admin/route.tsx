@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   // }
   const users = await client.user.findMany({
     orderBy: {
-      userId: 'asc'
+      name: 'asc'
     }
   });
   return NextResponse.json({ users });
