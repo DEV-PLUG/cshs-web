@@ -427,7 +427,7 @@ export default function AdminUserPanel() {
                   <option value="student">학생</option>
                   <option value="teacher">교사</option>
                 </select>
-                <CSVLink data={bulkAddType === 'student' ? [["userId", "name", "grade", "class", "number"]] : [["userId", "name"]]}
+                <CSVLink data={bulkAddType === 'student' ? [["id", "userId", "name", "grade", "class", "number"]] : [["id", "userId", "name"]]}
                   filename={bulkAddType === 'student' ? '학생 데이터.csv' : '교사 데이터.csv'}
                   className="mt-8 w-full max-w-[400px] h-[55px] rounded-2xl hover:border-gray-300 focus:border-blue-500 transition-all px-4 outline-none border-2 border-lightgray-100"
                 >

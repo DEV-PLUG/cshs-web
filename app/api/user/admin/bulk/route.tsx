@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     result.data.forEach(async function (data: any) {
       const user = await client.user.create({
         data: {
+          id: data.id,
           name: data.name + '',
           userId: data.userId + '',
           type: 0,
@@ -53,6 +54,7 @@ export async function POST(req: Request) {
         await bcrypt.hash(data.userId, salt, async function(err: any, hash: any) {
           const user = await client.user.create({
             data: {
+              id: data.id,
               name: data.name + '',
               userId: data.userId + '',
               type: 1,
